@@ -1,0 +1,31 @@
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    /* Margin bottom by footer height */
+    margin-top: 50px;
+}
+.header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    /* Set the fixed height of the header here */
+    height: 50px;
+    background-color: #f5f5f5;
+}
+
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+.header .navbar-brand {
+    padding: 9px;
+}
+.header .text-muted {
+    margin: 10px 0;
+    display: block;
+    font-size: 1.5em;
+}
