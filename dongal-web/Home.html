@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="utf-8">
@@ -20,6 +20,17 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style>
+        .gogo {
+            border-bottom: 1px solid #dbdbdb;
+        }
+        .list-group-item {
+            padding:0px 15px;
+        }
+        .list-content-date {
+            padding:10px 15px;
+        }
+    </style>
 </head>
 <body>
 
@@ -32,7 +43,7 @@
                 <a class="navbar-brand" href="#"><img alt="Brand" src="images/ffa500-bell-png/ffa500-bell-32.png"></a>
             </div>
             <div class="col-xs-6">
-                <span class="text-muted text-center">Home</span>
+                <span class="text-muted text-center">Dongal&Dongal</span>
             </div>
             <div class="col-xs-3"></div>
         </div>
@@ -47,7 +58,7 @@
                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
             </div>
             <div class="jumbo-user col-xs-3 col-sm-4 text-left">
-                <strong>User_name</strong>
+                <small>User_name</small>
             </div>
             <div class="col-xs-7 col-sm-6">
                 <small>홈 설정</small>
@@ -63,35 +74,48 @@
 </div>
 
 <div class="container">
-    <table class="table">
-        <tr>
-            <th>2015.10.02</th>
-        </tr>
-        <tr>
-            <td>[졸업] 졸업사진 공지</td>
-        </tr>
-        <tr>
-            <td>[졸업] 졸업사진 공지</td>
-        </tr>
-        <tr>
-            <td>[졸업] 졸업사진 공지</td>
-        </tr>
-    </table>
-    <table class="table">
-        <tr>
-            <th>2015.10.01</th>
-        </tr>
-        <tr>
-            <td>[졸업] 졸업사진 공지</td>
-        </tr>
-        <tr>
-            <td>[졸업] 졸업사진 공지</td>
-        </tr>
-        <tr>
-            <td>[졸업] 졸업사진 공지</td>
-        </tr>
-    </table>
+    <div class="row">
+        <ul class="list-group">
+            <li class="list-group-item">
+                <span class="badge">3</span>
+                <div class="row list-content-date" data-toggle="collapse" data-target="#demo1">2015.10.21</div>
+                <div id="demo1" class="collapse row list-content-details">
+                    <a class="col-xs-12 gogo" href="#">[학사] 짧음</a>
+                    <a class="col-xs-12 gogo" href="#">[졸업] 중간 길이</a>
+                    <a class="col-xs-12 gogo" href="#">[취업] 길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다.</a>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <span class="badge">3</span>
+                <div class="row list-content-date" data-toggle="collapse" data-target="#demo2">2015.10.20</div>
+                <div id="demo2" class="collapse row list-content-details">
+                    <a class="col-xs-12 gogo" href="#">[학사] 짧음</a>
+                    <a class="col-xs-12 gogo" href="#">[졸업] 중간 길이</a>
+                    <a class="col-xs-12 gogo" href="#">[취업] 길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다.</a>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <span class="badge">3</span>
+                <div class="row list-content-date" data-toggle="collapse" data-target="#demo3">2015.10.19</div>
+                <div id="demo3" class="collapse row list-content-details">
+                    <a class="col-xs-12 gogo" href="#">[학사] 짧음</a>
+                    <a class="col-xs-12 gogo" href="#">[졸업] 중간 길이</a>
+                    <a class="col-xs-12 gogo" href="#">[취업] 길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다.</a>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <span class="badge">3</span>
+                <div class="row list-content-date" data-toggle="collapse" data-target="#demo4">2015.10.18</div>
+                <div id="demo4" class="collapse row list-content-details">
+                    <a class="col-xs-12 gogo" href="#">[학사] 짧음</a>
+                    <a class="col-xs-12 gogo" href="#">[졸업] 중간 길이</a>
+                    <a class="col-xs-12 gogo" href="#">[취업] 길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다길다.</a>
+                </div>
+            </li>
+        </ul>
+    </div>
 </div>
+
 <!-- /container -->
 
 <!-- Footer Menu Bar -->

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="utf-8">
@@ -22,11 +22,32 @@
     <![endif]-->
 
     <style>
-        th {
+        .th {
             text-align:center;
         }
-        h6 {
+        .h6 {
             text-align:center;
+        }
+        .Table {
+            display: table;
+            margin: auto;
+        }
+
+        .Heading {
+            display: table-row;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .Row {
+            display: table-row;
+        }
+
+        .Cell {
+            display: table-cell;
+            border:solid;
+            border-width: thin;
+            padding: 30px 30px 30px 30px;
         }
     </style>
 </head>
@@ -41,7 +62,7 @@
                 <a class="navbar-brand" href="#"><img alt="Brand" src="images/ffa500-bell-png/ffa500-bell-32.png"></a>
             </div>
             <div class="col-xs-4">
-                <span class="text-muted text-center"><a href="#">Home</a></span>
+                <span class="text-muted text-center">Dongal&Dongal</span>
             </div>
         </div>
     </div>
@@ -49,51 +70,45 @@
 
 <!-- Contents -->
 <div class="container">
-
+    <div class="jumbotron">
+        <div class="row"> 
+            <div class="col-xs-12 col-ms-12">
+                <div class="Table">
+                    <div class="Heading">
+                        <div class="Cell">
+                            <span><img src="images/glyphicons/png/glyphicons-21-home.png" width="27" height="26" /></span>
+                        </div>
+                        <div class="Cell">
+                            <span><img src="images/glyphicons/png/glyphicons-40-notes.png" width="27" height="26" /></span>
+                        </div>
+                        <div class="Cell">
+                            <span><img src="images/glyphicons/png/glyphicons-66-tag.png" width="27" height="26" /></span>
+                        </div>
+                        <div class="Cell">
+                            <span><img src="images/glyphicons/png/glyphicons-137-cogwheel.png" width="27" height="26" /></span>
+                        </div>
+                    </div>
+                    <div class="Row">
+                        <div class="Cell">
+                            <span><img src="images/glyphicons/png/glyphicons-344-thumbs-up.png" width="27" height="26" /></span>
+                        </div>
+                        <div class="Cell">
+                            <span><img src="images/glyphicons/png/glyphicons-576-uk-rat-18.png" width="27" height="26" /></span>
+                        </div>
+                        <div class="Cell">
+                            <span><img src="images/glyphicons_social/png/social-31-facebook.png" width="27" height="26" /></span>
+                        </div>
+                        <div class="Cell">
+                            <span><img src="images/glyphicons_social/png/social-32-twitter.png" width="27" height="26" /></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- /container -->
-<div class="container">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th><img alt="Brand" src="images/notice.png" /></th>
-                <th><img alt="Brand" src="images/notice.png" /></th>
-                <th><img alt="Brand" src="images/notice.png" /></th>
-                <th><img alt="Brand" src="images/notice.png" /></th>
-            </tr>
-            <tr>
-                <th><img alt="Brand" src="images/notice.png" /></th>
-                <th><img alt="Brand" src="images/notice.png" /></th>
-                <th><img alt="Brand" src="images/notice.png" /></th>
-                <th><img alt="Brand" src="images/notice.png" /></th>
-            </tr>
-        </thead>
-    </table>
 
-    <h4>홈페이지 이동</h4>
-    <div class="gohomepageIcon">
-        <div class="row">
-            <div class="col-xs-3">
-                <a href="#"><img alt="Brand" src="images/dguicon.png" /></a></div>
-            <div class="col-xs-3">
-                <a href="#"><img alt="Brand" src="images/dyeonicon.png" /></a></div>
-            <div class="col-xs-3">
-                <a href="#"><img alt="Brand" src="images/coopicon.png" /></a></div>
-            <div class="col-xs-3"></div>
-        </div>
-    </div>
-    <div class="gohomepageName">
-        <div class="row">
-            <div class="col-xs-3">
-                <h6>동국대학교</h6></div>
-            <div class="col-xs-3">
-                <h6>디연</h6></div>
-            <div class="col-xs-3">
-                <h6>학식</h6></div>
-            <div class="col-xs-3"></div>
-        </div>
-    </div>
-</div>
 
 <!-- Footer Menu Bar -->
 <footer class="footer">
