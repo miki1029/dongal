@@ -1,0 +1,30 @@
+<!-- Footer Menu Bar -->
+<footer class="footer" ng-controller="footerCtrl">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-3">
+                <a href="home" ng-class="{ active: isActive('/')}" class="active text-muted text-center">
+                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span><br />Home
+                </a>
+            </div>
+            <div class="col-xs-3">
+                <a href="list" ng-class="{ active: isActive('/list')}" class="text-muted text-center">
+                    <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span><br />List
+                </a>
+            </div>
+            <div class="col-xs-3">
+                <a href="favorite" ng-class="{ active: isActive('/favorite')}" class="text-muted text-center">
+                    <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span><br />Favorite
+                </a>
+            </div>
+            <div class="col-xs-3">
+                <a href="more" ng-class="{ active: isActive('/more')}" class="text-muted text-center">
+                    <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span><br />More
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
