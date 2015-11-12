@@ -146,7 +146,7 @@
         <ul class="list-group">
             <li class="list-group-item">
                 <span class="badge">3</span>
-                <div class="row list-content-date" data-toggle="collapse" data-target="#demo1">2015.01.01</div>
+                <div class="row list-content-date collapse-header" data-target="#demo1">2015.01.01</div>
                 <div id="demo1" class="collapse row list-content-details">
                     <button class="col-xs-2 btn btn-warning text-center gogo">★</button>
                     <a class="col-xs-8 gogo" href="#">[졸업] 졸업사진 공지</a>
@@ -161,7 +161,7 @@
             </li>
             <li class="list-group-item">
                 <span class="badge">3</span>
-                <div class="row list-content-date" data-toggle="collapse" data-target="#demo2">2015.01.01</div>
+                <div class="row list-content-date collapse-header" data-target="#demo2">2015.01.01</div>
                 <div id="demo2" class="collapse row list-content-details">
                     <button class="col-xs-2 btn btn-warning text-center gogo">★</button>
                     <a class="col-xs-8 gogo" href="#">[졸업] 졸업사진 공지</a>
@@ -176,7 +176,7 @@
             </li>
             <li class="list-group-item">
                 <span class="badge">3</span>
-                <div class="row list-content-date" data-toggle="collapse" data-target="#demo3">2015.01.01</div>
+                <div class="row list-content-date collapse-header" data-target="#demo3">2015.01.01</div>
                 <div id="demo3" class="collapse row list-content-details">
                     <button class="col-xs-2 btn btn-warning text-center gogo">★</button>
                     <a class="col-xs-8 gogo" href="#">[졸업] 졸업사진 공지</a>
@@ -191,7 +191,7 @@
             </li>
             <li class="list-group-item">
                 <span class="badge">3</span>
-                <div class="row list-content-date" data-toggle="collapse" data-target="#demo4">2015.01.01</div>
+                <div class="row list-content-date collapse-header" data-target="#demo4">2015.01.01</div>
                 <div id="demo4" class="collapse row list-content-details">
                     <button class="col-xs-2 btn btn-warning text-center gogo">★</button>
                     <a class="col-xs-8 gogo" href="#">[졸업] 졸업사진 공지</a>
@@ -243,5 +243,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
 <script src="js/bootstrap/bootstrap.min.js"></script>
+<script>
+    $('.collapse-header').on('click', function () {
+        $($(this).data('target')).collapse('toggle');
+    });
+</script>
 </body>
 </html>
