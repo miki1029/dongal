@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html lang="ko" ng-app="dongal">
+
+<head>
+    <!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
+    <script src="assets/js/jquery.min.js"></script>
+
+    <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/bootstrap-switch.min.js"></script>
+
+    <!-- AngularJS Import -->
+    <script src="assets/js/angular.min.js"></script>
+    <script src="assets/js/angular-resource.min.js"></script>
+    <script src="assets/js/angular-route.min.js"></script>
+
+    <script src="assets/js/module.js"></script>
+    <script src="assets/js/bsSwitch.js"></script>
+
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/controller.js"></script>
+
+    <base href="/dongal/dongal-web/" />
+</head>
+
+<body>
+  <!-- Header -->
+  <div ng-include src="'views/header.html'"></div>
+
+  <!-- Views -->
+  <div id="view" ng-view></div>
+
+  <!-- Footer -->
+  <div ng-include="'views/footer.html'"></div>
+</body>
+</html>
