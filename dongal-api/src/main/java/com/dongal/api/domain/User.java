@@ -26,8 +26,8 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<UserSns> snses;
-    @OneToMany(mappedBy = "user")
+    @ManyToMany @JoinTable(name="user_category_settings", joinColumns=@JoinColumn(name="user_id"), inverseJoinColumns=@JoinColumn(name="category_id"))
     private List<Category> categories;
-    @OneToMany(mappedBy = "user")
+    @ManyToMany @JoinTable(name="user_favorite", joinColumns=@JoinColumn(name="user_id"), inverseJoinColumns=@JoinColumn(name="subscription_id"))
     private List<Subscription> favorites;
 }
