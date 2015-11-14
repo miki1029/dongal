@@ -1,0 +1,23 @@
+package com.dongal.api.domain;
+
+import lombok.Data;
+
+import javax.persistence.*;
+
+/**
+ * Created by miki on 2015. 11. 14..
+ */
+@Entity
+@Table
+@Data
+public class Category {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @ManyToOne(optional = false) @JoinColumn(name = "top_id")
+    private Category topCategory;
+    @ManyToOne(optional = false) @JoinColumn(name = "mid_id")
+    private Category midCategory;
+    @Column(nullable = false, length = 45)
+    private String name;
+}
