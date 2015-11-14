@@ -9,12 +9,12 @@
                 <small>{{ userInfo.name }}</small>
             </div>
             <div class="col-xs-7 col-sm-6">
-                <small>홈 설정</small>
+                <small>홈 설정 : </small>
                 <small>{{ userInfo.settings.home.count }} 개</small>
                 <small>{{ userInfo.settings.home.lastDate }}</small>
             </div>
             <div class="col-xs-7 col-sm-6">
-                <small>카테고리</small>
+                <small>카테고리 : </small>
                 <!--
                 <small>동국대학교 홈페이지: {{ userInfo.settings.categories.official" }}</small>
                 <small>디연: {{ userInfo.settings.category.dyeon" }}</small>
@@ -22,7 +22,7 @@
                 -->
             </div>
             <div class="col-xs-7 col-sm-6">
-                <small>최근 업데이트: {{ userInfo.settings.lastUpdateTime }}</small>
+                <small>최근 업데이트 : {{ userInfo.settings.lastUpdateTime }}</small>
             </div>
         </div>
     </div>
@@ -33,9 +33,9 @@
         <li class="list-group-item" ng-repeat="alarm in alarms">
             <span class="badge">{{ alarm.list.length }}</span>
             <div class="row list-content-date collapse-header"
-            data-target="#demo{{$index}}" ng-click="collapse($event)">{{ alarm.date }}</div>
-            <div id="demo{{ $index }}" class="collapse row list-content-details">
-                <a class="col-xs-12 gogo" ng-repeat="detail in alarm.list" href="{{ detail.url }}">{{ detail.title }}</a>
+            data-target="#value_id{{$index}}" ng-click="collapse($event)">{{ alarm.date }}</div>
+            <div id="value_id{{ $index }}" class="collapse row list-content-details">
+                <a class="col-xs-12 make-line text-over-hide" ng-repeat="detail in alarm.list" href="{{ detail.url }}">{{ detail.title }}</a>
             </div>
         </li>
     </ul>

@@ -22,7 +22,6 @@
 <!-- Contents -->
 <div class="container">
     <div class="row">
-        <!--<div class="col-xs-1"></div>-->
         <div class="col-xs-3 col-sm-10">
             <div class="input-group">
                 <div class="input-group-btn">
@@ -60,8 +59,8 @@
         <ul class="list-group">
             <li class="list-group-item" ng-repeat="favorite in favorites">
                 <span class="badge">{{ favorite.list.length }} </span>
-                <div class="row list-content-date collapse-header" data-target="#demo{{ $index }}" ng-click="collapse($event)">{{ favorite.date }}</div>
-                <div id="demo{{ $index }}" class="collapse row list-content-details">
+                <div class="row list-content-date collapse-header" data-target="#fav_list_id{{ $index }}" ng-click="collapse($event)">{{ favorite.date }}</div>
+                <div id="fav_list_id{{ $index }}" class="collapse row list-content-details">
                     <div ng-repeat="detail in favorite.list">
                       <div ng-include src="'views/templates/favorite_item.html'"></div>
                     </div>
