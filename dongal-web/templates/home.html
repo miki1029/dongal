@@ -1,0 +1,46 @@
+﻿{% extends "base.html" %}
+{% block content %}
+<!-- Contents -->
+<div class="jumbotron">
+    <div class="container">
+        <div class="row">
+            <div class="jumbo-user col-xs-2 text-right">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+            </div>
+            <div class="jumbo-user col-xs-3 col-sm-4 text-left">
+                <small>{{ userInfo.name }}</small>
+            </div>
+            <div class="col-xs-7 col-sm-6">
+                <small>[홈 설정]</small><br/>
+                <small>최대 리스트 개수: {{ userInfo.settings.home.count }} 개</small><br/>
+                <small>최근 알람 업데이트 시각: {{ userInfo.settings.home.lastDate }}</small><br/>
+                <br/>
+
+                <small>[카테고리] </small> <br/>
+                <small>동국대학교 홈페이지: {{ userInfo.settings.category.official }}</small></br>
+                <small>디연: {{ userInfo.settings.category.dyeon }}</small><br/>
+                <small>상록원: {{ userInfo.settings.category.dgucoop }}</small></br>
+                <br/>
+
+                <small>최근 업데이트 : {{ userInfo.settings.lastUpdateTime }}</small>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <ul class="list-group">
+        {% for alarm in alarms %}
+        <li class="list-group-item">
+            <span class="badge">{{ alarm.list.size }}</span>
+            <div class="row list-content-date collapse-header" data-target="#value_id{{ loop.index }}" >{{ alarm.date }}</div>
+            <div id="value_id{{ loop.index }}" class="collapse row list-content-details">
+                {% for detail in alarm.list %}
+                    <a class="col-xs-12 make-line text-over-hide" href="{{ detail.url }}">{{ detail.title }}</a>
+                {% endfor %}
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
+
