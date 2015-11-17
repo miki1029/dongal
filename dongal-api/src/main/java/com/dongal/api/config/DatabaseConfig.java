@@ -2,9 +2,11 @@ package com.dongal.api.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -12,7 +14,6 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.util.Properties;
 
@@ -22,8 +23,12 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = {"com.dongal.api.repository"})
-@PropertySource("classpath:config.properties")
-public class MysqlConfig {
+@PropertySources({
+        @PropertySource("classpath:properties/datasource.properties"),
+//        @PropertySource("classpath:properties/hibernate.properties"),
+        @PropertySource("classpath:config.properties")
+})
+public class DatabaseConfig {
 
     protected static final String PROPERTY_NAME_DATABASE_DRIVER_CLASS = "dataSourceClassName";
     protected static final String PROPERTY_NAME_DATABASE_USERNAME = "dataSource.user";
@@ -34,6 +39,7 @@ public class MysqlConfig {
     private static final String PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
     private static final String PROPERTY_NAME_HIBERNATE_SHOW_SQL = "hibernate.show_sql";
     private static final String PROPERTY_NAME_HIBERNATE_FORMAT_SQL= "hibernate.format_sql";
+    private static final String PROPERTY_NAME_HIBERNATE_EJB_NAMING_STRATEGY="hibernate.ejb.naming_strategy";
 
     private static final String PROPERTY_NAME_HIBERNATE_USE_QUERY_CACHE = "hibernate.cache.use_query_cache";
     private static final String PROPERTY_NAME_HIBERNATE_USE_SECOND_LEVEL_CACHE = "hibernate.cache.use_second_level_cache";
@@ -47,8 +53,21 @@ public class MysqlConfig {
 
     private static final String PROPERTY_PACKAGES_TO_SCAN = "com.dongal.api.domain";
 
-    @Resource
+    @Autowired
     private Environment environment;
+
+/*    @Bean
+    public DataSource dataSource() {
+        BasicDataSource dataSource = new BasicDataSource();
+
+        dataSource.setDriverClassName(environment.getProperty("db.driverClassName"));
+
+        dataSource.setUrl(environment.getProperty("db.url"));
+        dataSource.setUsername(environment.getProperty("db.username"));
+        dataSource.setPassword(environment.getProperty("db.password"));
+
+        return dataSource;
+    }*/
 
     @Bean
     public DataSource dataSource() {
@@ -87,6 +106,7 @@ public class MysqlConfig {
         jpaProperties.put(PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO, environment.getRequiredProperty(PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO));
         jpaProperties.put(PROPERTY_NAME_HIBERNATE_SHOW_SQL, environment.getRequiredProperty(PROPERTY_NAME_HIBERNATE_SHOW_SQL));
         jpaProperties.put(PROPERTY_NAME_HIBERNATE_FORMAT_SQL, environment.getRequiredProperty(PROPERTY_NAME_HIBERNATE_FORMAT_SQL));
+        jpaProperties.put(PROPERTY_NAME_HIBERNATE_EJB_NAMING_STRATEGY, environment.getRequiredProperty(PROPERTY_NAME_HIBERNATE_EJB_NAMING_STRATEGY));
 
         jpaProperties.put(PROPERTY_NAME_HIBERNATE_USE_QUERY_CACHE, environment.getRequiredProperty(PROPERTY_NAME_HIBERNATE_USE_QUERY_CACHE));
         jpaProperties.put(PROPERTY_NAME_HIBERNATE_USE_SECOND_LEVEL_CACHE, environment.getRequiredProperty(PROPERTY_NAME_HIBERNATE_USE_SECOND_LEVEL_CACHE));

@@ -7,6 +7,8 @@ import javax.servlet.Filter;
 import javax.servlet.ServletRegistration;
 
 /**
+ * web.xml
+ *
  * @author freddi
  */
 public class Initializer extends
@@ -14,8 +16,9 @@ public class Initializer extends
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] {
-                MysqlConfig.class,
+        return new Class<?>[] {
+                AppConfig.class,
+                DatabaseConfig.class,
         };
     }
 

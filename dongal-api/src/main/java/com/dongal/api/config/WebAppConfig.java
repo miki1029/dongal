@@ -1,24 +1,27 @@
 package com.dongal.api.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.joda.JodaModule;
-import org.springframework.context.annotation.*;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.web.servlet.DispatcherServlet;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
-import org.springframework.web.servlet.view.UrlBasedViewResolver;
-
-import java.util.List;
 
 /**
+ * servlet-context.xml(webAppConfig.xml)
+ *
  * @author freddi
  */
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = {
-        "com.dongal.api.controller",
+        "com.dongal.api.web",
         "com.dongal.api.service",
 })
 @EnableAspectJAutoProxy(proxyTargetClass=true) // For @Annotation without interface
@@ -29,17 +32,17 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
     }
 
-    @Override
+/*    @Override
     public void configureMessageConverters( List<HttpMessageConverter<?>> converters ) {
         converters.add(converter());
-    }
+    }*/
 
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
     }
 
-    @Bean
+/*    @Bean
     public MappingJackson2HttpMessageConverter converter() {
         MappingJackson2HttpMessageConverter httpMessageConverter = new MappingJackson2HttpMessageConverter();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -49,11 +52,11 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         httpMessageConverter.setObjectMapper(objectMapper);
 
         return httpMessageConverter;
-    }
+    }*/
 
     @Bean
-    public UrlBasedViewResolver setupViewResolver() {
-        UrlBasedViewResolver resolver = new UrlBasedViewResolver();
+    public ViewResolver viewResolver() {
+        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
         resolver.setPrefix("/WEB-INF/views/");
         resolver.setSuffix(".jsp");
         resolver.setViewClass(JstlView.class);

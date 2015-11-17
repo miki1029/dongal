@@ -1,4 +1,4 @@
-package com.dongal.api;
+package com.dongal.api.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

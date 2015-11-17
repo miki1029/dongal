@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * Created by miki on 2015. 11. 14..
+ * @author miki
  */
 @Entity
 @Table
