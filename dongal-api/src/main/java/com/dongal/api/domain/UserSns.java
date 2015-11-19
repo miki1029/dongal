@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class UserSns {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idx;
     @ManyToOne(optional = false) @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne(optional = false) @JoinColumn(name = "sns_id")

@@ -6,25 +6,21 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * @author miki
+ * @author Freddi
  */
 @Entity
-@Table
+@Table(name = "admin_user")
 @Data
-public class Subscription {
+public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @Column(nullable = false, length = 45)
+    private String email;
 
-    @Column(nullable = false, length = 1024)
-    private String title;
-
-    @Column(nullable = false, length = 2048)
-    private String url;
+    @Column(nullable = false, length = 20)
+    private String password;
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)

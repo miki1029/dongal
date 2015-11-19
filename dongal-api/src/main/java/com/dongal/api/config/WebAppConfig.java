@@ -1,9 +1,11 @@
 package com.dongal.api.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -21,7 +23,7 @@ import org.springframework.web.servlet.view.JstlView;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = {
-        "com.dongal.api.web",
+        "com.dongal.api.controller",
         "com.dongal.api.service",
 })
 @EnableAspectJAutoProxy(proxyTargetClass=true) // For @Annotation without interface
@@ -42,17 +44,17 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         configurer.enable();
     }
 
-/*    @Bean
-    public MappingJackson2HttpMessageConverter converter() {
-        MappingJackson2HttpMessageConverter httpMessageConverter = new MappingJackson2HttpMessageConverter();
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JodaModule());
+//    @Bean
+//    public MappingJackson2HttpMessageConverter converter() {
+//        MappingJackson2HttpMessageConverter httpMessageConverter = new MappingJackson2HttpMessageConverter();
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        objectMapper.registerModule(new JodaModule());
 //        objectMapper.getSerializerProvider().setNullValueSerializer(new NullToEmptySerialilzer());
-        objectMapper.configure(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS , true);
-        httpMessageConverter.setObjectMapper(objectMapper);
-
-        return httpMessageConverter;
-    }*/
+//        objectMapper.configure(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS , true);
+//        httpMessageConverter.setObjectMapper(objectMapper);
+//
+//        return httpMessageConverter;
+//    }
 
     @Bean
     public ViewResolver viewResolver() {
