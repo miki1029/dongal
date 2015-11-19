@@ -151,4 +151,3 @@ buildNumber.properties
 .mvn/timing.properties
 
 src/main/resources-local/properties/database.properties
-

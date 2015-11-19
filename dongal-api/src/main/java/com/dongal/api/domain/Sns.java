@@ -11,8 +11,10 @@ import javax.persistence.*;
 @Table
 @Data
 public class Sns {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idx;
+
     @Column(nullable = false, length = 45)
     private String name;
 }

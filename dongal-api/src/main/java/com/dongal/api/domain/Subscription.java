@@ -12,14 +12,21 @@ import java.util.Date;
 @Table
 @Data
 public class Subscription {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @ManyToOne(optional = false) @JoinColumn(name = "category_id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idx;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "category_id")
     private Category category;
+
     @Column(nullable = false, length = 1024)
     private String title;
+
     @Column(nullable = false, length = 2048)
     private String url;
-    @Column(nullable = false) @Temporal(TemporalType.TIMESTAMP)
-    private Date cratedTime;
+
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdTime;
 }

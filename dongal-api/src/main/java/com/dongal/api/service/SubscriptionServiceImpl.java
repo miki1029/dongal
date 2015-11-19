@@ -3,6 +3,7 @@ package com.dongal.api.service;
 import com.dongal.api.domain.Subscription;
 import com.dongal.api.repository.SubscriptionRepository;
 import com.dongal.api.repository.UserRepository;
+import com.dongal.api.service.interfaces.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * @author Freddi
  */
 @Service
-public class SubscriptionServiceImpl {
+public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Autowired
     private UserRepository userRepository;
@@ -21,6 +22,7 @@ public class SubscriptionServiceImpl {
     @Autowired
     private SubscriptionRepository subscriptionRepository;
 
+    @Override
     public List<Subscription> getUserSubscription(int userIdx, Date startTime, Date endTime) {
         return null;
     }
