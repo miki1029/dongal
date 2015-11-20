@@ -8,13 +8,13 @@ import javax.persistence.*;
  * @author Freddi
  */
 @Entity
-@Table(name = "admin_push_message")
+@Table
 @Data
 public class AdminPushMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
-    @Column(nullable = false, length = 45)
+    @Column(nullable = false, length = 1024)
     private String message;
 }

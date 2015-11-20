@@ -1,6 +1,7 @@
 package com.dongal.api.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.Date;
 @Entity
 @Table
 @Data
+@NoArgsConstructor
 public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,4 +31,11 @@ public class Subscription {
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdTime;
+
+    public Subscription(Category category, String title, String url, Date createdTime) {
+        this.category = category;
+        this.title = title;
+        this.url = url;
+        this.createdTime = createdTime;
+    }
 }

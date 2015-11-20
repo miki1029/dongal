@@ -9,7 +9,7 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(name = "crawling_last_seq")
+@Table
 @Data
 public class CrawlingLastSeq {
     @Id
@@ -19,8 +19,10 @@ public class CrawlingLastSeq {
     @Column(nullable = false)
     private Long lastSeq;
 
-    @OneToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-    @JoinColumn(name="category_id",insertable=true,
-            updatable=true,nullable=true,unique=true)
+    // FetchType.EAGER -> LAZY 로 하는게 성능 좋다함(지연 로딩)
+    // insertable=true, updatable=true, nullable=true 기본값 삭제
+    @OneToOne(cascade=CascadeType.ALL/*, fetch=FetchType.EAGER*/)
+    @JoinColumn(name="category_id",/*insertable=true,
+            updatable=true,nullable=true,*/unique=true)
     private Category category;
 }

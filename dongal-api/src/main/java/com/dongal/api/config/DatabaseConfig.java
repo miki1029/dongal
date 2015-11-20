@@ -24,7 +24,7 @@ import java.util.Properties;
 @EnableJpaRepositories(basePackages = {"com.dongal.api.repository"})
 @PropertySources({
         @PropertySource("classpath:config.properties"),
-        @PropertySource("classpath:properties/**/*.properties")
+        @PropertySource("classpath:properties/database.properties")
 })
 public class DatabaseConfig {
 

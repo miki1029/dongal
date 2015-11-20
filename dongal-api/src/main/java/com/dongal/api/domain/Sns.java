@@ -1,6 +1,7 @@
 package com.dongal.api.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @Entity
 @Table
 @Data
+@NoArgsConstructor
 public class Sns {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,4 +19,8 @@ public class Sns {
 
     @Column(nullable = false, length = 45)
     private String name;
+
+    public Sns(String name) {
+        this.name = name;
+    }
 }
