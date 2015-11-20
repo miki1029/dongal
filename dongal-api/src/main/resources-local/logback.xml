@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration scan="true" scanPeriod="3 seconds">
 	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
-		<layout>
+		<encoder>
 			<pattern>
 				%d{HH:mm:ss.SSS} [%thread][%X{uuid}] %-5level %logger{32} - %msg%n
 			</pattern>
-		</layout>
+		</encoder>
 	</appender>
 
 	<logger name="org.springframework" level="INFO" />
