@@ -14,7 +14,6 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.sql.DataSource;
 import java.util.Properties;
 
 /**
@@ -25,14 +24,9 @@ import java.util.Properties;
 @EnableJpaRepositories(basePackages = {"com.dongal.api.repository"})
 @PropertySources({
         @PropertySource("classpath:config.properties"),
-        @PropertySource("classpath:properties/database.properties")
+        @PropertySource("classpath:properties/**/*.properties")
 })
 public class DatabaseConfig {
-
-    protected static final String PROPERTY_NAME_DATABASE_DRIVER_CLASS = "dataSourceClassName";
-    protected static final String PROPERTY_NAME_DATABASE_USERNAME = "dataSource.user";
-    protected static final String PROPERTY_NAME_DATABASE_PASSWORD = "dataSource.password";
-    protected static final String PROPERTY_NAME_DATABASE_DBNAME= "dataSource.databaseName";
 
     private static final String PROPERTY_NAME_HIBERNATE_DIALECT = "hibernate.dialect";
     private static final String PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
@@ -56,17 +50,21 @@ public class DatabaseConfig {
     private Environment environment;
 
     @Bean
-    public DataSource dataSource() {
+    public HikariDataSource dataSource() {
+        HikariConfig config = new HikariConfig();
 
-        Properties props = new Properties();
-        props.setProperty(PROPERTY_NAME_DATABASE_DRIVER_CLASS, environment.getRequiredProperty(PROPERTY_NAME_DATABASE_DRIVER_CLASS));
-        props.setProperty(PROPERTY_NAME_DATABASE_USERNAME, environment.getRequiredProperty(PROPERTY_NAME_DATABASE_USERNAME));
-        props.setProperty(PROPERTY_NAME_DATABASE_PASSWORD, environment.getRequiredProperty(PROPERTY_NAME_DATABASE_PASSWORD));
-        props.setProperty(PROPERTY_NAME_DATABASE_DBNAME, environment.getRequiredProperty(PROPERTY_NAME_DATABASE_DBNAME));
+        // basic config
+        config.setJdbcUrl(environment.getRequiredProperty("dataSource.jdbcUrl"));
+        config.setUsername(environment.getRequiredProperty("dataSource.user"));
+        config.setPassword(environment.getRequiredProperty("dataSource.password"));
 
-        HikariConfig config = new HikariConfig(props);
+        // optimal config
+//        config.addDataSourceProperty("cachePrepStmts", "true");
+//        config.addDataSourceProperty("prepStmtCacheSize", "250");
+//        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
         config.setInitializationFailFast(Boolean.TRUE);
         config.setAutoCommit(Boolean.TRUE);
+
         return new HikariDataSource(config);
     }
 

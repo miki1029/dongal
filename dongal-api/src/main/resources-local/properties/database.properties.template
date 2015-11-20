@@ -1,2 +1,21 @@
+##########################################################
+#
+# Properties for Frescott(Local)
+#
+##########################################################
+
+### HiKariCP
+#dataSourceClassName=com.mysql.jdbc.jdbc2.optional.MysqlDataSource
 dataSource.user=root
-dataSource.password=rkdrltkd
+dataSource.password=
+#dataSource.databaseName=dongal
+#dataSource.portNumber=3306
+#dataSource.serverName=localhost
+dataSource.jdbcUrl=jdbc:mysql://localhost:3306/dongal?useUnicode=true&characterEncoding=UTF8
+
+### Hibernate DDL
+hibernate.hbm2ddl.auto=create
+
+### Hibernate Logging
+hibernate.show_sql=true
+hibernate.format_sql=true
