@@ -1,7 +1,6 @@
 package com.dongal.api.config;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +13,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.sql.DataSource;
 import java.util.Properties;
 
 /**
@@ -50,22 +50,17 @@ public class DatabaseConfig {
     private Environment environment;
 
     @Bean
-    public HikariDataSource dataSource() {
-        HikariConfig config = new HikariConfig();
+    public DataSource dataSource() {
+        BasicDataSource dataSource = new BasicDataSource();
 
-        // basic config
-        config.setJdbcUrl(environment.getRequiredProperty("dataSource.jdbcUrl"));
-        config.setUsername(environment.getRequiredProperty("dataSource.user"));
-        config.setPassword(environment.getRequiredProperty("dataSource.password"));
+        dataSource.setDriverClassName(environment.getRequiredProperty("dataSourceClassName"));
+        dataSource.setUrl(environment.getRequiredProperty("dataSource.jdbcUrl"));
+        dataSource.setUsername(environment.getRequiredProperty("dataSource.user"));
+        dataSource.setPassword(environment.getRequiredProperty("dataSource.password"));
+//        dataSource.setPoolPreparedStatements(true);
+        dataSource.setInitialSize(30);
 
-        // optimal config
-//        config.addDataSourceProperty("cachePrepStmts", "true");
-//        config.addDataSourceProperty("prepStmtCacheSize", "250");
-//        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-        config.setInitializationFailFast(Boolean.TRUE);
-        config.setAutoCommit(Boolean.TRUE);
-
-        return new HikariDataSource(config);
+        return dataSource;
     }
 
     @Bean
