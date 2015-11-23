@@ -4,13 +4,10 @@
 #
 ##########################################################
 
-### HiKariCP
-#dataSourceClassName=com.mysql.jdbc.jdbc2.optional.MysqlDataSource
+### DataSource
+dataSourceClassName=com.mysql.jdbc.Driver
 dataSource.user=root
 dataSource.password=
-#dataSource.databaseName=dongal
-#dataSource.portNumber=3306
-#dataSource.serverName=localhost
 dataSource.jdbcUrl=jdbc:mysql://localhost:3306/dongal?useUnicode=true&characterEncoding=UTF8
 
 ### Hibernate DDL
