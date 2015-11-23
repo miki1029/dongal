@@ -58,4 +58,32 @@ public class User {
         this.createdTime = createdTime;
         this.isDguVerified = isDguVerified;
     }
+
+    private UserSns findAttachedSns(Sns checkSns) {
+        for (UserSns userSns : sns) {
+            if (userSns.getSns().equals(checkSns)) {
+                return userSns;
+            }
+        }
+        return null;
+    }
+
+    public void attachSns(Sns newSns, String snsValue) {
+        UserSns findUserSns = findAttachedSns(newSns);
+
+        // 새로운 Sns 추가
+        if (findUserSns == null) {
+            sns.add(new UserSns(this, newSns, snsValue));
+        }
+        // 이미 연결중인 Sns 이면 snsValue 교체
+        else {
+            findUserSns.setSnsValue(snsValue);
+        }
+    }
+
+    public void detachSns(Sns delSns) {
+        UserSns findUserSns = findAttachedSns(delSns);
+
+        sns.remove(findUserSns);
+    }
 }

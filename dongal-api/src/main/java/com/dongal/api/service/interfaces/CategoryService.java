@@ -6,5 +6,5 @@ import java.util.List;
  * @author Freddi
  */
 public interface CategoryService {
-    boolean setUserCategories(int userIdx, List<Integer> categoryIdxes);
+    void setUserCategories(Long userIdx, List<Long> categoryIdxes);
 }

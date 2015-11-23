@@ -1,5 +1,7 @@
 package com.dongal.api.service;
 
+import com.dongal.api.domain.Subscription;
+import com.dongal.api.domain.User;
 import com.dongal.api.repository.SubscriptionRepository;
 import com.dongal.api.repository.UserRepository;
 import com.dongal.api.service.interfaces.FavoriteService;
@@ -19,12 +21,24 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Autowired
     private SubscriptionRepository subscriptionRepository;
 
-    public boolean addFavoriteToUser(int userIdx, int subscriptionIdx) {
-        return false;
+    @Override
+    public void addFavoriteToUser(Long userIdx, Long subscriptionIdx) {
+        User user = userRepository.findOne(userIdx);
+        Subscription favorite = subscriptionRepository.findOne(subscriptionIdx);
+
+        user.getFavorites().add(favorite);
+
+        userRepository.save(user);
     }
 
-    public boolean delFavoriteFromUser(int userIdx, int subscriptionIdx) {
-        return false;
+    @Override
+    public void delFavoriteFromUser(Long userIdx, Long subscriptionIdx) {
+        User user = userRepository.findOne(userIdx);
+        Subscription favorite = subscriptionRepository.findOne(subscriptionIdx);
+
+        user.getFavorites().remove(favorite);
+
+        userRepository.save(user);
     }
 
 }

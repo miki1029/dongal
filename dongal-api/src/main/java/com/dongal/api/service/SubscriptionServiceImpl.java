@@ -1,6 +1,7 @@
 package com.dongal.api.service;
 
 import com.dongal.api.domain.Subscription;
+import com.dongal.api.domain.User;
 import com.dongal.api.repository.SubscriptionRepository;
 import com.dongal.api.repository.UserRepository;
 import com.dongal.api.service.interfaces.SubscriptionService;
@@ -23,7 +24,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private SubscriptionRepository subscriptionRepository;
 
     @Override
-    public List<Subscription> getUserSubscription(int userIdx, Date startTime, Date endTime) {
-        return null;
+    public List<Subscription> getUserSubscription(Long userIdx, Date startTime, Date endTime) {
+        User user = userRepository.findOne(userIdx);
+        List<Subscription> subscriptions = subscriptionRepository.findByCategoryInAndCreatedTimeBetween(
+                user.getCategories(), startTime, endTime);
+
+        return subscriptions;
     }
 }

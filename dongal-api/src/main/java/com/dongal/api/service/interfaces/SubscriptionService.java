@@ -9,5 +9,5 @@ import java.util.List;
  * @author Freddi
  */
 public interface SubscriptionService {
-    List<Subscription> getUserSubscription(int userIdx, Date startTime, Date endTime);
+    List<Subscription> getUserSubscription(Long userIdx, Date startTime, Date endTime);
 }
