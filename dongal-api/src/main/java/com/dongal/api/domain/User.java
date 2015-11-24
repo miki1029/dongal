@@ -23,11 +23,11 @@ public class User {
     @Column(nullable = false, length = 45)
     private String email;
 
-    @Column(nullable = false, length = 45)
-    private String name;
-
     @Column(nullable = false, length = 20)
     private String password;
+
+    @Column(nullable = false, length = 45)
+    private String name;
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -51,39 +51,11 @@ public class User {
             inverseJoinColumns=@JoinColumn(name="subscription_id"))
     private List<Subscription> favorites = new ArrayList<>();
 
-    public User(String email, String name, String password, Date createdTime, boolean isDguVerified) {
+    public User(String email, String password, String name, Date createdTime, boolean isDguVerified) {
         this.email = email;
-        this.name = name;
         this.password = password;
+        this.name = name;
         this.createdTime = createdTime;
         this.isDguVerified = isDguVerified;
-    }
-
-    private UserSns findAttachedSns(Sns checkSns) {
-        for (UserSns userSns : sns) {
-            if (userSns.getSns().equals(checkSns)) {
-                return userSns;
-            }
-        }
-        return null;
-    }
-
-    public void attachSns(Sns newSns, String snsValue) {
-        UserSns findUserSns = findAttachedSns(newSns);
-
-        // 새로운 Sns 추가
-        if (findUserSns == null) {
-            sns.add(new UserSns(this, newSns, snsValue));
-        }
-        // 이미 연결중인 Sns 이면 snsValue 교체
-        else {
-            findUserSns.setSnsValue(snsValue);
-        }
-    }
-
-    public void detachSns(Sns delSns) {
-        UserSns findUserSns = findAttachedSns(delSns);
-
-        sns.remove(findUserSns);
     }
 }

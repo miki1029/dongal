@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 /**
  * @author Freddi
  */
-
 @Service
 public class FavoriteServiceImpl implements FavoriteService {
 

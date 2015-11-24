@@ -16,4 +16,7 @@ import java.util.List;
 public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
     @Query("select s from Subscription s inner join s.category c where c in ?1 and s.createdTime between ?2 and ?3")
     List<Subscription> findByCategoryInAndCreatedTimeBetween(List<Category> categories, Date startTime, Date endTime);
+
+    @Query("select s from Subscription s inner join s.category c where c in ?1")
+    List<Subscription> findByCategoryIn(List<Category> categories);
 }
