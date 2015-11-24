@@ -1,10 +1,10 @@
-package com.dongal.api.service;
+package com.dongal.api.service.impl;
 
 import com.dongal.api.domain.Subscription;
 import com.dongal.api.domain.User;
 import com.dongal.api.repository.SubscriptionRepository;
 import com.dongal.api.repository.UserRepository;
-import com.dongal.api.service.interfaces.SubscriptionService;
+import com.dongal.api.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

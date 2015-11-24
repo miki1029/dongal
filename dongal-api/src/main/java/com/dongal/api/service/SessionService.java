@@ -1,4 +1,4 @@
-package com.dongal.api.service.interfaces;
+package com.dongal.api.service;
 
 import com.dongal.api.domain.User;
 import com.dongal.api.exception.WrongPasswordException;
