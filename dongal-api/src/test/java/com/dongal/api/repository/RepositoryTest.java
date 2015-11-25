@@ -29,6 +29,7 @@ public class RepositoryTest {
     @Autowired UserRepository userRepository;
     @Autowired CategoryRepository categoryRepository;
     @Autowired SubscriptionRepository subscriptionRepository;
+    @Autowired SnsRepository snsRepository;
 
     Map<String, Sns> sns = new HashMap<>();
     Map<String, User> users = new HashMap<>();
@@ -72,6 +73,7 @@ public class RepositoryTest {
         subscriptions.put("익게1", new Subscription(categories.get("익게"), "익명 게시판1", "http://dgu.edu/5", new Date()));
         subscriptions.put("익게2", new Subscription(categories.get("익게"), "익명 게시판2", "http://dgu.edu/6", new Date()));
 
+        snsRepository.deleteAll();
         userRepository.deleteAll();
         categoryRepository.deleteAll();
         subscriptionRepository.deleteAll();
@@ -79,6 +81,11 @@ public class RepositoryTest {
 
     @Test
     public void testSaveAndCount() throws Exception {
+        for (String key : sns.keySet()) {
+            snsRepository.save(sns.get(key));
+        }
+        assertThat(snsRepository.count(), is(3L));
+
         for (String key : users.keySet()) {
             userRepository.save(users.get(key));
         }

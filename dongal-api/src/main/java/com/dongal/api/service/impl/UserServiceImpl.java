@@ -18,10 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    SnsRepository snsRepository;
+    private SnsRepository snsRepository;
 
     @Override
     public void changePassword(Long userIdx, String password) {
