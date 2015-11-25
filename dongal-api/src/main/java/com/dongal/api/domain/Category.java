@@ -44,12 +44,12 @@ public class Category {
     public Category(String name, Category superCategory) {
         this.name = name;
         // superCategory is topCategory
-        if(superCategory.topCategory == null && superCategory.midCategory == null) {
+        if(superCategory.getCategoryType().equals(CategoryEnum.TOP)) {
             this.topCategory = superCategory;
             this.midCategory = null;
         }
         // superCategory is midCategory
-        else if(superCategory.topCategory != null && superCategory.midCategory == null) {
+        else if(superCategory.getCategoryType().equals(CategoryEnum.MID)) {
             this.topCategory = superCategory.topCategory;
             this.midCategory = superCategory;
         }
@@ -57,5 +57,11 @@ public class Category {
         else {
             throw new RuntimeException("Bad input : " + superCategory);
         }
+    }
+
+    public CategoryEnum getCategoryType() {
+        if(topCategory == null && midCategory == null) return CategoryEnum.TOP;
+        else if(topCategory !=null && midCategory == null) return CategoryEnum.MID;
+        else return CategoryEnum.BOTTOM;
     }
 }

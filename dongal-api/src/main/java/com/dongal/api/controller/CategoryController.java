@@ -26,7 +26,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @RequestMapping(value = "/setUserCategories", method = RequestMethod.GET)
-    public ResponseEntity<String> setUserCategories(@RequestParam Long userIdx, List<Long> categoryIdxes) {
+    public ResponseEntity<String> setUserCategories(@RequestParam Long userIdx, @RequestParam List<Long> categoryIdxes) {
         LOGGER.info("setUserCategories(userIdx=" + userIdx + ",categoryIdxes=" + categoryIdxes + ")");
 
         ResponseEntity<String> entity = null;
