@@ -1,5 +1,6 @@
 package com.dongal.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class Admin {
     @Column(nullable = false, length = 20)
     private String password;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdTime;

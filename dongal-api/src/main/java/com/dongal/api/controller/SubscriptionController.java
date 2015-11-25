@@ -28,7 +28,7 @@ public class SubscriptionController {
     @Autowired
     private SubscriptionService subscriptionService;
 
-    @RequestMapping(value = "getUserSubscription", method = RequestMethod.POST)
+    @RequestMapping(value = "getUserSubscription", method = RequestMethod.GET)
     public ResponseEntity<List<Subscription>> getUserSubscription(@RequestParam Long userIdx,
                                                                   @RequestParam(required = false) Integer recentDay) {
         LOGGER.info("getUserSubscription(userIdx=" + userIdx + ",recentDay=" + recentDay + ")");
