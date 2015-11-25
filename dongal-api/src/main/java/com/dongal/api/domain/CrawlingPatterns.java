@@ -25,7 +25,7 @@ public class CrawlingPatterns {
     private String createdTimePattern;
 
     // insertable=true, updatable=true, nullable=true 기본값 삭제
-    @OneToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="category_id",/*insertable=true,
             updatable=true,nullable=true,*/unique=true)
     private Category category;
