@@ -6,6 +6,7 @@ import com.dongal.api.repository.UserRepository;
 import com.dongal.api.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -13,6 +14,7 @@ import java.util.Date;
  * @author Freddi
  */
 @Service
+@Transactional
 public class SessionServiceImpl implements SessionService {
 
     @Autowired

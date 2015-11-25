@@ -7,6 +7,7 @@ import com.dongal.api.repository.UserRepository;
 import com.dongal.api.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
  * @author Freddi
  */
 @Service
+@Transactional
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired

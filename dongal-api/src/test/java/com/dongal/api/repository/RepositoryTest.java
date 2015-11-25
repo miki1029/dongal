@@ -49,8 +49,8 @@ public class RepositoryTest {
         sns.put("twitter", new Sns("twitter"));
         sns.put("instagram", new Sns("instagram"));
         
-        users.put("minwoo", new User("kmwkmw5@dongguk.edu", "김민우", "1234", new Date(), false));
-        users.put("kisang", new User("felika@dongguk.edu", "강기상", "5678", new Date(), true));
+        users.put("minwoo", new User("kmwkmw5@dongguk.edu", "1234", "김민우", new Date(), false));
+        users.put("kisang", new User("felika@dongguk.edu", "5678", "강기상", new Date(), true));
 
         userSns.put("k-f", new UserSns(users.get("kisang"), sns.get("facebook"), "FACEBOOKVALUE"));
         users.get("kisang").getSns().add(userSns.get("k-f"));

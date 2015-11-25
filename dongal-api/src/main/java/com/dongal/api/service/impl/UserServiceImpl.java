@@ -8,12 +8,13 @@ import com.dongal.api.repository.UserRepository;
 import com.dongal.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Freddi
  */
 @Service
-//@Transactional
+@Transactional
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -34,13 +35,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findOne(userIdx);
         Sns sns = snsRepository.findOne(snsIdx);
 
-        UserSns userSns = null;
-        for (UserSns us : user.getSns()) {
-            if (us.getSns().equals(sns)) {
-                userSns = us;
-                break;
-            }
-        }
+        UserSns userSns = findAttachedSns(user, sns);
 
         if(userSns == null) {
             user.getSns().add(new UserSns(user, sns, snsValue));
@@ -56,6 +51,18 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findOne(userIdx);
         Sns sns = snsRepository.findOne(snsIdx);
 
+        UserSns userSns = findAttachedSns(user, sns);
+
+        if (userSns != null) {
+            user.getSns().remove(userSns);
+        }
+
+        userRepository.save(user);
+    }
+
+    private UserSns findAttachedSns(User user, Sns sns) {
+        if (user.getSns().size() == 0)
+            return null;
         UserSns userSns = null;
         for (UserSns us : user.getSns()) {
             if (us.getSns().equals(sns)) {
@@ -63,11 +70,6 @@ public class UserServiceImpl implements UserService {
                 break;
             }
         }
-
-        if (userSns != null) {
-            user.getSns().remove(userSns);
-        }
-
-        userRepository.save(user);
+        return userSns;
     }
 }
