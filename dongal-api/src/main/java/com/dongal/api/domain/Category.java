@@ -1,5 +1,6 @@
 package com.dongal.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -30,7 +31,8 @@ public class Category {
     @Column(nullable = false, length = 45)
     private String name;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Subscription> subscriptions = new ArrayList<>();
 
     public Category(String name) {
