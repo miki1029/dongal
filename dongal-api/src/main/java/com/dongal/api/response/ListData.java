@@ -25,40 +25,27 @@ public class ListData implements Serializable {
         Collections.sort(subscriptions, (o1, o2) -> o2.getCreatedTime().compareTo(o1.getCreatedTime()));
 
         // category
-        Category officialCategory = null;
-        Category dyeonCategory = null;
-
-        for (Category category : categories) {
-            // top category
-            if (category.getCategoryType() == CategoryEnum.TOP) {
-                switch (category.getName()) {
-                    case "공지사항":
-                        officialCategory = category;
-                    case "디연":
-                        dyeonCategory = category;
-                }
-            }
-        }
-
         StringBuilder officialSB = new StringBuilder();
         StringBuilder dyeonSB = new StringBuilder();
 
         for (Category category : categories) {
-            if (category.getTopCategory() != null) {
-                if (category.getTopCategory().equals(officialCategory)) {
-                    officialSB.append(category.getName()).append(",");
-                } else if (category.getTopCategory().equals(dyeonCategory)) {
-                    dyeonSB.append(category.getName()).append(",");
-                }
+            if (category.getCategoryType().equals(CategoryEnum.DONGGUK)) {
+                officialSB.append(category.getName()).append(",");
+            } else if (category.getCategoryType().equals(CategoryEnum.DYEON)) {
+                dyeonSB.append(category.getName()).append(",");
             }
         }
         // delete last ','
-        officialSB.deleteCharAt(officialSB.length() - 1);
-        dyeonSB.deleteCharAt(dyeonSB.length() - 1);
+        if (officialSB.length() != 0) {
+            officialSB.deleteCharAt(officialSB.length() - 1);
+        }
+        if (dyeonSB.length() != 0) {
+            dyeonSB.deleteCharAt(dyeonSB.length() - 1);
+        }
 
         // userInfo
         userInfo.setName(user.getName());
-        userInfo.setLastUpdateTime(sdf.format(subscriptions.get(0)));
+        userInfo.setLastUpdateTime(sdf.format(subscriptions.get(0).getCreatedTime()));
         userInfo.settings.home.lastDate = 3;
         userInfo.settings.home.count = 10;
         userInfo.settings.category.official = officialSB.toString();
@@ -81,7 +68,7 @@ public class ListData implements Serializable {
             postListData.url = subscription.getUrl();
             postData.list.add(postListData);
         }
-
+        posts.add(postData);
     }
 
     private UserInfoData userInfo = new UserInfoData();

@@ -46,25 +46,10 @@ public class RestViewServiceImpl implements RestViewService {
     public SettingsData settings(Long userIdx) {
         User user = userRepository.findOne(userIdx);
 
-        List<Category> topCategories = categoryRepository.findByTopCategoryIsNullAndMidCategoryIsNull();
-        List<Category> midCategories = categoryRepository.findByTopCategoryNotNullAndMidCategoryIsNull();
+        List<Category> officialCategories = categoryRepository.findByTopId(1L);
+        List<Category> dyeonCategories = categoryRepository.findByTopId(2L);
 
-        Category officialCategory = null;
-        Category dyeonCategory = null;
-        for (Category category : topCategories) {
-            if (officialCategory == null && category.getName().equals("공지사항")) {
-                officialCategory = category;
-            } else if (dyeonCategory == null && category.getName().equals("디연")) {
-                dyeonCategory = category;
-            }
-            if (officialCategory != null && dyeonCategory != null) break;
-        }
-
-        List<Category> officialCategories = categoryRepository.findByTopCategoryAndMidCategoryNotNull(officialCategory);
-        List<Category> dyeonCategories = categoryRepository.findByTopCategoryAndMidCategoryNotNull(dyeonCategory);
-
-        SettingsData settingsData = new SettingsData(topCategories, midCategories,
-                user.getCategories(), officialCategories, dyeonCategories);
+        SettingsData settingsData = new SettingsData(user.getCategories(), officialCategories, dyeonCategories);
 
         return settingsData;
     }

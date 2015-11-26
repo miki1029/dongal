@@ -20,13 +20,8 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
-    @ManyToOne
-    @JoinColumn(name = "top_id")
-    private Category topCategory;
-
-    @ManyToOne
-    @JoinColumn(name = "mid_id")
-    private Category midCategory;
+    @Column(nullable = false)
+    private Long topId;
 
     @Column(nullable = false, length = 45)
     private String name;
@@ -35,33 +30,25 @@ public class Category {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Subscription> subscriptions = new ArrayList<>();
 
-    public Category(String name) {
+    public Category(String name, CategoryEnum categoryEnum) {
         this.name = name;
-        topCategory = null;
-        midCategory = null;
-    }
-
-    public Category(String name, Category superCategory) {
-        this.name = name;
-        // superCategory is topCategory
-        if(superCategory.getCategoryType().equals(CategoryEnum.TOP)) {
-            this.topCategory = superCategory;
-            this.midCategory = null;
-        }
-        // superCategory is midCategory
-        else if(superCategory.getCategoryType().equals(CategoryEnum.MID)) {
-            this.topCategory = superCategory.topCategory;
-            this.midCategory = superCategory;
-        }
-        // bad input
-        else {
-            throw new RuntimeException("Bad input : " + superCategory);
+        switch (categoryEnum) {
+            case DONGGUK:
+                this.topId = 1L;
+                break;
+            case DYEON:
+                this.topId = 2L;
+                break;
         }
     }
 
     public CategoryEnum getCategoryType() {
-        if(topCategory == null && midCategory == null) return CategoryEnum.TOP;
-        else if(topCategory !=null && midCategory == null) return CategoryEnum.MID;
-        else return CategoryEnum.BOTTOM;
+        if (topId.equals(1L)) {
+            return CategoryEnum.DONGGUK;
+        } else if (topId.equals(2L)) {
+            return CategoryEnum.DYEON;
+        } else {
+            throw new RuntimeException("잘못된 topId");
+        }
     }
 }

@@ -1,7 +1,6 @@
 package com.dongal.api.service.impl;
 
 import com.dongal.api.domain.Category;
-import com.dongal.api.domain.CategoryEnum;
 import com.dongal.api.domain.User;
 import com.dongal.api.repository.CategoryRepository;
 import com.dongal.api.repository.UserRepository;
@@ -33,9 +32,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         for (Long categoryIdx : categoryIdxes) {
             Category category = categoryRepository.findOne(categoryIdx);
-            if (category.getCategoryType().equals(CategoryEnum.BOTTOM)) {
-                user.getCategories().add(category);
-            }
+            user.getCategories().add(category);
         }
 
         userRepository.save(user);

@@ -56,14 +56,10 @@ public class RepositoryTest {
         userSns.put("k-f", new UserSns(users.get("kisang"), sns.get("facebook"), "FACEBOOKVALUE"));
         users.get("kisang").getSns().add(userSns.get("k-f"));
 
-        categories.put("공지사항", new Category("공지사항"));
-        categories.put("공식 홈페이지", new Category("공식 홈페이지", categories.get("공지사항")));
-        categories.put("학사", new Category("학사", categories.get("공식 홈페이지")));
-        categories.put("장학", new Category("장학", categories.get("공식 홈페이지")));
+        categories.put("학사", new Category("학사", CategoryEnum.DONGGUK));
+        categories.put("장학", new Category("장학", CategoryEnum.DONGGUK));
 
-        categories.put("디연", new Category("디연"));
-        categories.put("커뮤니티", new Category("커뮤니티", categories.get("디연")));
-        categories.put("익게", new Category("익명 게시판", categories.get("커뮤니티")));
+        categories.put("익게", new Category("익명 게시판", CategoryEnum.DYEON));
 
         subscriptions.put("학사1", new Subscription(categories.get("학사"), "졸업 공지사항1", "http://dgu.edu/1", new Date()));
         subscriptions.put("학사2", new Subscription(categories.get("학사"), "졸업 공지사항2", "http://dgu.edu/2", new Date()));
@@ -94,7 +90,7 @@ public class RepositoryTest {
         for (String key : categories.keySet()) {
             categoryRepository.save(categories.get(key));
         }
-        assertThat(categoryRepository.count(), is(7L));
+        assertThat(categoryRepository.count(), is(3L));
 
         for (String key : subscriptions.keySet()) {
             subscriptionRepository.save(subscriptions.get(key));
