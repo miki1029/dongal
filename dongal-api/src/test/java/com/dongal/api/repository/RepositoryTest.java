@@ -12,7 +12,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -42,7 +44,7 @@ public class RepositoryTest {
     List<Admin> admins = new ArrayList<>();
     List<AdminPushMessage> adminPushMessages = new ArrayList<>();
 
-    
+
     @Before
     public void setUp() {
         // 기초 데이터 생성
@@ -52,7 +54,7 @@ public class RepositoryTest {
         snses.add(facebook);
         snses.add(twitter);
         snses.add(instagram);
-        
+
         User minwoo = new User("kmwkmw5@dongguk.edu", "1234", "김민우", new Date(), false);
         User kisang = new User("felika@dongguk.edu", "5678", "강기상", new Date(), true);
         users.add(minwoo);
@@ -87,6 +89,33 @@ public class RepositoryTest {
         categories.add(new Category("유머게시판", CategoryEnum.DYEON));
         categories.add(new Category("정치사회이슈", CategoryEnum.DYEON));
         categories.add(new Category("16학번 게시판", CategoryEnum.DYEON));
+
+        crawlingMetas.add(new CrawlingMeta("", "<tr><td>\\d+<\\/td><td class=\"title\"><a href=\"(view\\.jsp\\?spage=\\d+&amp;boardId=(\\d+)&amp;boardSeq=(\\d+)&amp;id=kr_\\d+&amp;column=&amp;search=&amp;categoryDepth=&amp;mcategoryId=0)\">(.*?)<\\/a>(<img alt=\"N\" src=\"\\/Web-home\\/manager\\/images\\/mbsPreview\\/icon_new.gif\" title=\"새글\"\\/>|)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>((.*?)|<img alt=\"파일\" src=\"\\/mbs\\/kr\\/images\\/board\\/ico_file.gif\"\\/>)<\\/td><\\/tr>", "https://www.dongguk.edu/mbs/kr/jsp/board/list.jsp?boardId=3646&search=&column=&categoryDepth=&categoryId=0&boardType=01&listType=01&command=list&id=kr_010802000000&mcategoryId=0",
+                categories.get(1), "", "", 12214522L, ""));
+        crawlingMetas.add(new CrawlingMeta("", "<tr><td>\\d+<\\/td><td class=\"title\"><a href=\"(view\\.jsp\\?spage=\\d+&amp;boardId=(\\d+)&amp;boardSeq=(\\d+)&amp;id=kr_\\d+&amp;column=&amp;search=&amp;categoryDepth=&amp;mcategoryId=0)\">(.*?)<\\/a>(<img alt=\"N\" src=\"\\/Web-home\\/manager\\/images\\/mbsPreview\\/icon_new.gif\" title=\"새글\"\\/>|)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>((.*?)|<img alt=\"파일\" src=\"\\/mbs\\/kr\\/images\\/board\\/ico_file.gif\"\\/>)<\\/td><\\/tr>", "https://www.dongguk.edu/mbs/kr/jsp/board/list.jsp?boardId=3638&search=&column=&categoryDepth=&categoryId=0&boardType=01&listType=01&command=list&id=kr_010801000000&mcategoryId=0",
+                categories.get(2), "", "", 12015537L, ""));
+        crawlingMetas.add(new CrawlingMeta("", "<tr><td>\\d+<\\/td><td class=\"title\"><a href=\"(view\\.jsp\\?spage=\\d+&amp;boardId=(\\d+)&amp;boardSeq=(\\d+)&amp;id=kr_\\d+&amp;column=&amp;search=&amp;categoryDepth=&amp;mcategoryId=0)\">(.*?)<\\/a>(<img alt=\"N\" src=\"\\/Web-home\\/manager\\/images\\/mbsPreview\\/icon_new.gif\" title=\"새글\"\\/>|)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>((.*?)|<img alt=\"파일\" src=\"\\/mbs\\/kr\\/images\\/board\\/ico_file.gif\"\\/>)<\\/td><\\/tr>", "https://www.dongguk.edu/mbs/kr/jsp/board/list.jsp?boardId=3654&search=&column=&categoryDepth=&categoryId=0&boardType=01&listType=01&command=list&id=kr_010803000000&mcategoryId=0",
+                categories.get(3), "", "", 11567697L, ""));
+        crawlingMetas.add(new CrawlingMeta("", "<tr><td>\\d+<\\/td><td class=\"title\"><a href=\"(view\\.jsp\\?spage=\\d+&amp;boardId=(\\d+)&amp;boardSeq=(\\d+)&amp;id=kr_\\d+&amp;column=&amp;search=&amp;categoryDepth=&amp;mcategoryId=0)\">(.*?)<\\/a>(<img alt=\"N\" src=\"\\/Web-home\\/manager\\/images\\/mbsPreview\\/icon_new.gif\" title=\"새글\"\\/>|)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>((.*?)|<img alt=\"파일\" src=\"\\/mbs\\/kr\\/images\\/board\\/ico_file.gif\"\\/>)<\\/td><\\/tr>", "https://www.dongguk.edu/mbs/kr/jsp/board/list.jsp?boardId=3662&search=&column=&categoryDepth=&categoryId=0&boardType=01&listType=01&command=list&id=kr_010804000000&mcategoryId=0",
+                categories.get(4), "", "", 11794358L, ""));
+        crawlingMetas.add(new CrawlingMeta("", "<tr><td>\\d+<\\/td><td class=\"title\"><a href=\"(view\\.jsp\\?spage=\\d+&amp;boardId=(\\d+)&amp;boardSeq=(\\d+)&amp;id=kr_\\d+&amp;column=&amp;search=&amp;categoryDepth=&amp;mcategoryId=0)\">(.*?)<\\/a>(<img alt=\"N\" src=\"\\/Web-home\\/manager\\/images\\/mbsPreview\\/icon_new.gif\" title=\"새글\"\\/>|)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>((.*?)|<img alt=\"파일\" src=\"\\/mbs\\/kr\\/images\\/board\\/ico_file.gif\"\\/>)<\\/td><\\/tr>", "https://www.dongguk.edu/mbs/kr/jsp/board/list.jsp?boardId=9457435&search=&column=&categoryDepth=&categoryId=0&boardType=01&listType=01&command=list&id=kr_010807000000&mcategoryId=0",
+                categories.get(5), "", "", 11794358L, ""));
+        crawlingMetas.add(new CrawlingMeta("", "<tr><td>\\d+<\\/td><td class=\"title\"><a href=\"(view\\.jsp\\?spage=\\d+&amp;boardId=(\\d+)&amp;boardSeq=(\\d+)&amp;id=kr_\\d+&amp;column=&amp;search=&amp;categoryDepth=&amp;mcategoryId=0)\">(.*?)<\\/a>(<img alt=\"N\" src=\"\\/Web-home\\/manager\\/images\\/mbsPreview\\/icon_new.gif\" title=\"새글\"\\/>|)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>((.*?)|<img alt=\"파일\" src=\"\\/mbs\\/kr\\/images\\/board\\/ico_file.gif\"\\/>)<\\/td><\\/tr>", "https://www.dongguk.edu/mbs/kr/jsp/board/list.jsp?boardId=11533472&search=&column=&categoryDepth=&categoryId=0&boardType=01&listType=01&command=list&id=kr_010808000000&mcategoryId=0",
+                categories.get(6), "", "", 11564303L, ""));
+        crawlingMetas.add(new CrawlingMeta("<span class=\"absolute\">(\\d+)년 (\\d+)월 (\\d+)일</span>", "<a href=\"(http:\\/\\/dyeon\\.net\\/post\\/(\\d+)(\\?page=\\d+|))\" page=\"\\d+\">(.*?)</a>", "https://dyeon.net/board/qna",
+                categories.get(7), "<span class=\"head label\">비밀글</span>", "<span class=\"label category\" style=\"(.*?)\"><a href=\"(.*?)\">(.*?)</a></span>", 1162771L, ""));
+        crawlingMetas.add(new CrawlingMeta("<span class=\"absolute\">(\\d+)년 (\\d+)월 (\\d+)일</span>", "<a href=\"(http:\\/\\/dyeon\\.net\\/post\\/(\\d+)(\\?page=\\d+|))\" page=\"\\d+\">(.*?)</a>", "https://dyeon.net/board/plaza",
+                categories.get(8), "<span class=\"head label\">비밀글</span>", "<span class=\"label category\" style=\"(.*?)\"><a href=\"(.*?)\">(.*?)</a></span>", 1163060L, ""));
+        crawlingMetas.add(new CrawlingMeta("<span class=\"absolute\">(\\d+)년 (\\d+)월 (\\d+)일</span>", "<a href=\"(http:\\/\\/dyeon\\.net\\/post\\/(\\d+)(\\?page=\\d+|))\" page=\"\\d+\">(.*?)</a>", "https://dyeon.net/board/anonymous",
+                categories.get(9), "<span class=\"head label\">비밀글</span>", "<span class=\"label category\" style=\"(.*?)\"><a href=\"(.*?)\">(.*?)</a></span>", 1163326L, ""));
+        crawlingMetas.add(new CrawlingMeta("<span class=\"absolute\">(\\d+)년 (\\d+)월 (\\d+)일</span>", "<a href=\"(http:\\/\\/dyeon\\.net\\/post\\/(\\d+)(\\?page=\\d+|))\" page=\"\\d+\">(.*?)</a>", "https://dyeon.net/board/love",
+                categories.get(10), "<span class=\"head label\">비밀글</span>", "<span class=\"label category\" style=\"(.*?)\"><a href=\"(.*?)\">(.*?)</a></span>", 1163016L, ""));
+        crawlingMetas.add(new CrawlingMeta("<span class=\"absolute\">(\\d+)년 (\\d+)월 (\\d+)일</span>", "<a href=\"(http:\\/\\/dyeon\\.net\\/post\\/(\\d+)(\\?page=\\d+|))\" page=\"\\d+\">(.*?)</a>", "https://dyeon.net/board/nimo",
+                categories.get(11), "<span class=\"head label\">비밀글</span>", "<span class=\"label category\" style=\"(.*?)\"><a href=\"(.*?)\">(.*?)</a></span>", 1162990L, ""));
+        crawlingMetas.add(new CrawlingMeta("<span class=\"absolute\">(\\d+)년 (\\d+)월 (\\d+)일</span>", "<a href=\"(http:\\/\\/dyeon\\.net\\/post\\/(\\d+)(\\?page=\\d+|))\" page=\"\\d+\">(.*?)</a>", "https://dyeon.net/board/forest",
+                categories.get(12), "<span class=\"head label\">비밀글</span>", "<span class=\"label category\" style=\"(.*?)\"><a href=\"(.*?)\">(.*?)</a></span>", 1162990L, ""));
+        crawlingMetas.add(new CrawlingMeta("<span class=\"absolute\">(\\d+)년 (\\d+)월 (\\d+)일</span>", "<a href=\"(http:\\/\\/dyeon\\.net\\/post\\/(\\d+)(\\?page=\\d+|))\" page=\"\\d+\">(.*?)</a>", "https://dyeon.net/board/gong",
+                categories.get(13), "<span class=\"head label\">비밀글</span>", "<span class=\"label category\" style=\"(.*?)\"><a href=\"(.*?)\">(.*?)</a></span>", 1162200L, ""));
 
         subscriptions.add(new Subscription(categories.get(0), "제목제목제목", "http://dgu.edu", new Date()));
         subscriptions.add(new Subscription(categories.get(1), "제목제목제목", "http://dgu.edu", new Date()));
@@ -148,6 +177,11 @@ public class RepositoryTest {
             categoryRepository.save(category);
         }
         assertThat(categoryRepository.count(), is(29L));
+
+        for (CrawlingMeta crawlingMeta : crawlingMetas) {
+            crawlingMetaRepository.save(crawlingMeta);
+        }
+        assertThat(crawlingMetaRepository.count(), is(13L));
 
         for (Subscription subscription : subscriptions) {
             subscriptionRepository.save(subscription);
