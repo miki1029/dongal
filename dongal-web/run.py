@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 
-import json, requests
+import simplejson as json
+import requests
 
 app = Flask(__name__)
 
