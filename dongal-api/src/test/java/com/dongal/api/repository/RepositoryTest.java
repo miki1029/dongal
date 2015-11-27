@@ -38,8 +38,7 @@ public class RepositoryTest {
     Map<String, Category> categories = new HashMap<>();
     Map<String, Subscription> subscriptions = new HashMap<>();
 
-    Map<String, CrawlingLastSeq> crawlingLastSeqs = new HashMap<>();
-    Map<String, CrawlingPatterns> crawlingPatternses = new HashMap<>();
+    Map<String, CrawlingMeta> crawlingMetas = new HashMap<>();
 
     Map<String, Admin> admins = new HashMap<>();
     Map<String, AdminPushMessage> adminPushMessages = new HashMap<>();
