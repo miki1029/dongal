@@ -1,3 +1,7 @@
+### ignore dongal-api, dongal-crawler
+../dongal-api/
+../dongal-crawler/
+
 ### dongal-web
 *.pyc
 venv

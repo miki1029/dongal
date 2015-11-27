@@ -21,7 +21,7 @@ public class UserSns {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "sns_id")
     private Sns sns;
 

@@ -1,12 +1,13 @@
-package com.dongal.api.service;
+package com.dongal.api.service.impl;
 
 import com.dongal.api.domain.Subscription;
 import com.dongal.api.domain.User;
 import com.dongal.api.repository.SubscriptionRepository;
 import com.dongal.api.repository.UserRepository;
-import com.dongal.api.service.interfaces.SubscriptionService;
+import com.dongal.api.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
  * @author Freddi
  */
 @Service
+@Transactional
 public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Autowired
@@ -22,6 +24,14 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Autowired
     private SubscriptionRepository subscriptionRepository;
+
+    @Override
+    public List<Subscription> getUserSubscription(Long userIdx) {
+        User user = userRepository.findOne(userIdx);
+        List<Subscription> subscriptions = subscriptionRepository.findByCategoryIn(user.getCategories());
+
+        return subscriptions;
+    }
 
     @Override
     public List<Subscription> getUserSubscription(Long userIdx, Date startTime, Date endTime) {

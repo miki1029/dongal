@@ -1,5 +1,7 @@
 package com.dongal.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,12 +25,13 @@ public class User {
     @Column(nullable = false, length = 45)
     private String email;
 
-    @Column(nullable = false, length = 45)
-    private String name;
-
     @Column(nullable = false, length = 20)
     private String password;
 
+    @Column(nullable = false, length = 45)
+    private String name;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdTime;
@@ -36,54 +39,29 @@ public class User {
     @Column(nullable = false)
     private boolean isDguVerified; // 변수명 하이버네이트 이름 규칙 때문에 고침
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserSns> sns = new ArrayList<>();
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name="user_category_settings",
             joinColumns=@JoinColumn(name="user_id"),
             inverseJoinColumns=@JoinColumn(name="category_id"))
     private List<Category> categories = new ArrayList<>();
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name="user_favorite",
             joinColumns=@JoinColumn(name="user_id"),
             inverseJoinColumns=@JoinColumn(name="subscription_id"))
     private List<Subscription> favorites = new ArrayList<>();
 
-    public User(String email, String name, String password, Date createdTime, boolean isDguVerified) {
+    public User(String email, String password, String name, Date createdTime, boolean isDguVerified) {
         this.email = email;
-        this.name = name;
         this.password = password;
+        this.name = name;
         this.createdTime = createdTime;
         this.isDguVerified = isDguVerified;
-    }
-
-    private UserSns findAttachedSns(Sns checkSns) {
-        for (UserSns userSns : sns) {
-            if (userSns.getSns().equals(checkSns)) {
-                return userSns;
-            }
-        }
-        return null;
-    }
-
-    public void attachSns(Sns newSns, String snsValue) {
-        UserSns findUserSns = findAttachedSns(newSns);
-
-        // 새로운 Sns 추가
-        if (findUserSns == null) {
-            sns.add(new UserSns(this, newSns, snsValue));
-        }
-        // 이미 연결중인 Sns 이면 snsValue 교체
-        else {
-            findUserSns.setSnsValue(snsValue);
-        }
-    }
-
-    public void detachSns(Sns delSns) {
-        UserSns findUserSns = findAttachedSns(delSns);
-
-        sns.remove(findUserSns);
     }
 }

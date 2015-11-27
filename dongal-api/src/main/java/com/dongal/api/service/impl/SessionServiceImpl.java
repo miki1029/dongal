@@ -1,16 +1,20 @@
-package com.dongal.api.service;
+package com.dongal.api.service.impl;
 
 import com.dongal.api.domain.User;
 import com.dongal.api.exception.WrongPasswordException;
 import com.dongal.api.repository.UserRepository;
-import com.dongal.api.service.interfaces.SessionService;
+import com.dongal.api.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
 /**
  * @author Freddi
  */
+@Service
+@Transactional
 public class SessionServiceImpl implements SessionService {
 
     @Autowired
@@ -33,8 +37,8 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public User join(String email, String name, String password) {
-        User user = new User(email, name, password, new Date(), false);
+    public User join(String email, String password, String name) {
+        User user = new User(email, password, name, new Date(), false);
         userRepository.save(user);
         return user;
     }

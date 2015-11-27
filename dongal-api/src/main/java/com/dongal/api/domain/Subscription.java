@@ -1,5 +1,6 @@
 package com.dongal.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -28,6 +29,7 @@ public class Subscription {
     @Column(nullable = false, length = 2048)
     private String url;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdTime;
