@@ -46,6 +46,18 @@ def getCategoryMetaDataAndLastSeq():
 
     cursor.close()
 
+def updateLastSeq():
+    cursor = db.cursor()
+    sql = "UPDATE dongal.crawling_meta SET last_seq = %s WHERE category_id = %s"
+    params = [ (dyeon['after_last_seq'], dyeon['idx'] ) for dyeon in CATEGORY_META_DATA['dyeon'] ]
+    try:
+        cursor.executemany(sql, params)
+        db.commit()
+    except:
+        cursor.executemany(sql, params)
+
+    cursor.close()
+
 def insertSubscriptions():
     cursor = db.cursor()
     for idx, dyeon in enumerate(CATEGORY_META_DATA['dyeon']):
@@ -58,6 +70,10 @@ def insertSubscriptions():
             cursor.executemany(sql, params)
 
     cursor.close()
+
+def saveSubscription():
+    insertSubscriptions()
+    updateLastSeq()
 
 def login_dyeon():
     username = 'kang8530'
@@ -72,9 +88,8 @@ def login_dyeon():
 
     return opener
 
-session = login_dyeon()
 
-def crawling_dyeon(dyeon, page):
+def parsingSubscriptionData(dyeon, page):
     crawling_url = dyeon['url'] + "?page=" + str(page)
     print "-------------%s(%d): %s------------" % (dyeon['name'], dyeon['idx'], crawling_url)
     resp = session.open(crawling_url)
@@ -121,14 +136,26 @@ def crawling_dyeon(dyeon, page):
         return;
 
 def crawling():
+
+    # crawling dgu
+
+    # crawling dyeon
+    session = login_dyeon()
     for idx, dyeon in enumerate(CATEGORY_META_DATA['dyeon']):
-        crawling_dyeon(dyeon, 1)
+        parsingSubscriptionData(dyeon, 1)
+
 
 db = MySQLdb.connect("localhost", "root", "rkdrltkd", "dongal")
 
 getCategoryMetaDataAndLastSeq()
+
 crawling()
-insertSubscriptions()
+
+saveSubscription()
+
+getPushMeesagePatterns()
 
 db.close()
+
+
 
