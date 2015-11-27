@@ -43,8 +43,6 @@ def getCategoryMetaDataAndLastSeq():
         else:
             CATEGORY_META_DATA['dyeon'].append(category)
 
-    print CATEGORY_META_DATA
-
     cursor.close()
 
 def updateLastSeq():

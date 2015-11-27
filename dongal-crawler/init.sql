@@ -2,8 +2,6 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 
 TRUNCATE TABLE dongal.category;
-INSERT INTO dongal.category(name, top_id) VALUES('동국대', 0);
-INSERT INTO dongal.category(name, top_id) VALUES('디연', 0);
 INSERT INTO dongal.category(name, top_id) VALUES('일반', 1);
 INSERT INTO dongal.category(name, top_id) VALUES('학사', 1);
 INSERT INTO dongal.category(name, top_id) VALUES('입시', 1);
@@ -138,6 +136,11 @@ INSERT INTO dongal.crawling_meta(
   category_id, secret_pattern, category_pattern, last_seq, url_pattern)
 VALUES('<span class="absolute">(\\d+)년 (\\d+)월 (\\d+)일<\/span>', '<a href="(http:\\/\\/dyeon\\.net\\/post\\/(\\d+)(\\?page=\\d+|))" page="\\d+">(.*?)</a>', 'https://dyeon.net/board/announce',
        16, '<span class="head label">비밀글</span>', '<span class="label category" style="(.*?)"><a href="(.*?)">(.*?)</a></span>', 1162200, '');
+
+set sql_safe_updates=0;
+
+UPDATE dongal.crawling_meta
+SET category_id = category_id - 2;
 
 
 TRUNCATE TABLE dongal.subscription;
