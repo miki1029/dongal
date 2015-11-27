@@ -12,9 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.util.HashMap;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -26,74 +24,140 @@ import static org.junit.Assert.assertThat;
 @ContextConfiguration(classes = { DatabaseConfig.class, WebAppConfig.class, Initializer.class })
 @WebAppConfiguration
 public class RepositoryTest {
+    @Autowired SnsRepository snsRepository;
     @Autowired UserRepository userRepository;
     @Autowired CategoryRepository categoryRepository;
     @Autowired SubscriptionRepository subscriptionRepository;
-    @Autowired SnsRepository snsRepository;
+    @Autowired CrawlingMetaRepository crawlingMetaRepository;
 
-    Map<String, Sns> sns = new HashMap<>();
-    Map<String, User> users = new HashMap<>();
-    Map<String, UserSns> userSns = new HashMap<>();
+    List<Sns> snses = new ArrayList<>();
+    List<User> users = new ArrayList<>();
+    List<UserSns> userSns = new ArrayList<>();
 
-    Map<String, Category> categories = new HashMap<>();
-    Map<String, Subscription> subscriptions = new HashMap<>();
+    List<Category> categories = new ArrayList<>();
+    List<Subscription> subscriptions = new ArrayList<>();
 
-    Map<String, CrawlingMeta> crawlingMetas = new HashMap<>();
+    List<CrawlingMeta> crawlingMetas = new ArrayList<>();
 
-    Map<String, Admin> admins = new HashMap<>();
-    Map<String, AdminPushMessage> adminPushMessages = new HashMap<>();
+    List<Admin> admins = new ArrayList<>();
+    List<AdminPushMessage> adminPushMessages = new ArrayList<>();
 
+    
     @Before
     public void setUp() {
-        sns.put("facebook", new Sns("facebook"));
-        sns.put("twitter", new Sns("twitter"));
-        sns.put("instagram", new Sns("instagram"));
+        // 기초 데이터 생성
+        Sns facebook = new Sns("facebook");
+        Sns twitter = new Sns("twitter");
+        Sns instagram = new Sns("instagram");
+        snses.add(facebook);
+        snses.add(twitter);
+        snses.add(instagram);
         
-        users.put("minwoo", new User("kmwkmw5@dongguk.edu", "1234", "김민우", new Date(), false));
-        users.put("kisang", new User("felika@dongguk.edu", "5678", "강기상", new Date(), true));
+        User minwoo = new User("kmwkmw5@dongguk.edu", "1234", "김민우", new Date(), false);
+        User kisang = new User("felika@dongguk.edu", "5678", "강기상", new Date(), true);
+        users.add(minwoo);
+        users.add(kisang);
 
-        userSns.put("k-f", new UserSns(users.get("kisang"), sns.get("facebook"), "FACEBOOKVALUE"));
-        users.get("kisang").getSns().add(userSns.get("k-f"));
+        categories.add(new Category("일반", CategoryEnum.DONGGUK));
+        categories.add(new Category("학사", CategoryEnum.DONGGUK));
+        categories.add(new Category("입시", CategoryEnum.DONGGUK));
+        categories.add(new Category("장학", CategoryEnum.DONGGUK));
+        categories.add(new Category("국제", CategoryEnum.DONGGUK));
+        categories.add(new Category("학술/행사공지", CategoryEnum.DONGGUK));
+        categories.add(new Category("*학사질문게시판", CategoryEnum.DYEON));
+        categories.add(new Category("자유게시판", CategoryEnum.DYEON));
+        categories.add(new Category("익명게시판", CategoryEnum.DYEON));
+        categories.add(new Category("Love카운셀러", CategoryEnum.DYEON));
+        categories.add(new Category("Nimo를 찾아서", CategoryEnum.DYEON));
+        categories.add(new Category("대나무숲", CategoryEnum.DYEON));
+        categories.add(new Category("대외활동", CategoryEnum.DYEON));
+        categories.add(new Category("교내단체소식", CategoryEnum.DYEON));
+        categories.add(new Category("취업&알바", CategoryEnum.DYEON));
+        categories.add(new Category("하숙&자취", CategoryEnum.DYEON));
+        categories.add(new Category("광고게시판", CategoryEnum.DYEON));
+        categories.add(new Category("Dyeon Market", CategoryEnum.DYEON));
+        categories.add(new Category("job아라!", CategoryEnum.DYEON));
+        categories.add(new Category("STUDY그룹", CategoryEnum.DYEON));
+        categories.add(new Category("찾아주세요", CategoryEnum.DYEON));
+        categories.add(new Category("Dyeon 스타일", CategoryEnum.DYEON));
+        categories.add(new Category("어썸피플", CategoryEnum.DYEON));
+        categories.add(new Category("올드보이", CategoryEnum.DYEON));
+        categories.add(new Category("해부학개론", CategoryEnum.DYEON));
+        categories.add(new Category("맛잌다", CategoryEnum.DYEON));
+        categories.add(new Category("유머게시판", CategoryEnum.DYEON));
+        categories.add(new Category("정치사회이슈", CategoryEnum.DYEON));
+        categories.add(new Category("16학번 게시판", CategoryEnum.DYEON));
 
-        categories.put("학사", new Category("학사", CategoryEnum.DONGGUK));
-        categories.put("장학", new Category("장학", CategoryEnum.DONGGUK));
+        subscriptions.add(new Subscription(categories.get(0), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(1), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(2), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(3), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(4), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(5), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(6), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(7), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(8), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(9), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(10), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(11), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(12), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(13), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(14), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(15), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(16), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(17), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(18), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(19), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(20), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(21), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(22), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(23), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(24), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(25), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(26), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(27), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(28), "제목제목제목", "http://dgu.edu", new Date()));
 
-        categories.put("익게", new Category("익명 게시판", CategoryEnum.DYEON));
+        // 관계 설정
+        kisang.getSns().add(new UserSns(kisang, facebook, "FACEBOOKVALUE"));
+        minwoo.getCategories().add(categories.get(0));
+        minwoo.getCategories().add(categories.get(2));
+        minwoo.getCategories().add(categories.get(4));
+        minwoo.getCategories().add(categories.get(6));
+        minwoo.getCategories().add(categories.get(8));
+        minwoo.getCategories().add(categories.get(10));
+        minwoo.getFavorites().add(subscriptions.get(2));
 
-        subscriptions.put("학사1", new Subscription(categories.get("학사"), "졸업 공지사항1", "http://dgu.edu/1", new Date()));
-        subscriptions.put("학사2", new Subscription(categories.get("학사"), "졸업 공지사항2", "http://dgu.edu/2", new Date()));
-        subscriptions.put("장학1", new Subscription(categories.get("장학"), "장학 공지사항1", "http://dgu.edu/3", new Date()));
-        subscriptions.put("장학2", new Subscription(categories.get("장학"), "장학 공지사항2", "http://dgu.edu/4", new Date()));
-
-        subscriptions.put("익게1", new Subscription(categories.get("익게"), "익명 게시판1", "http://dgu.edu/5", new Date()));
-        subscriptions.put("익게2", new Subscription(categories.get("익게"), "익명 게시판2", "http://dgu.edu/6", new Date()));
-
-        snsRepository.deleteAll();
+        // 삭제 순서 중요
         userRepository.deleteAll();
-        categoryRepository.deleteAll();
+        snsRepository.deleteAll();
         subscriptionRepository.deleteAll();
+        crawlingMetaRepository.deleteAll();
+        categoryRepository.deleteAll();
     }
 
     @Test
     public void testSaveAndCount() throws Exception {
-        for (String key : sns.keySet()) {
-            snsRepository.save(sns.get(key));
+        // 삽입 순서 중요
+        for (Sns sns : snses) {
+            snsRepository.save(sns);
         }
         assertThat(snsRepository.count(), is(3L));
 
-        for (String key : users.keySet()) {
-            userRepository.save(users.get(key));
+        for (Category category : categories) {
+            categoryRepository.save(category);
+        }
+        assertThat(categoryRepository.count(), is(29L));
+
+        for (Subscription subscription : subscriptions) {
+            subscriptionRepository.save(subscription);
+        }
+        assertThat(subscriptionRepository.count(), is(29L));
+
+        for (User user : users) {
+            userRepository.save(user);
         }
         assertThat(userRepository.count(), is(2L));
 
-        for (String key : categories.keySet()) {
-            categoryRepository.save(categories.get(key));
-        }
-        assertThat(categoryRepository.count(), is(3L));
-
-        for (String key : subscriptions.keySet()) {
-            subscriptionRepository.save(subscriptions.get(key));
-        }
-        assertThat(subscriptionRepository.count(), is(6L));
     }
 }
