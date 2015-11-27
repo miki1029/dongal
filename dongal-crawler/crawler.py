@@ -2,6 +2,8 @@
 from bs4 import BeautifulSoup
 from pprint import pprint
 
+import simplejson as json
+
 import requests
 import urllib, urllib2, cookielib
 import re
@@ -196,7 +198,10 @@ def crawling():
         parsingSubscriptionData(dyeon, 1)
 
 
-db = MySQLdb.connect("localhost", "root", "rkdrltkd", "dongal")
+txt = open("mysql.json")
+
+json = json.loads(txt.read())
+db = MySQLdb.connect(json['host'], json['user'], json['password'], json['db'])
 
 getCategoryMetaDataAndLastSeq()
 
