@@ -5,16 +5,16 @@ import lombok.Data;
 import javax.persistence.*;
 
 /**
- * @author miki
+ * @author Freddi
  */
 @Entity
-@Table
+@Table(name = "admin_push_message")
 @Data
-public class Sns {
+public class AdminPushMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idx;
 
     @Column(nullable = false, length = 45)
-    private String name;
+    private String message;
 }

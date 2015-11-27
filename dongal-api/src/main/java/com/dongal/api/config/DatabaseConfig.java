@@ -24,9 +24,8 @@ import java.util.Properties;
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = {"com.dongal.api.repository"})
 @PropertySources({
-        @PropertySource("classpath:properties/datasource.properties"),
-//        @PropertySource("classpath:properties/hibernate.properties"),
-        @PropertySource("classpath:config.properties")
+        @PropertySource("classpath:config.properties"),
+        @PropertySource("classpath:properties/database.properties")
 })
 public class DatabaseConfig {
 
@@ -55,19 +54,6 @@ public class DatabaseConfig {
 
     @Autowired
     private Environment environment;
-
-/*    @Bean
-    public DataSource dataSource() {
-        BasicDataSource dataSource = new BasicDataSource();
-
-        dataSource.setDriverClassName(environment.getProperty("db.driverClassName"));
-
-        dataSource.setUrl(environment.getProperty("db.url"));
-        dataSource.setUsername(environment.getProperty("db.username"));
-        dataSource.setPassword(environment.getProperty("db.password"));
-
-        return dataSource;
-    }*/
 
     @Bean
     public DataSource dataSource() {

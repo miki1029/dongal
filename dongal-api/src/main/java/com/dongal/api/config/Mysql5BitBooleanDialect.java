@@ -11,6 +11,5 @@ public class Mysql5BitBooleanDialect extends MySQL5InnoDBDialect {
     public Mysql5BitBooleanDialect() {
         super();
         registerColumnType( Types.BOOLEAN, "bit" );
-//        registerColumnType( Types.TIMESTAMP, "datetime($l)" );
     }
 }
