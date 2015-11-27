@@ -15,10 +15,8 @@ CATEGORY_META_DATA = {
     'dyeon' : []
 }
 
-db = MySQLdb.connect("localhost", "root", "rkdrltkd", "dongal")
-cursor = db.cursor()
-
 def getCategoryMetaDataAndLastSeq():
+    cursor = db.cursor()
     # Get category metadata
     cursor.execute("""
         SELECT  A.idx, A.name,
@@ -32,15 +30,34 @@ def getCategoryMetaDataAndLastSeq():
     
     for row in data:
         category = {}
-        category['idx'] = row[0]
+        category['idx'] = int(row[0])
         category['name'] = row[1]
         category['title_pattern'] = row[2]
         category['created_time_pattern'] = row[3]
         category['secret_pattern'] = row[4]
         category['category_pattern'] = row[5]
-        category['last_seq'] = row[6]
+        category['before_last_seq'] = row[6]
+        category['after_last_seq'] = row[6]
         category['url'] = row[7]
+        category['last_seq_updated'] = False
+        category['is_meet_last_board_item'] = False
+        category['subscriptions'] = []
         CATEGORY_META_DATA['dyeon'].append(category)
+
+    cursor.close()
+
+def insertSubscriptions():
+    cursor = db.cursor()
+    for idx, dyeon in enumerate(CATEGORY_META_DATA['dyeon']):
+        sql = "INSERT INTO dongal.subscription(category_id, title, url, created_time) VALUES(%s, %s, %s, %s)"
+        params = [ (dyeon['idx'], subscription['title'], subscription['link'], subscription['created_time']) for subscription in dyeon['subscriptions'] ]
+        try:
+            cursor.executemany(sql, params)
+            db.commit()
+        except:
+            cursor.executemany(sql, params)
+
+    cursor.close()
 
 def login_dyeon():
     username = 'kang8530'
@@ -57,7 +74,7 @@ def login_dyeon():
 
 session = login_dyeon()
 
-def crawling_dyeon(crawling_meta, dyeon, page):
+def crawling_dyeon(dyeon, page):
     crawling_url = dyeon['url'] + "?page=" + str(page)
     print "-------------%s(%d): %s------------" % (dyeon['name'], dyeon['idx'], crawling_url)
     resp = session.open(crawling_url)
@@ -80,38 +97,38 @@ def crawling_dyeon(crawling_meta, dyeon, page):
             yyyymmdd = date.group(1) + '-' + date.group(2) + '-' + date.group(3)
             category = re.search(category_pattern, board_item[1])
 
-            if int(crawling_meta['before_last_seq']) >= int(link.group(2)):
-                crawling_meta['is_meet_last_board_item'] = True
+            if int(dyeon['before_last_seq']) >= int(link.group(2)):
+                dyeon['is_meet_last_board_item'] = True
                 break;
 
-            if (not crawling_meta['last_seq_updated']) and (int(crawling_meta['after_last_seq']) < int(link.group(2))):
-                crawling_meta['after_last_seq'] = int(link.group(2))
-                crawling_meta['last_seq_updated'] = True
+            if (not dyeon['last_seq_updated']) and (int(dyeon['after_last_seq']) < int(link.group(2))):
+                dyeon['after_last_seq'] = int(link.group(2))
+                dyeon['last_seq_updated'] = True
 
             subscription = {}
             subscription['link'] = link.group(1)
             subscription['postId'] = link.group(2)
             subscription['title'] = '[' + category.group(3) + '] ' + link.group(4) if category else link.group(4)
             subscription['created_time'] = yyyymmdd
+            dyeon['subscriptions'].append(subscription)
 
-            crawling_meta['data'].append(subscription)
             #print "link: %s, postId: %s, title: %s, date: %s" % (link.group(1), link.group(2), link.group(4), yyyymmdd)
 
-    if not crawling_meta['is_meet_last_board_item']:
-        crawling_dyeon(crawling_meta, dyeon, page+1)
+    if not dyeon['is_meet_last_board_item']:
+        crawling_dyeon(dyeon, page+1)
     else:
-        print "last_seq change %d to %d" % (int(crawling_meta['before_last_seq']), int(crawling_meta['after_last_seq']))
+        print "last_seq change %d to %d" % (int(dyeon['before_last_seq']), int(dyeon['after_last_seq']))
         return;
 
-getCategoryMetaDataAndLastSeq()
+def crawling():
+    for idx, dyeon in enumerate(CATEGORY_META_DATA['dyeon']):
+        crawling_dyeon(dyeon, 1)
 
-for idx, dyeon in enumerate(CATEGORY_META_DATA['dyeon']):
-    crawling_meta = {
-        'last_seq_updated': False,
-        'is_meet_last_board_item': False,
-        'before_last_seq': dyeon['last_seq'],
-        'after_last_seq': dyeon['last_seq'],
-        'data': [],
-    }
-    crawling_dyeon(crawling_meta, dyeon, 1)
+db = MySQLdb.connect("localhost", "root", "rkdrltkd", "dongal")
+
+getCategoryMetaDataAndLastSeq()
+crawling()
+insertSubscriptions()
+
+db.close()
 
