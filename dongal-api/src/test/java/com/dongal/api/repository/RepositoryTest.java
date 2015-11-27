@@ -60,6 +60,29 @@ public class RepositoryTest {
         users.add(minwoo);
         users.add(kisang);
 
+        setUpCategories();
+        setUpCrawlingMetas();
+        setUpSubscriptions();
+
+        // 관계 설정
+        kisang.getSns().add(new UserSns(kisang, facebook, "FACEBOOKVALUE"));
+        minwoo.getCategories().add(categories.get(0));
+        minwoo.getCategories().add(categories.get(2));
+        minwoo.getCategories().add(categories.get(4));
+        minwoo.getCategories().add(categories.get(6));
+        minwoo.getCategories().add(categories.get(8));
+        minwoo.getCategories().add(categories.get(10));
+        minwoo.getFavorites().add(subscriptions.get(2));
+
+        // 삭제 순서 중요
+        userRepository.deleteAll();
+        snsRepository.deleteAll();
+        subscriptionRepository.deleteAll();
+        crawlingMetaRepository.deleteAll();
+        categoryRepository.deleteAll();
+    }
+
+    private void setUpCategories() {
         categories.add(new Category("일반", CategoryEnum.DONGGUK));
         categories.add(new Category("학사", CategoryEnum.DONGGUK));
         categories.add(new Category("입시", CategoryEnum.DONGGUK));
@@ -89,7 +112,9 @@ public class RepositoryTest {
         categories.add(new Category("유머게시판", CategoryEnum.DYEON));
         categories.add(new Category("정치사회이슈", CategoryEnum.DYEON));
         categories.add(new Category("16학번 게시판", CategoryEnum.DYEON));
+    }
 
+    private void setUpCrawlingMetas() {
         crawlingMetas.add(new CrawlingMeta("", "<tr><td>\\d+<\\/td><td class=\"title\"><a href=\"(view\\.jsp\\?spage=\\d+&amp;boardId=(\\d+)&amp;boardSeq=(\\d+)&amp;id=kr_\\d+&amp;column=&amp;search=&amp;categoryDepth=&amp;mcategoryId=0)\">(.*?)<\\/a>(<img alt=\"N\" src=\"\\/Web-home\\/manager\\/images\\/mbsPreview\\/icon_new.gif\" title=\"새글\"\\/>|)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>((.*?)|<img alt=\"파일\" src=\"\\/mbs\\/kr\\/images\\/board\\/ico_file.gif\"\\/>)<\\/td><\\/tr>", "https://www.dongguk.edu/mbs/kr/jsp/board/list.jsp?boardId=3646&search=&column=&categoryDepth=&categoryId=0&boardType=01&listType=01&command=list&id=kr_010802000000&mcategoryId=0",
                 categories.get(1), "", "", 12214522L, ""));
         crawlingMetas.add(new CrawlingMeta("", "<tr><td>\\d+<\\/td><td class=\"title\"><a href=\"(view\\.jsp\\?spage=\\d+&amp;boardId=(\\d+)&amp;boardSeq=(\\d+)&amp;id=kr_\\d+&amp;column=&amp;search=&amp;categoryDepth=&amp;mcategoryId=0)\">(.*?)<\\/a>(<img alt=\"N\" src=\"\\/Web-home\\/manager\\/images\\/mbsPreview\\/icon_new.gif\" title=\"새글\"\\/>|)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>((.*?)|<img alt=\"파일\" src=\"\\/mbs\\/kr\\/images\\/board\\/ico_file.gif\"\\/>)<\\/td><\\/tr>", "https://www.dongguk.edu/mbs/kr/jsp/board/list.jsp?boardId=3638&search=&column=&categoryDepth=&categoryId=0&boardType=01&listType=01&command=list&id=kr_010801000000&mcategoryId=0",
@@ -116,7 +141,9 @@ public class RepositoryTest {
                 categories.get(12), "<span class=\"head label\">비밀글</span>", "<span class=\"label category\" style=\"(.*?)\"><a href=\"(.*?)\">(.*?)</a></span>", 1162990L, ""));
         crawlingMetas.add(new CrawlingMeta("<span class=\"absolute\">(\\d+)년 (\\d+)월 (\\d+)일</span>", "<a href=\"(http:\\/\\/dyeon\\.net\\/post\\/(\\d+)(\\?page=\\d+|))\" page=\"\\d+\">(.*?)</a>", "https://dyeon.net/board/gong",
                 categories.get(13), "<span class=\"head label\">비밀글</span>", "<span class=\"label category\" style=\"(.*?)\"><a href=\"(.*?)\">(.*?)</a></span>", 1162200L, ""));
+    }
 
+    private void setUpSubscriptions() {
         subscriptions.add(new Subscription(categories.get(0), "제목제목제목", "http://dgu.edu", new Date()));
         subscriptions.add(new Subscription(categories.get(1), "제목제목제목", "http://dgu.edu", new Date()));
         subscriptions.add(new Subscription(categories.get(2), "제목제목제목", "http://dgu.edu", new Date()));
@@ -146,23 +173,6 @@ public class RepositoryTest {
         subscriptions.add(new Subscription(categories.get(26), "제목제목제목", "http://dgu.edu", new Date()));
         subscriptions.add(new Subscription(categories.get(27), "제목제목제목", "http://dgu.edu", new Date()));
         subscriptions.add(new Subscription(categories.get(28), "제목제목제목", "http://dgu.edu", new Date()));
-
-        // 관계 설정
-        kisang.getSns().add(new UserSns(kisang, facebook, "FACEBOOKVALUE"));
-        minwoo.getCategories().add(categories.get(0));
-        minwoo.getCategories().add(categories.get(2));
-        minwoo.getCategories().add(categories.get(4));
-        minwoo.getCategories().add(categories.get(6));
-        minwoo.getCategories().add(categories.get(8));
-        minwoo.getCategories().add(categories.get(10));
-        minwoo.getFavorites().add(subscriptions.get(2));
-
-        // 삭제 순서 중요
-        userRepository.deleteAll();
-        snsRepository.deleteAll();
-        subscriptionRepository.deleteAll();
-        crawlingMetaRepository.deleteAll();
-        categoryRepository.deleteAll();
     }
 
     @Test
