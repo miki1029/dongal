@@ -11,7 +11,7 @@ ROOT_URL = 'https://dyeon.net'
 DYEON = []
 
 CATEGORY_META_DATA = {
-    'dongguk' : [],
+    'dgu' : [],
     'dyeon' : []
 }
 
@@ -21,10 +21,9 @@ def getCategoryMetaDataAndLastSeq():
     cursor.execute("""
         SELECT  A.idx, A.name,
                 B.title_pattern, B.created_time_pattern, B.secret_pattern, B.category_pattern,
-                IFNULL(B.last_seq, -1), B.url
+                IFNULL(B.last_seq, -1), B.url, A.top_id
         FROM dongal.category as A
         INNER JOIN dongal.crawling_meta as B on A.idx = B.category_id
-        WHERE A.top_id = 2;
     """)
     data = cursor.fetchall()
     
@@ -42,14 +41,16 @@ def getCategoryMetaDataAndLastSeq():
         category['last_seq_updated'] = False
         category['is_meet_last_board_item'] = False
         category['subscriptions'] = []
-        CATEGORY_META_DATA['dyeon'].append(category)
+        CATEGORY_META_DATA['dgu' if row[7] = '1' else 'dyeon'].append(category)
 
     cursor.close()
 
 def updateLastSeq():
     cursor = db.cursor()
     sql = "UPDATE dongal.crawling_meta SET last_seq = %s WHERE category_id = %s"
-    params = [ (dyeon['after_last_seq'], dyeon['idx'] ) for dyeon in CATEGORY_META_DATA['dyeon'] ]
+    param_dgu = [ (dyeon['after_last_seq'], dyeon['idx'] ) for dyeon in CATEGORY_META_DATA['dgu'] ]
+    param_dyeon = [ (dyeon['after_last_seq'], dyeon['idx'] ) for dyeon in CATEGORY_META_DATA['dyeon'] ]
+    params = param_dgu + param_dyeon
     try:
         cursor.executemany(sql, params)
         db.commit()
@@ -60,6 +61,15 @@ def updateLastSeq():
 
 def insertSubscriptions():
     cursor = db.cursor()
+    for idx, dyeon in enumerate(CATEGORY_META_DATA['dgu']):
+        sql = "INSERT INTO dongal.subscription(category_id, title, url, created_time) VALUES(%s, %s, %s, %s)"
+        params = [ (dyeon['idx'], subscription['title'], subscription['link'], subscription['created_time']) for subscription in dyeon['subscriptions'] ]
+        try:
+            cursor.executemany(sql, params)
+            db.commit()
+        except:
+            cursor.executemany(sql, params)
+
     for idx, dyeon in enumerate(CATEGORY_META_DATA['dyeon']):
         sql = "INSERT INTO dongal.subscription(category_id, title, url, created_time) VALUES(%s, %s, %s, %s)"
         params = [ (dyeon['idx'], subscription['title'], subscription['link'], subscription['created_time']) for subscription in dyeon['subscriptions'] ]
@@ -68,6 +78,7 @@ def insertSubscriptions():
             db.commit()
         except:
             cursor.executemany(sql, params)
+
 
     cursor.close()
 
@@ -88,6 +99,9 @@ def login_dyeon():
 
     return opener
 
+
+
+session = login_dyeon()
 
 def parsingSubscriptionData(dyeon, page):
     crawling_url = dyeon['url'] + "?page=" + str(page)
@@ -130,17 +144,56 @@ def parsingSubscriptionData(dyeon, page):
             #print "link: %s, postId: %s, title: %s, date: %s" % (link.group(1), link.group(2), link.group(4), yyyymmdd)
 
     if not dyeon['is_meet_last_board_item']:
-        crawling_dyeon(dyeon, page+1)
+        parsingSubscriptionData(dyeon, page+1)
     else:
         print "last_seq change %d to %d" % (int(dyeon['before_last_seq']), int(dyeon['after_last_seq']))
         return;
 
+def parsingSubscriptionDataDGU(dgu, page):
+    crawling_url = dgu['url'] + "&spage=" + str(page)
+    print "-------------%s(%d): %s------------" % (dgu['name'], dgu['idx'], crawling_url)
+    handle = urllib2.urlopen(crawling_url)
+    data = handle.read()
+    soup = BeautifulSoup(data, 'html.parser')
+
+    output = {}
+    subscriptions = []
+
+    board_list = soup.select('table#board_list > tbody > tr')
+    for idx, board_item in enumerate(board_list):
+        board_item_pattern = re.compile(dgu['title_pattern'])
+        
+        board_item = re.search(board_item_pattern, str(board_item).replace("\n", ""))
+        if board_item:
+            if int(dgu['before_last_seq']) >= int(board_item.group(2)):
+                dgu['is_meet_last_board_item'] = True
+                break;
+
+            if (not dgu['last_seq_updated']) and (int(dgu['after_last_seq']) < int(board_item.group(2))):
+                dgu['after_last_seq'] = int(board_item.group(2))
+                dgu['last_seq_updated'] = True
+
+            subscription = {}
+            subscription['link'] = 'http://dongguk.edu/'+ board_item.group(0)
+            subscription['boardId'] = board_item.group(1)
+            subscription['postId'] = board_item.group(2)
+            subscription['title'] = board_item.group(3)
+            subscription['created_time'] = board_item.group(6).replace(" ", "").replace("\t", "")
+            dgu['subscriptions'].append(subscription)
+
+    if not dgu['is_meet_last_board_item']:
+        parsingSubscriptionDataDGU(dgu, page+1)
+    else:
+        print "last_seq change %d to %d" % (int(dgu['before_last_seq']), int(dgu['after_last_seq']))
+        return;
+
 def crawling():
 
-    # crawling dgu
+    # crawling dyeon
+    for idx, dgu in enumerate(CATEGORY_META_DATA['dgu']):
+        parsingSubscriptionDataDGU(dgu, 1)
 
     # crawling dyeon
-    session = login_dyeon()
     for idx, dyeon in enumerate(CATEGORY_META_DATA['dyeon']):
         parsingSubscriptionData(dyeon, 1)
 

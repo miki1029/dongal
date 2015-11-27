@@ -1,36 +1,34 @@
 #-*- coding: utf-8 -*-
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
+
 import urllib2
 import MySQLdb
 import json
+import re
  
 def crawling(baseUrl):
     handle = urllib2.urlopen(baseUrl)
     data = handle.read()
-    soup = BeautifulSoup(data)
+    soup = BeautifulSoup(data, 'html.parser')
 
     output = {}
     subscriptions = []
 
-    tableRows = soup.findAll("tr")
-    for idx, tableRow in enumerate(tableRows):
-        if idx > 0:
-            for idx, tableData in enumerate(tableRow):
-                if tableData != None:
-                    if idx == 3:
-                        subscription = {}
-                        subscription['category_id'] = 0;
+    board_list = soup.select('table#board_list > tbody > tr')
+    for idx, board_item in enumerate(board_list):
+        board_item_pattern = re.compile('<tr><td>\d+<\/td><td class="title"><a href="view\.jsp\?spage=1&amp;boardId=(\d+)&amp;boardSeq=(\d+)&amp;id=kr_010801000000&amp;column=&amp;search=&amp;categoryDepth=&amp;mcategoryId=0">(.*?)<\/a>(<img alt="N" src="\/Web-home\/manager\/images\/mbsPreview\/icon_new.gif" title="새글"\/>|)<\/td><td>(.*?)<\/td><td>(.*?)<\/td><td>(.*?)<\/td><td>((.*?)|<img alt="파일" src="\/mbs\/kr\/images\/board\/ico_file.gif"\/>)<\/td><\/tr>')
+        
+        board_item = re.search(board_item_pattern, str(board_item).replace("\n", ""))
+        if board_item:
+            subscription = {}
+            subscription['link'] = 'http://dongguk.edu/'+ board_item.group(0)
+            subscription['boardId'] = board_item.group(1)
+            subscription['postId'] = board_item.group(2)
+            subscription['title'] = board_item.group(3)
+            subscription['created_time'] = board_item.group(6).replace(" ", "").replace("\t", "")
 
-                        subscription['title'] = tableData.next.next.string
-                        subscription['url'] = baseUrl + "/" + tableData.next.next['href']
+            print subscription
 
-                    elif idx == 7:
-                        subscription['created_time'] = tableData.string.replace('\t', '').replace('\n','').replace(' ', '')
-                        subscriptions.append(subscription)
-
-    output['subscriptions'] = subscriptions
-
-    print json.dumps(output, ensure_ascii=False, sort_keys=True, indent=4).encode('utf8')
 
 # 일반
 crawling("https://www.dongguk.edu/mbs/kr/jsp/board/list.jsp?boardId=3646&id=kr_010802000000")
