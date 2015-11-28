@@ -25,6 +25,22 @@ public class RestViewController {
     @Autowired
     private RestViewService restViewService;
 
+    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    public ResponseEntity<ListData> home(@RequestParam Long userIdx) {
+        LOGGER.info("home(userIdx=" + userIdx + ")");
+
+        ResponseEntity<ListData> entity = null;
+        ListData listData = null;
+        try {
+            listData = restViewService.home(userIdx);
+            entity = new ResponseEntity<ListData>(listData, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            entity = new ResponseEntity<ListData>(listData, HttpStatus.BAD_REQUEST);
+        }
+        return entity;
+    }
+
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ResponseEntity<ListData> list(@RequestParam Long userIdx) {
         LOGGER.info("list(userIdx=" + userIdx + ")");

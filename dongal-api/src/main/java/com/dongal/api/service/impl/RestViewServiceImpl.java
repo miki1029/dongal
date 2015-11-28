@@ -4,6 +4,7 @@ import com.dongal.api.domain.Category;
 import com.dongal.api.domain.Subscription;
 import com.dongal.api.domain.User;
 import com.dongal.api.repository.CategoryRepository;
+import com.dongal.api.repository.SubscriptionRepository;
 import com.dongal.api.repository.UserRepository;
 import com.dongal.api.response.ListData;
 import com.dongal.api.response.SettingsData;
@@ -27,6 +28,25 @@ public class RestViewServiceImpl implements RestViewService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private SubscriptionRepository subscriptionRepository;
+
+    @Override
+    public ListData home(Long userIdx) {
+        User user = userRepository.findOne(userIdx);
+
+        List<Subscription> subscriptions = subscriptionRepository.findByCategoryInOrderByCreatedTimeDesc(user.getCategories());
+        List<Subscription> homeSubscriptions = new ArrayList<>(user.getHomeCount());
+
+        for (int i=0; i<user.getHomeCount(); i++) {
+            homeSubscriptions.add(subscriptions.get(i));
+        }
+
+        ListData listData = new ListData(user, homeSubscriptions, user.getCategories());
+
+        return listData;
+    }
 
     @Override
     public ListData list(Long userIdx) {

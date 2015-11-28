@@ -28,7 +28,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Override
     public List<Subscription> getUserSubscription(Long userIdx) {
         User user = userRepository.findOne(userIdx);
-        List<Subscription> subscriptions = subscriptionRepository.findByCategoryIn(user.getCategories());
+        List<Subscription> subscriptions = subscriptionRepository.findByCategoryInOrderByCreatedTimeDesc(user.getCategories());
 
         return subscriptions;
     }

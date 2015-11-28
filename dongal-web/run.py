@@ -28,7 +28,7 @@ def join():
 @app.route("/")
 @app.route("/home")
 def home():
-    data = json.loads(requests.get(url=BASE_URL+"list?userIdx="+userIdx).text)
+    data = json.loads(requests.get(url=BASE_URL+"home?userIdx="+userIdx).text)
     return render_template("home.html", title="Home", userInfo=data['userInfo'], alarms=data['posts'])
 
 @app.route("/list")

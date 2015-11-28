@@ -39,6 +39,9 @@ public class User {
     @Column(nullable = false)
     private boolean isDguVerified; // 변수명 하이버네이트 이름 규칙 때문에 고침
 
+    @Column(nullable = false)
+    private int homeCount = 10;
+
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserSns> sns = new ArrayList<>();

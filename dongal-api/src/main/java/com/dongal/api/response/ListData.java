@@ -39,7 +39,8 @@ public class ListData implements Serializable {
 
         // userInfo
         userInfo.setName(user.getName());
-        userInfo.settings.setLastUpdateTime(sdf.format(subscriptions.get(0).getCreatedTime()));
+        if (subscriptions.size() == 0) userInfo.settings.setLastUpdateTime("");
+        else userInfo.settings.setLastUpdateTime(sdf.format(subscriptions.get(0).getCreatedTime()));
         userInfo.settings.home.lastDate = 3;
         userInfo.settings.home.count = 10;
         if (dongguk && dyeon) userInfo.settings.category = "동국대, 디연";
