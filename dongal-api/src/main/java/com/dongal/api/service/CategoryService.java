@@ -7,4 +7,6 @@ import java.util.List;
  */
 public interface CategoryService {
     void setUserCategories(Long userIdx, List<Long> categoryIdxes);
+    void addCategoryToUser(Long userIdx, Long categoryIdx);
+    void delCategoryFromUser(Long userIdx, Long categoryIdx);
 }

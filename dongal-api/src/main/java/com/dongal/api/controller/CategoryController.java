@@ -39,4 +39,34 @@ public class CategoryController {
         }
         return entity;
     }
+
+    @RequestMapping(value = "addCategoryToUser", method = RequestMethod.GET)
+    public ResponseEntity<String> addCategoryToUser(@RequestParam Long userIdx, @RequestParam Long categoryIdx) {
+        LOGGER.info("addCategoryToUser(userIdx=" + userIdx + ",categoryIdx=" + categoryIdx + ")");
+
+        ResponseEntity<String> entity = null;
+        try {
+            categoryService.addCategoryToUser(userIdx, categoryIdx);
+            entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return entity;
+    }
+
+    @RequestMapping(value = "delCategoryFromUser", method = RequestMethod.GET)
+    public ResponseEntity<String> delCategoryFromUser(@RequestParam Long userIdx, @RequestParam Long categoryIdx) {
+        LOGGER.info("delCategoryFromUser(userIdx=" + userIdx + ",categoryIdx=" + categoryIdx + ")");
+
+        ResponseEntity<String> entity = null;
+        try {
+            categoryService.delCategoryFromUser(userIdx, categoryIdx);
+            entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return entity;
+    }
 }

@@ -37,4 +37,28 @@ public class CategoryServiceImpl implements CategoryService {
 
         userRepository.save(user);
     }
+
+    @Override
+    public void addCategoryToUser(Long userIdx, Long categoryIdx) {
+        User user = userRepository.findOne(userIdx);
+
+        Category category = categoryRepository.findOne(categoryIdx);
+
+        if (user.getCategories().contains(category)) return;
+        user.getCategories().add(category);
+
+        userRepository.save(user);
+    }
+
+    @Override
+    public void delCategoryFromUser(Long userIdx, Long categoryIdx) {
+        User user = userRepository.findOne(userIdx);
+
+        Category category = categoryRepository.findOne(categoryIdx);
+
+        if (!user.getCategories().contains(category)) return;
+        user.getCategories().remove(category);
+
+        userRepository.save(user);
+    }
 }
