@@ -39,7 +39,10 @@ public class RestViewServiceImpl implements RestViewService {
         List<Subscription> subscriptions = subscriptionRepository.findByCategoryInOrderByCreatedTimeDesc(user.getCategories());
         List<Subscription> homeSubscriptions = new ArrayList<>(user.getHomeCount());
 
-        for (int i=0; i<user.getHomeCount(); i++) {
+        int homeCount = subscriptions.size();
+        if (user.getHomeCount() < homeCount) homeCount = user.getHomeCount();
+
+        for (int i=0; i<homeCount; i++) {
             homeSubscriptions.add(subscriptions.get(i));
         }
 
