@@ -27,6 +27,7 @@ public class FavoriteServiceImpl implements FavoriteService {
         User user = userRepository.findOne(userIdx);
         Subscription favorite = subscriptionRepository.findOne(subscriptionIdx);
 
+        if (user.getFavorites().contains(favorite)) return;
         user.getFavorites().add(favorite);
 
         userRepository.save(user);
@@ -37,6 +38,7 @@ public class FavoriteServiceImpl implements FavoriteService {
         User user = userRepository.findOne(userIdx);
         Subscription favorite = subscriptionRepository.findOne(subscriptionIdx);
 
+        if (!user.getFavorites().contains(favorite)) return;
         user.getFavorites().remove(favorite);
 
         userRepository.save(user);

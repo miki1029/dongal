@@ -146,24 +146,25 @@
         });
     </script>
 
+    {# settings bsSwitch #}
     <script>
         $bsSwitch = $('.categoryIdx');
         $bsSwitch.bootstrapSwitch();
         $bsSwitch.bootstrapSwitch('size', 'mini');
     </script>
     <script>
-      var get = function(url, data, success) {
+      var get = function(url, data, success, error) {
         data['userIdx'] = "{{ session['userIdx'] }}";
         $.ajax({
             url: ROOT_URL + url,
-            jsonp: "callback",
-            dataType: 'json',
             data: data,
-            success: success
+            success: success,
+            error: error
         });
       }
     </script>
 
+    {# settings #}
     <script>
       $(".categoryIdx").on('switchChange.bootstrapSwitch', function(event, state) {
         var json = {};
@@ -179,5 +180,25 @@
         get(url, json, function(data) {
         });
       });
+    </script>
+
+    {# list #}
+    <script>
+        $(".add-favorite").on('click', function(event, state) {
+            var json = {};
+            json["subscriptionIdx"] = $(this).attr("seq") * 1;
+            url = "favorite/addFavoriteToUser";
+            get(url, json, function(data) {
+                alert('abc');
+            });
+        });
+        $(".del-favorite").on('click', function(event, state) {
+            var json = {};
+            json["subscriptionIdx"] = $(this).attr("seq") * 1;
+            url = "favorite/delFavoriteFromUser";
+            get(url, json, function(data) {
+                alert(data);
+            });
+        });
     </script>
 </html>
