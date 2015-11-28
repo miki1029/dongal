@@ -13,7 +13,7 @@
         <ul class="list-group">
             {% for favorite in favorites %}
             <li class="list-group-item">
-                <span class="badge">{{ favorite|length }} </span>
+                <span class="badge">{{ favorite.list|length }} </span>
                 <div class="row list-content-date collapse-header" data-target="#fav_list_id{{ loop.index }}">{{ favorite.date }}</div>
                 <div id="fav_list_id{{ loop.index }}" class="collapse row list-content-details">
                     {% for detail in favorite.list %}

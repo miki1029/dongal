@@ -37,7 +37,7 @@
     <ul class="list-group">
         {% for alarm in alarms %}
         <li class="list-group-item">
-            <span class="badge">{{ alarm.list.size }}</span>
+            <span class="badge">{{ alarm.list|length }}</span>
             <div class="row list-content-date collapse-header" data-target="#value_id{{ loop.index }}" >{{ alarm.date }}</div>
             <div id="value_id{{ loop.index }}" class="collapse row list-content-details">
                 {% for detail in alarm.list %}
