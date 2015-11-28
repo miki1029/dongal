@@ -166,9 +166,7 @@
             jsonp: "callback",
             dataType: 'json',
             data: data,
-            success: function(result) {
-            console.log("success: " + JSON.stringify(result));
-          }
+            success: success
         });
       }
     </script>
@@ -182,8 +180,10 @@
         } else {
           url = "category/delCategoryFromUser";
         }
+        var showResult = $(this).parent().parent().parent().next();
+        $(showResult).append('success');
+        $(showResult).hide().delay(1000).fadeIn(2200);
         get(url, json, function(data) {
-          console.log(data);
         });
       });
     </script>

@@ -4,28 +4,32 @@
 <div class="container">
   <div class="make-line text-center text-bold row">
     <div class="col-xs-6">동국대</div>
-    <div class="col-xs-6">ON/OFF</div>
+    <div class="col-xs-5">ON/OFF</div>
+    <div class="col-xs-1"></div>
   </div>
   {% for category in official %}
   <div class="row make-line-bottom">
     <div class="col-xs-6 text-center">{{ category.name }}</div>
-    <div class="col-xs-6 text-center">
+    <div class="col-xs-5 text-center">
       <input class="categoryIdx" seq={{ category.categoryIdx }} id="categoryIdx{{ category.categoryIdx }}" type="checkbox" {% if category.isAble %} checked="checked" {% endif %}/>
     </div>
+    <div class="col-xs-1 text-center"></div>
   </div>
   {% endfor %}
 
   <br/>
   <div class="make-line text-center text-bold row">
     <div class="col-xs-6">디연</div>
-    <div class="col-xs-6">ON/OFF</div>
+    <div class="col-xs-5">ON/OFF</div>
+    <div class="col-xs-1"></div>
   </div>
   {% for category in dyeon %}
   <div class="row make-line-bottom">
     <div class="col-xs-6 text-center">{{ category.name }}</div>
-    <div class="col-xs-6 text-center">
+    <div class="col-xs-5 text-center">
       <input class="categoryIdx" seq={{ category.categoryIdx }} id="categoryIdx{{ category.categoryIdx }}" type="checkbox" {% if category.isAble %} checked="checked" {% endif %}/>
     </div>
+    <div class="col-xs-1 text-center"></div>
   </div>
   {% endfor %}
 
