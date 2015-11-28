@@ -12,9 +12,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Map;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -26,74 +26,182 @@ import static org.junit.Assert.assertThat;
 @ContextConfiguration(classes = { DatabaseConfig.class, WebAppConfig.class, Initializer.class })
 @WebAppConfiguration
 public class RepositoryTest {
+    @Autowired SnsRepository snsRepository;
     @Autowired UserRepository userRepository;
     @Autowired CategoryRepository categoryRepository;
     @Autowired SubscriptionRepository subscriptionRepository;
-    @Autowired SnsRepository snsRepository;
+    @Autowired CrawlingMetaRepository crawlingMetaRepository;
 
-    Map<String, Sns> sns = new HashMap<>();
-    Map<String, User> users = new HashMap<>();
-    Map<String, UserSns> userSns = new HashMap<>();
+    List<Sns> snses = new ArrayList<>();
+    List<User> users = new ArrayList<>();
+    List<UserSns> userSns = new ArrayList<>();
 
-    Map<String, Category> categories = new HashMap<>();
-    Map<String, Subscription> subscriptions = new HashMap<>();
+    List<Category> categories = new ArrayList<>();
+    List<Subscription> subscriptions = new ArrayList<>();
 
-    Map<String, CrawlingMeta> crawlingMetas = new HashMap<>();
+    List<CrawlingMeta> crawlingMetas = new ArrayList<>();
 
-    Map<String, Admin> admins = new HashMap<>();
-    Map<String, AdminPushMessage> adminPushMessages = new HashMap<>();
+    List<Admin> admins = new ArrayList<>();
+    List<AdminPushMessage> adminPushMessages = new ArrayList<>();
+
 
     @Before
     public void setUp() {
-        sns.put("facebook", new Sns("facebook"));
-        sns.put("twitter", new Sns("twitter"));
-        sns.put("instagram", new Sns("instagram"));
-        
-        users.put("minwoo", new User("kmwkmw5@dongguk.edu", "1234", "김민우", new Date(), false));
-        users.put("kisang", new User("felika@dongguk.edu", "5678", "강기상", new Date(), true));
+        // 기초 데이터 생성
+        Sns facebook = new Sns("facebook");
+        Sns twitter = new Sns("twitter");
+        Sns instagram = new Sns("instagram");
+        snses.add(facebook);
+        snses.add(twitter);
+        snses.add(instagram);
 
-        userSns.put("k-f", new UserSns(users.get("kisang"), sns.get("facebook"), "FACEBOOKVALUE"));
-        users.get("kisang").getSns().add(userSns.get("k-f"));
+        User minwoo = new User("kmwkmw5@dongguk.edu", "1234", "김민우", new Date(), false);
+        User kisang = new User("felika@dongguk.edu", "5678", "강기상", new Date(), true);
+        users.add(minwoo);
+        users.add(kisang);
 
-        categories.put("학사", new Category("학사", CategoryEnum.DONGGUK));
-        categories.put("장학", new Category("장학", CategoryEnum.DONGGUK));
+        setUpCategories();
+        setUpCrawlingMetas();
+        setUpSubscriptions();
 
-        categories.put("익게", new Category("익명 게시판", CategoryEnum.DYEON));
+        // 관계 설정
+        kisang.getSns().add(new UserSns(kisang, facebook, "FACEBOOKVALUE"));
+        minwoo.getCategories().add(categories.get(0));
+        minwoo.getCategories().add(categories.get(2));
+        minwoo.getCategories().add(categories.get(4));
+        minwoo.getCategories().add(categories.get(6));
+        minwoo.getCategories().add(categories.get(8));
+        minwoo.getCategories().add(categories.get(10));
+        minwoo.getFavorites().add(subscriptions.get(2));
 
-        subscriptions.put("학사1", new Subscription(categories.get("학사"), "졸업 공지사항1", "http://dgu.edu/1", new Date()));
-        subscriptions.put("학사2", new Subscription(categories.get("학사"), "졸업 공지사항2", "http://dgu.edu/2", new Date()));
-        subscriptions.put("장학1", new Subscription(categories.get("장학"), "장학 공지사항1", "http://dgu.edu/3", new Date()));
-        subscriptions.put("장학2", new Subscription(categories.get("장학"), "장학 공지사항2", "http://dgu.edu/4", new Date()));
-
-        subscriptions.put("익게1", new Subscription(categories.get("익게"), "익명 게시판1", "http://dgu.edu/5", new Date()));
-        subscriptions.put("익게2", new Subscription(categories.get("익게"), "익명 게시판2", "http://dgu.edu/6", new Date()));
-
-        snsRepository.deleteAll();
+        // 삭제 순서 중요
         userRepository.deleteAll();
-        categoryRepository.deleteAll();
+        snsRepository.deleteAll();
         subscriptionRepository.deleteAll();
+        crawlingMetaRepository.deleteAll();
+        categoryRepository.deleteAll();
+    }
+
+    private void setUpCategories() {
+        categories.add(new Category("일반", CategoryEnum.DONGGUK));
+        categories.add(new Category("학사", CategoryEnum.DONGGUK));
+        categories.add(new Category("입시", CategoryEnum.DONGGUK));
+        categories.add(new Category("장학", CategoryEnum.DONGGUK));
+        categories.add(new Category("국제", CategoryEnum.DONGGUK));
+        categories.add(new Category("학술/행사공지", CategoryEnum.DONGGUK));
+        categories.add(new Category("*학사질문게시판", CategoryEnum.DYEON));
+        categories.add(new Category("자유게시판", CategoryEnum.DYEON));
+        categories.add(new Category("익명게시판", CategoryEnum.DYEON));
+        categories.add(new Category("Love카운셀러", CategoryEnum.DYEON));
+        categories.add(new Category("Nimo를 찾아서", CategoryEnum.DYEON));
+        categories.add(new Category("대나무숲", CategoryEnum.DYEON));
+        categories.add(new Category("대외활동", CategoryEnum.DYEON));
+        categories.add(new Category("교내단체소식", CategoryEnum.DYEON));
+        categories.add(new Category("취업&알바", CategoryEnum.DYEON));
+        categories.add(new Category("하숙&자취", CategoryEnum.DYEON));
+        categories.add(new Category("광고게시판", CategoryEnum.DYEON));
+        categories.add(new Category("Dyeon Market", CategoryEnum.DYEON));
+        categories.add(new Category("job아라!", CategoryEnum.DYEON));
+        categories.add(new Category("STUDY그룹", CategoryEnum.DYEON));
+        categories.add(new Category("찾아주세요", CategoryEnum.DYEON));
+        categories.add(new Category("Dyeon 스타일", CategoryEnum.DYEON));
+        categories.add(new Category("어썸피플", CategoryEnum.DYEON));
+        categories.add(new Category("올드보이", CategoryEnum.DYEON));
+        categories.add(new Category("해부학개론", CategoryEnum.DYEON));
+        categories.add(new Category("맛잌다", CategoryEnum.DYEON));
+        categories.add(new Category("유머게시판", CategoryEnum.DYEON));
+        categories.add(new Category("정치사회이슈", CategoryEnum.DYEON));
+        categories.add(new Category("16학번 게시판", CategoryEnum.DYEON));
+    }
+
+    private void setUpCrawlingMetas() {
+        crawlingMetas.add(new CrawlingMeta("", "<tr><td>\\d+<\\/td><td class=\"title\"><a href=\"(view\\.jsp\\?spage=\\d+&amp;boardId=(\\d+)&amp;boardSeq=(\\d+)&amp;id=kr_\\d+&amp;column=&amp;search=&amp;categoryDepth=&amp;mcategoryId=0)\">(.*?)<\\/a>(<img alt=\"N\" src=\"\\/Web-home\\/manager\\/images\\/mbsPreview\\/icon_new.gif\" title=\"새글\"\\/>|)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>((.*?)|<img alt=\"파일\" src=\"\\/mbs\\/kr\\/images\\/board\\/ico_file.gif\"\\/>)<\\/td><\\/tr>", "https://www.dongguk.edu/mbs/kr/jsp/board/list.jsp?boardId=3646&search=&column=&categoryDepth=&categoryId=0&boardType=01&listType=01&command=list&id=kr_010802000000&mcategoryId=0",
+                categories.get(0), "", "", 12214522L, ""));
+        crawlingMetas.add(new CrawlingMeta("", "<tr><td>\\d+<\\/td><td class=\"title\"><a href=\"(view\\.jsp\\?spage=\\d+&amp;boardId=(\\d+)&amp;boardSeq=(\\d+)&amp;id=kr_\\d+&amp;column=&amp;search=&amp;categoryDepth=&amp;mcategoryId=0)\">(.*?)<\\/a>(<img alt=\"N\" src=\"\\/Web-home\\/manager\\/images\\/mbsPreview\\/icon_new.gif\" title=\"새글\"\\/>|)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>((.*?)|<img alt=\"파일\" src=\"\\/mbs\\/kr\\/images\\/board\\/ico_file.gif\"\\/>)<\\/td><\\/tr>", "https://www.dongguk.edu/mbs/kr/jsp/board/list.jsp?boardId=3638&search=&column=&categoryDepth=&categoryId=0&boardType=01&listType=01&command=list&id=kr_010801000000&mcategoryId=0",
+                categories.get(1), "", "", 12015537L, ""));
+        crawlingMetas.add(new CrawlingMeta("", "<tr><td>\\d+<\\/td><td class=\"title\"><a href=\"(view\\.jsp\\?spage=\\d+&amp;boardId=(\\d+)&amp;boardSeq=(\\d+)&amp;id=kr_\\d+&amp;column=&amp;search=&amp;categoryDepth=&amp;mcategoryId=0)\">(.*?)<\\/a>(<img alt=\"N\" src=\"\\/Web-home\\/manager\\/images\\/mbsPreview\\/icon_new.gif\" title=\"새글\"\\/>|)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>((.*?)|<img alt=\"파일\" src=\"\\/mbs\\/kr\\/images\\/board\\/ico_file.gif\"\\/>)<\\/td><\\/tr>", "https://www.dongguk.edu/mbs/kr/jsp/board/list.jsp?boardId=3654&search=&column=&categoryDepth=&categoryId=0&boardType=01&listType=01&command=list&id=kr_010803000000&mcategoryId=0",
+                categories.get(2), "", "", 11567697L, ""));
+        crawlingMetas.add(new CrawlingMeta("", "<tr><td>\\d+<\\/td><td class=\"title\"><a href=\"(view\\.jsp\\?spage=\\d+&amp;boardId=(\\d+)&amp;boardSeq=(\\d+)&amp;id=kr_\\d+&amp;column=&amp;search=&amp;categoryDepth=&amp;mcategoryId=0)\">(.*?)<\\/a>(<img alt=\"N\" src=\"\\/Web-home\\/manager\\/images\\/mbsPreview\\/icon_new.gif\" title=\"새글\"\\/>|)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>((.*?)|<img alt=\"파일\" src=\"\\/mbs\\/kr\\/images\\/board\\/ico_file.gif\"\\/>)<\\/td><\\/tr>", "https://www.dongguk.edu/mbs/kr/jsp/board/list.jsp?boardId=3662&search=&column=&categoryDepth=&categoryId=0&boardType=01&listType=01&command=list&id=kr_010804000000&mcategoryId=0",
+                categories.get(3), "", "", 11794358L, ""));
+        crawlingMetas.add(new CrawlingMeta("", "<tr><td>\\d+<\\/td><td class=\"title\"><a href=\"(view\\.jsp\\?spage=\\d+&amp;boardId=(\\d+)&amp;boardSeq=(\\d+)&amp;id=kr_\\d+&amp;column=&amp;search=&amp;categoryDepth=&amp;mcategoryId=0)\">(.*?)<\\/a>(<img alt=\"N\" src=\"\\/Web-home\\/manager\\/images\\/mbsPreview\\/icon_new.gif\" title=\"새글\"\\/>|)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>((.*?)|<img alt=\"파일\" src=\"\\/mbs\\/kr\\/images\\/board\\/ico_file.gif\"\\/>)<\\/td><\\/tr>", "https://www.dongguk.edu/mbs/kr/jsp/board/list.jsp?boardId=9457435&search=&column=&categoryDepth=&categoryId=0&boardType=01&listType=01&command=list&id=kr_010807000000&mcategoryId=0",
+                categories.get(4), "", "", 11794358L, ""));
+        crawlingMetas.add(new CrawlingMeta("", "<tr><td>\\d+<\\/td><td class=\"title\"><a href=\"(view\\.jsp\\?spage=\\d+&amp;boardId=(\\d+)&amp;boardSeq=(\\d+)&amp;id=kr_\\d+&amp;column=&amp;search=&amp;categoryDepth=&amp;mcategoryId=0)\">(.*?)<\\/a>(<img alt=\"N\" src=\"\\/Web-home\\/manager\\/images\\/mbsPreview\\/icon_new.gif\" title=\"새글\"\\/>|)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>(.*?)<\\/td><td>((.*?)|<img alt=\"파일\" src=\"\\/mbs\\/kr\\/images\\/board\\/ico_file.gif\"\\/>)<\\/td><\\/tr>", "https://www.dongguk.edu/mbs/kr/jsp/board/list.jsp?boardId=11533472&search=&column=&categoryDepth=&categoryId=0&boardType=01&listType=01&command=list&id=kr_010808000000&mcategoryId=0",
+                categories.get(5), "", "", 11564303L, ""));
+        crawlingMetas.add(new CrawlingMeta("<span class=\"absolute\">(\\d+)년 (\\d+)월 (\\d+)일</span>", "<a href=\"(http:\\/\\/dyeon\\.net\\/post\\/(\\d+)(\\?page=\\d+|))\" page=\"\\d+\">(.*?)</a>", "https://dyeon.net/board/qna",
+                categories.get(6), "<span class=\"head label\">비밀글</span>", "<span class=\"label category\" style=\"(.*?)\"><a href=\"(.*?)\">(.*?)</a></span>", 1162771L, ""));
+        crawlingMetas.add(new CrawlingMeta("<span class=\"absolute\">(\\d+)년 (\\d+)월 (\\d+)일</span>", "<a href=\"(http:\\/\\/dyeon\\.net\\/post\\/(\\d+)(\\?page=\\d+|))\" page=\"\\d+\">(.*?)</a>", "https://dyeon.net/board/plaza",
+                categories.get(7), "<span class=\"head label\">비밀글</span>", "<span class=\"label category\" style=\"(.*?)\"><a href=\"(.*?)\">(.*?)</a></span>", 1163060L, ""));
+        crawlingMetas.add(new CrawlingMeta("<span class=\"absolute\">(\\d+)년 (\\d+)월 (\\d+)일</span>", "<a href=\"(http:\\/\\/dyeon\\.net\\/post\\/(\\d+)(\\?page=\\d+|))\" page=\"\\d+\">(.*?)</a>", "https://dyeon.net/board/anonymous",
+                categories.get(8), "<span class=\"head label\">비밀글</span>", "<span class=\"label category\" style=\"(.*?)\"><a href=\"(.*?)\">(.*?)</a></span>", 1163326L, ""));
+        crawlingMetas.add(new CrawlingMeta("<span class=\"absolute\">(\\d+)년 (\\d+)월 (\\d+)일</span>", "<a href=\"(http:\\/\\/dyeon\\.net\\/post\\/(\\d+)(\\?page=\\d+|))\" page=\"\\d+\">(.*?)</a>", "https://dyeon.net/board/love",
+                categories.get(9), "<span class=\"head label\">비밀글</span>", "<span class=\"label category\" style=\"(.*?)\"><a href=\"(.*?)\">(.*?)</a></span>", 1163016L, ""));
+        crawlingMetas.add(new CrawlingMeta("<span class=\"absolute\">(\\d+)년 (\\d+)월 (\\d+)일</span>", "<a href=\"(http:\\/\\/dyeon\\.net\\/post\\/(\\d+)(\\?page=\\d+|))\" page=\"\\d+\">(.*?)</a>", "https://dyeon.net/board/nimo",
+                categories.get(10), "<span class=\"head label\">비밀글</span>", "<span class=\"label category\" style=\"(.*?)\"><a href=\"(.*?)\">(.*?)</a></span>", 1162990L, ""));
+        crawlingMetas.add(new CrawlingMeta("<span class=\"absolute\">(\\d+)년 (\\d+)월 (\\d+)일</span>", "<a href=\"(http:\\/\\/dyeon\\.net\\/post\\/(\\d+)(\\?page=\\d+|))\" page=\"\\d+\">(.*?)</a>", "https://dyeon.net/board/forest",
+                categories.get(11), "<span class=\"head label\">비밀글</span>", "<span class=\"label category\" style=\"(.*?)\"><a href=\"(.*?)\">(.*?)</a></span>", 1162990L, ""));
+        crawlingMetas.add(new CrawlingMeta("<span class=\"absolute\">(\\d+)년 (\\d+)월 (\\d+)일</span>", "<a href=\"(http:\\/\\/dyeon\\.net\\/post\\/(\\d+)(\\?page=\\d+|))\" page=\"\\d+\">(.*?)</a>", "https://dyeon.net/board/gong",
+                categories.get(12), "<span class=\"head label\">비밀글</span>", "<span class=\"label category\" style=\"(.*?)\"><a href=\"(.*?)\">(.*?)</a></span>", 1162200L, ""));
+    }
+
+    private void setUpSubscriptions() {
+        subscriptions.add(new Subscription(categories.get(0), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(1), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(2), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(3), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(4), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(5), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(6), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(7), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(8), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(9), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(10), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(11), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(12), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(13), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(14), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(15), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(16), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(17), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(18), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(19), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(20), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(21), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(22), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(23), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(24), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(25), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(26), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(27), "제목제목제목", "http://dgu.edu", new Date()));
+        subscriptions.add(new Subscription(categories.get(28), "제목제목제목", "http://dgu.edu", new Date()));
     }
 
     @Test
     public void testSaveAndCount() throws Exception {
-        for (String key : sns.keySet()) {
-            snsRepository.save(sns.get(key));
+        // 삽입 순서 중요
+        for (Sns sns : snses) {
+            snsRepository.save(sns);
         }
         assertThat(snsRepository.count(), is(3L));
 
-        for (String key : users.keySet()) {
-            userRepository.save(users.get(key));
+        for (Category category : categories) {
+            categoryRepository.save(category);
+        }
+        assertThat(categoryRepository.count(), is(29L));
+
+        for (CrawlingMeta crawlingMeta : crawlingMetas) {
+            crawlingMetaRepository.save(crawlingMeta);
+        }
+        assertThat(crawlingMetaRepository.count(), is(13L));
+
+        for (Subscription subscription : subscriptions) {
+            subscriptionRepository.save(subscription);
+        }
+        assertThat(subscriptionRepository.count(), is(29L));
+
+        for (User user : users) {
+            userRepository.save(user);
         }
         assertThat(userRepository.count(), is(2L));
 
-        for (String key : categories.keySet()) {
-            categoryRepository.save(categories.get(key));
-        }
-        assertThat(categoryRepository.count(), is(3L));
-
-        for (String key : subscriptions.keySet()) {
-            subscriptionRepository.save(subscriptions.get(key));
-        }
-        assertThat(subscriptionRepository.count(), is(6L));
     }
 }

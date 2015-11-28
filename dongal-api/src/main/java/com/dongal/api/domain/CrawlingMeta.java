@@ -1,6 +1,7 @@
 package com.dongal.api.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Entity
 @Table
 @Data
+@NoArgsConstructor
 public class CrawlingMeta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,4 +42,16 @@ public class CrawlingMeta {
 
     @Column(length = 255)
     private String url;
+
+    public CrawlingMeta(String createdTimePattern, String titlePattern, String url,
+                        Category category, String secretPattern, String categoryPattern, Long lastSeq, String urlPattern) {
+        this.createdTimePattern = createdTimePattern;
+        this.titlePattern = titlePattern;
+        this.url = url;
+        this.category = category;
+        this.secretPattern = secretPattern;
+        this.categoryPattern = categoryPattern;
+        this.lastSeq = lastSeq;
+        this.urlPattern = urlPattern;
+    }
 }
