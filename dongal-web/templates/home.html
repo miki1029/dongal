@@ -11,6 +11,12 @@
                 <small>{{ userInfo.name }}</small>
             </div>
             <div class="col-xs-7 col-sm-6">
+                <small>홈 설정 : 최근 {{ userInfo.settings.home.count }}개만</small><br/>
+                <small>카테고리 설정 : {{ userInfo.settings.category }}</small><br/>
+                <small>최근 업데이트 : {{ userInfo.settings.lastUpdateTime }}</small>
+            </div>
+{#            <div class="col-xs-7 col-sm-6">
+
                 <small>[홈 설정]</small><br/>
                 <small>최대 리스트 개수: {{ userInfo.settings.home.count }} 개</small><br/>
                 <small>최근 알람 업데이트 시각: {{ userInfo.settings.home.lastDate }}</small><br/>
@@ -23,7 +29,7 @@
                 <br/>
 
                 <small>최근 업데이트 : {{ userInfo.settings.lastUpdateTime }}</small>
-            </div>
+            </div>#}
         </div>
     </div>
 </div>

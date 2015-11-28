@@ -25,31 +25,27 @@ public class ListData implements Serializable {
         Collections.sort(subscriptions, (o1, o2) -> o2.getCreatedTime().compareTo(o1.getCreatedTime()));
 
         // category
-        StringBuilder officialSB = new StringBuilder();
-        StringBuilder dyeonSB = new StringBuilder();
+        boolean dongguk = false;
+        boolean dyeon = false;
 
         for (Category category : categories) {
             if (category.getCategoryType().equals(CategoryEnum.DONGGUK)) {
-                officialSB.append(category.getName()).append(",");
+                dongguk = true;
             } else if (category.getCategoryType().equals(CategoryEnum.DYEON)) {
-                dyeonSB.append(category.getName()).append(",");
+                dyeon = true;
             }
-        }
-        // delete last ','
-        if (officialSB.length() != 0) {
-            officialSB.deleteCharAt(officialSB.length() - 1);
-        }
-        if (dyeonSB.length() != 0) {
-            dyeonSB.deleteCharAt(dyeonSB.length() - 1);
+            if (dongguk && dyeon) break;
         }
 
         // userInfo
         userInfo.setName(user.getName());
-        userInfo.setLastUpdateTime(sdf.format(subscriptions.get(0).getCreatedTime()));
+        userInfo.settings.setLastUpdateTime(sdf.format(subscriptions.get(0).getCreatedTime()));
         userInfo.settings.home.lastDate = 3;
         userInfo.settings.home.count = 10;
-        userInfo.settings.category.official = officialSB.toString();
-        userInfo.settings.category.dyeon = dyeonSB.toString();
+        if (dongguk && dyeon) userInfo.settings.category = "동국대, 디연";
+        else if (dongguk && !dyeon) userInfo.settings.category = "동국대";
+        else if (!dongguk && dyeon) userInfo.settings.category = "디연";
+        else userInfo.settings.category = "미설정";
 
         // posts
         PostData postData = new PostData();
@@ -78,23 +74,17 @@ public class ListData implements Serializable {
     private class UserInfoData {
         private String name;
         private SettingsData settings = new SettingsData();
-        private String lastUpdateTime;
 
         @Data
         private class SettingsData {
             private HomeData home = new HomeData();
-            private CategoryData category = new CategoryData();
+            private String category;
+            private String lastUpdateTime;
 
             @Data
             private class HomeData {
                 private int lastDate;
                 private int count;
-            }
-
-            @Data
-            private class CategoryData {
-                private String official;
-                private String dyeon;
             }
         }
     }

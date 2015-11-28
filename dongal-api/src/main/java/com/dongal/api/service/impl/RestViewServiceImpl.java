@@ -29,13 +29,24 @@ public class RestViewServiceImpl implements RestViewService {
     private CategoryRepository categoryRepository;
 
     @Override
-    public ListData home(Long userIdx) {
+    public ListData list(Long userIdx) {
         User user = userRepository.findOne(userIdx);
 
         List<Subscription> subscriptions = new ArrayList<>();
         for (Category category : user.getCategories()) {
             subscriptions.addAll(category.getSubscriptions());
         }
+
+        ListData listData = new ListData(user, subscriptions, user.getCategories());
+
+        return listData;
+    }
+
+    @Override
+    public ListData favorite(Long userIdx) {
+        User user = userRepository.findOne(userIdx);
+
+        List<Subscription> subscriptions = user.getFavorites();
 
         ListData listData = new ListData(user, subscriptions, user.getCategories());
 

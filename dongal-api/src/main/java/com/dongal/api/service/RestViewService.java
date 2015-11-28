@@ -7,6 +7,7 @@ import com.dongal.api.response.SettingsData;
  * @author miki
  */
 public interface RestViewService {
-    ListData home(Long userIdx);
+    ListData list(Long userIdx);
+    ListData favorite(Long userIdx);
     SettingsData settings(Long userIdx);
 }
