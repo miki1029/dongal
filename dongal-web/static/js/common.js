@@ -17,7 +17,7 @@ jQuery.fn.serializeObject = function() {
   return obj;
 };
 
-var ROOT_URL = "http://localhost:8081/";
+var ROOT_URL = "http://localhost:8080/";
 		
 var post = function(url, data, success) {
 	$.ajax({
@@ -31,6 +31,7 @@ var post = function(url, data, success) {
 };
 
 var get = function(url, data, success) {
+	data['userIdx'] = "{{ session['userIdx'] }}";
 	$.ajax({
   		url: ROOT_URL + url,
 		jsonp: "callback",

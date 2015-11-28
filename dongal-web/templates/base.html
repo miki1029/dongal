@@ -131,6 +131,7 @@
 
     <script src="static/js/jquery.mobile.custom.min.js"></script>
 
+    <script src="static/js/common.js"></script>
     <script>
         $('.carousel').carousel({
             interval: false
@@ -153,8 +154,37 @@
     </script>
 
     <script>
-        $bsSwitch = $('.bs-switch');
+        $bsSwitch = $('.categoryIdx');
         $bsSwitch.bootstrapSwitch();
         $bsSwitch.bootstrapSwitch('size', 'mini');
+    </script>
+    <script>
+      var get = function(url, data, success) {
+        data['userIdx'] = "{{ session['userIdx'] }}";
+        $.ajax({
+            url: ROOT_URL + url,
+            jsonp: "callback",
+            dataType: 'json',
+            data: data,
+            success: function(result) {
+            console.log("success: " + JSON.stringify(result));
+          }
+        });
+      }
+    </script>
+
+    <script>
+      $(".categoryIdx").on('switchChange.bootstrapSwitch', function(event, state) {
+        var json = {};
+        json[$(this).attr("class")] = $(this).attr("seq") * 1;
+        if( $(this).is(":checked") ) {
+          url = "category/addCategoryToUser";
+        } else {
+          url = "category/delCategoryFromUser";
+        }
+        get(url, json, function(data) {
+          console.log(data);
+        });
+      });
     </script>
 </html>
