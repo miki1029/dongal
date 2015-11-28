@@ -43,8 +43,11 @@ public class Initializer extends
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
         characterEncodingFilter.setEncoding("UTF-8");
 
+        SimpleCORSFilter corsFilter = new SimpleCORSFilter();
+
         return new Filter[] {
                 characterEncodingFilter,
+                corsFilter,
         };
     }
 
