@@ -1,99 +1,26 @@
 ﻿{% extends "base.html" %}
 {% block content %}
-<!--Modal Part-->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" id="myModalLabel">공지사항 찾기</h4>
-            </div>
-            <div class="modal-body">
-                <input type="text" class="form-control" placeholder="찾고자 하는 키워드를 입력해주세요.">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-                <button type="button" class="btn btn-warning">찾기</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Contents -->
 <div class="container">
-    <div class="row">
-        <div class="col-xs-3 col-sm-10">
-            <div class="input-group">
-                <div class="input-group-btn">
-                    <button type="button" class="btn btn-default pull-left dropdown-toggle" data-toggle="dropdown" aria-expanded="false">기간<span class="caret"></span></button>
-                    <ul class="dropdown-menu pull-left" role="menu">
-                        <li><a href="#">모든 날짜</a></li>
-                        <li><a href="#">지난 1일</a></li>
-                        <li><a href="#">지난 1주</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-9 col-sm-2">
-            <div class="input-group">
-                <div class="input-group-btn">
-                    <button type="button" class="btn btn-default pull-right dropdown-toggle" data-toggle="dropdown" aria-expanded="false">카테고리<span class="caret"></span></button>
-                    <ul class="dropdown-menu pull-right" role="menu">
-                        <li><a href="#">공지사항</a></li>
-                        <li><a href="#">디연</a></li>
-                        <li><a href="#">학식</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="row text-center text-bold">
+{#    <div class="row text-center text-bold">
         <div class="col-xs-3 col-sm-2">즐겨찾기</div>
         <div class="col-xs-6 col-sm-8">리스트 목록</div>
         <div class="col-xs-3 col-sm-2">삭제</div>
-    </div>
+    </div>#}
+
     <div class="row">
         <ul class="list-group">
             {% for favorite in favorites %}
             <li class="list-group-item">
-                <span class="badge">{{ favorite|length }} </span>
+                <span class="badge">{{ favorite.list|length }} </span>
                 <div class="row list-content-date collapse-header" data-target="#fav_list_id{{ loop.index }}">{{ favorite.date }}</div>
                 <div id="fav_list_id{{ loop.index }}" class="collapse row list-content-details">
-                {% for detail in favorite.list %}
-                    <div id="carousel-example-generic{{ loop.index }}" class="carousel slide" data-ride="carousel">
-                      <!-- Indicators -->
-                      <ol class="carousel-indicators">
-                          <li data-target="#carousel-example-generic{{ loop.index }}" data-slide-to="0" class="active"></li>
-                          <li data-target="#carousel-example-generic{{ loop.index }}" data-slide-to="1"></li>
-                      </ol>
-
-                      <!-- Wrapper for slides -->
-                      <div class="carousel-inner" role="listbox">
-                          <div class="item active">
-                              <div class="row">
-                                  <!--실제 값 중에 title부분-->
-                                  <a class="carousel-list col-xs-12" href="{{ detail.url }}">{{ detail.title }}</a>
-                              </div>
-                          </div>
-                          <div class="item">
-                              <div class="row" style="text-align:center">
-                                  <!--실제 값 중에 즐겨찾기와 Del부분-->
-                                  <button class="col-xs-6 btn btn-warning text-center">★</button>
-                                  <button class="col-xs-6 btn btn-danger text-center">Del</button>
-                              </div>
-                          </div>
-                      </div>
-
-                      <!-- Controls -->
-                      <a class="left carousel-control" href="#carousel-example-generic{{ loop.index }}" data-slide="prev"></a>
-                      <a class="right carousel-control" href="#carousel-example-generic{{ loop.index }}" data-slide="next"></a>
-                  </div>
-              {% endfor %}
-              </div>
-
+                    {% for detail in favorite.list %}
+                        <a class="col-xs-10" href="{{ detail.url }}">{{ detail.title }}</a>
+                        <button class="col-xs-2 btn btn-danger text-center">Del</button>
+                    {% endfor %}
+                </div>
             </li>
             {% endfor %}
         </ul>
