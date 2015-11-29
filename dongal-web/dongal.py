@@ -6,15 +6,14 @@ from email.mime.text import MIMEText
 # me == my email address
 # you == recipient's email address
 me = "no-reply@gmail.com"
-you = "kang8530@gmail.com"
 
 # Create message container - the correct MIME type is multipart/alternative.
 msg = MIMEMultipart('alternative')
 msg['Subject'] = "Link"
 msg['From'] = me
-msg['To'] = you
 
-def init_mail(userIdx):
+def init_mail(userIdx, email):
+    msg['To'] = email
     # Create the body of the message (a plain-text and an HTML version).
     text = "[Dongal] Vefiry email"
     html = """\

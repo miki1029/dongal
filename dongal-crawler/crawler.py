@@ -5,15 +5,52 @@ from gcm import *
 
 import simplejson as json
 
+import logging
+from logging.handlers import SMTPHandler
+
 import requests
-import urllib, urllib2, cookielib
+import urllib, urllib2, cookielib, ssl
 import re
 import MySQLdb
+import datetime
+
+logging.basicConfig(level=logging.ERROR, filename='crawler.log')
 
 CATEGORY_META_DATA = {
     'dgu' : [],
     'dyeon' : []
 }
+
+def emit(self, record):
+    """
+    Overwrite the logging.handlers.SMTPHandler.emit function with SMTP_SSL.
+    Emit a record.
+    Format the record and send it to the specified addressees.
+    """
+    try:
+        import smtplib
+        from email.utils import formatdate
+        port = self.mailport
+        if not port:
+            port = smtplib.SMTP_PORT
+        smtp = smtplib.SMTP_SSL(self.mailhost, port, timeout=self._timeout)
+        msg = self.format(record)
+        msg = "From: %s\r\nTo: %s\r\nSubject: %s\r\nDate: %s\r\n\r\n%s" % (self.fromaddr, ", ".join(self.toaddrs), self.getSubject(record), formatdate(), msg)
+        if self.username:
+            smtp.ehlo()
+            smtp.login(self.username, self.password)
+        smtp.sendmail(self.fromaddr, self.toaddrs, msg)
+        smtp.quit()
+    except (KeyboardInterrupt, SystemExit):
+        raise
+    except:
+        self.handleError(record)
+
+def write_log(msg):
+    today = datetime.datetime.today() 
+    logFormat = "[ERROR]\t%s\t%s\n" % (today.strftime('%Y-%m-%d %H:%M:%S'), msg) 
+    f = open("error.log", 'a')
+    f.write(logFormat) 
 
 def getCategoryMetaDataAndLastSeq():
     cursor = db.cursor()
@@ -106,7 +143,9 @@ def parsingSubscriptionData(dyeon, page):
     crawling_url = dyeon['url'] + "?page=" + str(page)
     if page == 1:
         print "---------------디연 > %s 크롤링 시작------------" % (dyeon['name'])
-    resp = session.open(crawling_url)
+
+    resp = session.open(crawling_url, timeout = 10)
+
     soup = BeautifulSoup(resp, 'html.parser')
 
     board_list = soup.select('table.bbs > tbody')
@@ -154,7 +193,9 @@ def parsingSubscriptionDataDGU(dgu, page):
     crawling_url = dgu['url'] + "&spage=" + str(page)
     if page == 1:
         print "---------------동국대학교 홈페이지 > %s 크롤링 시작------------" % (dgu['name'])
-    handle = urllib2.urlopen(crawling_url)
+
+    handle = urllib2.urlopen(crawling_url, timeout = 10)
+
     data = handle.read()
     soup = BeautifulSoup(data, 'html.parser')
 
@@ -195,7 +236,7 @@ def parsingSubscriptionDataDGU(dgu, page):
         return;
 
 def crawling():
-    # crawling dyeon
+    # crawling DGU 
     print "----------- 동국대학교 홈페이지 크롤링 시작----------------"
     for idx, dgu in enumerate(CATEGORY_META_DATA['dgu']):
         parsingSubscriptionDataDGU(dgu, 1)
@@ -208,6 +249,7 @@ def crawling():
     print "----------- 디연 홈페이지 크롤링 종료----------------"
 
 def sendPushMessage():
+    print "----------- 푸시 메시지 보내기 시작----------------"
     title = "동알동알 알림도착"
     message = "%d 건이 업데이트 되었습니다."
 
@@ -259,7 +301,8 @@ def sendPushMessage():
                 entry.registration_id = canonical_id
                 entry.save()
 
-        
+    print "----------- 푸시 메시지 보내기 종료----------------"
+
 txt = open("mysql.json")
 
 json = json.loads(txt.read())
@@ -267,12 +310,14 @@ db = MySQLdb.connect(json['host'], json['user'], json['password'], json['db'])
 
 getCategoryMetaDataAndLastSeq()
 
-crawling()
-
+try:
+    crawling()
+except Exception as ex:
+    logging.exception("[ERROR] Dongal Crawler Error Occured")
+    
 #saveSubscription()
 sendPushMessage()
 
 db.close()
-
 
 
