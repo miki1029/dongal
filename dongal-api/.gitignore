@@ -12,3 +12,4 @@ buildNumber.properties
 ### dongal-api
 src/main/resources-local/properties/*.properties
 rebel.xml
+deploy

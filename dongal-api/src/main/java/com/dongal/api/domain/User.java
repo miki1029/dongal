@@ -42,6 +42,9 @@ public class User {
     @Column(nullable = false)
     private int homeCount = 10;
 
+    @Column(length = 255)
+    private String deviceKey;
+
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserSns> sns = new ArrayList<>();
