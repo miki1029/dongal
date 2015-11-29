@@ -8,6 +8,9 @@
     <name>dongal-api</name>
 
     <properties>
+        <!-- mvn -U -Preal clean compile war:exploded -->
+        <deploy.dir>deploy</deploy.dir>
+
         <!-- 프로젝트 코드 인코딩 설정 -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -294,18 +297,29 @@
         </testResources>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
                 <configuration>
                     <source>${jdk.version}</source>
                     <target>${jdk.version}</target>
+                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
             <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
                 <configuration>
-                    <includes>
-                        <include>**/*Tests.java</include>
-                    </includes>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <webappDirectory>${deploy.dir}</webappDirectory>
+                    <warName>${name}</warName>
                 </configuration>
             </plugin>
         </plugins>
