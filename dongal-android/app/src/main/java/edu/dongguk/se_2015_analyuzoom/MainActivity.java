@@ -111,11 +111,11 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
 
-                    mWebView.loadUrl("http://192.168.0.151:9090");
+                    mWebView.loadUrl("http://dna.dongguk.ac.kr:9090");
                     mWebView.setWebViewClient(new WebViewClient() {
                         public void onPageFinished(WebView view, String url) {
                             Log.e(TAG, url);
-                            if(url.equals("http://192.168.0.151:9090/")) {
+                            if(url.equals("http://dna.dongguk.ac.kr:9090/")) {
                                 view.loadUrl("javascript:deviceTokenInit('" + token + "')");
                             }
                         }

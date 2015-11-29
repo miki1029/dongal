@@ -39,7 +39,7 @@ def init_mail(userIdx, email):
     msg.attach(part1)
     msg.attach(part2)
 
-def send_mail():
+def send_mail(email):
     # Send the message via local SMTP server.
     mail = smtplib.SMTP('smtp.gmail.com', 587)
 
@@ -48,7 +48,7 @@ def send_mail():
     mail.starttls()
 
     mail.login('dgu.dna@gmail.com', 'dnalinux12345')
-    mail.sendmail(me, you, msg.as_string())
+    mail.sendmail(me, email, msg.as_string())
     mail.quit()
 
 
