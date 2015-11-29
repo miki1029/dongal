@@ -30,6 +30,7 @@ def login():
 
 @app.route("/loginProcess", methods=['POST'])
 def login_process():
+    session["email"] = request.form['email']
     email = request.form['email']
     password = request.form['password']
     try:
