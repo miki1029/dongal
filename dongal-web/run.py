@@ -36,6 +36,7 @@ def login_process():
     try:
         data = json.loads(requests.get(url=SESSION_BASE_URL + "login?email=" + email + "&password=" + password).text)
         session["userIdx"] = str(data["idx"])
+        print 'loginProcess ~ session["userIdx"]=' + session["userIdx"]
         if data['dguVerified']:
             session["userIdx"] = str(data["idx"])
             return redirect(url_for('home'))
@@ -56,6 +57,7 @@ def logout():
 
 @app.route("/sendVerifyEmail")
 def send_verify_mail():
+    print 'sendVerifyEmail ~ session["userIdx"]=' + session["userIdx"]
     # Send Verify email
     init_mail(session["userIdx"], session["email"], ROOT_BASE_URL)
     send_mail(session["email"])
@@ -70,6 +72,7 @@ def join_process():
     deviceKey = request.form['deviceKey']
     try:
         data = json.loads(requests.get(url=SESSION_BASE_URL + "join?email=" + email + "&password=" + password + "&name=" + name + "&deviceKey=" + deviceKey).text)
+        print data
         session["userIdx"] = str(data["idx"])
         session["email"] = email
         # Send Verify email

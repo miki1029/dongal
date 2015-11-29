@@ -13,6 +13,7 @@ msg['Subject'] = "Link"
 msg['From'] = me
 
 def init_mail(userIdx, email, rootUrl):
+    print 'init_mail ~ userIdx=' + userIdx
     msg['To'] = email
     # Create the body of the message (a plain-text and an HTML version).
     text = "[Dongal] Vefiry email"
@@ -28,6 +29,7 @@ def init_mail(userIdx, email, rootUrl):
       </body>
     </html>
     """ % (rootUrl, userIdx)
+    print html
 
     # Record the MIME types of both parts - text/plain and text/html.
     part1 = MIMEText(text, 'plain')
