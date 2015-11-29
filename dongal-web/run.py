@@ -33,8 +33,7 @@ def login():
 def login_process():
     email = request.form['email']
     password = request.form['password']
-    deviceToken = request.form['deviceToken']
-    data = json.loads(requests.get(url=SESSION_BASE_URL + "login?email=" + email + "&password=" + password + "&deviceToken=" + deviceToken).text)
+    data = json.loads(requests.get(url=SESSION_BASE_URL + "login?email=" + email + "&password=" + password).text)
     session["userIdx"] = str(data["idx"])
     return redirect(url_for('home'))
 

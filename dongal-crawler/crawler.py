@@ -99,8 +99,6 @@ def login_dyeon():
 
     return opener
 
-
-
 session = login_dyeon()
 
 def parsingSubscriptionData(dyeon, page):
@@ -175,7 +173,7 @@ def parsingSubscriptionDataDGU(dgu, page):
                 dgu['last_seq_updated'] = True
 
             subscription = {}
-            subscription['link'] = 'https://www.dongguk.edu/mbs/kr/jsp/board/' + board_item.group(1)
+            subscription['link'] = 'https://www.dongguk.edu/mbs/kr/jsp/board/' + board_item.group(1).replace("&amp;", "&")
             subscription['boardId'] = board_item.group(2)
             subscription['postId'] = board_item.group(3)
             subscription['title'] = board_item.group(4)
@@ -198,6 +196,45 @@ def crawling():
         parsingSubscriptionData(dyeon, 1)
 
 
+def sendPushMessage():
+    title = "동알동알 알림도착"
+    message = "%d 건이 업데이트 되었습니다."
+
+    cursor = db.cursor()
+    # Get category metadata
+    cursor.execute("""
+        select 
+        device_key,
+            GROUP_CONCAT(category_id) as category_idxes
+            from dongal.user a
+            inner join dongal.user_category_settings b on a.idx = b.user_id
+            group by b.user_id
+    """
+    data = cursor.fetchall()
+    
+    users = []
+    for row in data:
+        user = {}
+        user['device_key'] = row[0]
+        user['category_idxes'] = str(row[1]).split(",")
+        user['sub_count'] = 0
+        users.append(user)
+
+    cursor.close()
+
+    for dgu in CATEGORY_META['dgu']:
+        for user in users:
+            if dgu['idx'] in user['category_idxes']:
+                user['sub_count']++
+        
+    for dgu in CATEGORY_META['dyeon']:
+        for user in users:
+            if dgu['idx'] in user['category_idxes']:
+                user['sub_count']++
+
+    for user in users:
+        user['message'] = message.replace("%d", str(user['sub_count']))
+        
 txt = open("mysql.json")
 
 json = json.loads(txt.read())
