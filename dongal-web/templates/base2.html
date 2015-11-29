@@ -80,14 +80,28 @@
             $("#joinForm").submit(function(e) {
               if (e.preventDefault) e.preventDefault();
 
-              var deviceKey = $("<input>")
-                               .attr("type", "hidden")
-                               .attr("name", "deviceKey").val(localStorage.getItem("deviceToken"));
+              var isValid = true;
+              $.each($(".needCheck"), function(idx, elem) {
+                if($(elem).val() == "") {
+                  alert($(elem).attr("name_kor") + " 입력해주세요");
+                  $(elem).focus();
+                  isValid = false;
+                  return false;
+                }
+              });
 
-              $(this).append($(deviceKey));
+              if(isValid) {
+                var deviceKey = $("<input>")
+                                 .attr("type", "hidden")
+                                 .attr("name", "deviceKey").val(localStorage.getItem("deviceToken"));
 
-              json = $(this).serializeObject();
-              this.submit();
+                $(this).append($(deviceKey));
+
+                json = $(this).serializeObject();
+                this.submit();
+              } else {
+                return false;
+              }
             });
           </script>
           <script>
