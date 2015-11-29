@@ -1,6 +1,7 @@
 package com.dongal.api.service.impl;
 
 import com.dongal.api.domain.User;
+import com.dongal.api.exception.AlreadyExistUserException;
 import com.dongal.api.exception.WrongPasswordException;
 import com.dongal.api.repository.UserRepository;
 import com.dongal.api.service.SessionService;
@@ -37,7 +38,11 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public User join(String email, String password, String name, String deviceKey) {
+    public User join(String email, String password, String name, String deviceKey) throws AlreadyExistUserException {
+        User existUser = userRepository.findByEmail(email);
+        if (existUser == null) {
+            throw new AlreadyExistUserException();
+        }
         User user = new User(email, password, name, new Date(), false);
         user.setDeviceKey(deviceKey);
         userRepository.save(user);

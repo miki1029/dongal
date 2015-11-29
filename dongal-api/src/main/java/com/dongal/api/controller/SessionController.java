@@ -79,7 +79,10 @@ public class SessionController {
         ResponseEntity<String> entity = null;
         try {
             sessionService.verifyDGU(userIdx);
-            entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+            entity = new ResponseEntity<String>("<script>" +
+                    "alert(\"It has been certified.\");" +
+                    "window.open(\"about:blank\",\"_self\").close();" +
+                    "</script>", HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);

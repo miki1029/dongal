@@ -18,7 +18,7 @@
             <li class="list-group-item">
                 <span class="badge">{{ favorite.list|length }}</span>
                 <div class="row list-content-date collapse-header" data-target="#list_value_id{{ loop.index }}">{{ favorite.date }}</div>
-                <div id="list_value_id{{ loop.index }}" class="collapse row list-content-details">aaa
+                <div id="list_value_id{{ loop.index }}" class="collapse row list-content-details">
                     {% for detail in favorite.list %}
                         <a class="col-xs-10" href="{{ detail.url }}">{{ detail.title }}</a>
                         <button class="col-xs-2 btn btn-warning text-center add-favorite" seq={{ detail.subscriptionIdx }}>★</button>

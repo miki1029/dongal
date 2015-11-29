@@ -103,7 +103,7 @@
                         url = "category/delCategoryFromUser";
                     }
                     var showResult = $(this).parent().parent().parent().next();
-                    $(showResult).append('success');
+{#                    $(showResult).append('success');#}
                     $(showResult).hide().delay(1000).fadeIn(2200);
                     get(url, json, function(data) {
                       console.log('success');
@@ -120,7 +120,7 @@
                     json["subscriptionIdx"] = $(this).attr("seq") * 1;
                     url = "favorite/addFavoriteToUser";
                     get(url, json, function(data) {
-                        alert('Favorite에 추가되었습니다.');
+                        alert('즐겨찾기에 추가되었습니다.');
                     });
                 });
                 $(".del-favorite").on('click', function(event, state) {

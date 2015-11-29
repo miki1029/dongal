@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import Flask, render_template, request, session, redirect, url_for
 
 import simplejson as json
@@ -34,8 +35,16 @@ def login():
 def login_process():
     email = request.form['email']
     password = request.form['password']
-    data = json.loads(requests.get(url=SESSION_BASE_URL + "login?email=" + email + "&password=" + password).text)
-    session["userIdx"] = str(data["idx"])
+    try:
+        data = json.loads(requests.get(url=SESSION_BASE_URL + "login?email=" + email + "&password=" + password).text)
+        session["userIdx"] = str(data["idx"])
+    except json.scanner.JSONDecodeError as e:
+        return '''
+            <script>
+                alert('이메일 또는 비밀번호를 확인해 주세요.');
+                location.href='login';
+            </script>
+        '''
     return redirect(url_for('home'))
 
 @app.route("/logout")
@@ -43,23 +52,22 @@ def logout():
     session.clear()
     return redirect(url_for('index'))
 
-@app.route("/joinSelect")
-def join_select():
-    return render_template("join_select.html", title="Join Select")
-
-@app.route("/joinMail")
-def join_by_mail():
-    return render_template("join_mail.html", title="Join - Mail")
-
 @app.route("/joinProcess", methods=['POST'])
 def join_process():
     email = request.form['email']
     password = request.form['password']
     name = request.form['name']
     deviceKey = request.form['deviceKey']
-    print email + ',' + password + ',' + name
-    data = json.loads(requests.get(url=SESSION_BASE_URL + "join?email=" + email + "&password=" + password + "&name=" + name + "&deviceKey=" + deviceKey).text)
-    session["userIdx"] = str(data["idx"])
+    try:
+        data = json.loads(requests.get(url=SESSION_BASE_URL + "join?email=" + email + "&password=" + password + "&name=" + name + "&deviceKey=" + deviceKey).text)
+        session["userIdx"] = str(data["idx"])
+    except json.scanner.JSONDecodeError as e:
+        return '''
+            <script>
+                alert('이미 가입된 이메일입니다');
+                location.href='join';
+            </script>
+        '''
     return redirect(url_for('home'))
 
 @app.route("/join")
