@@ -1,6 +1,7 @@
 #-*- coding: utf-8 -*-
 from bs4 import BeautifulSoup
 from pprint import pprint
+from gcm import *
 
 import simplejson as json
 
@@ -195,7 +196,6 @@ def crawling():
     for idx, dyeon in enumerate(CATEGORY_META_DATA['dyeon']):
         parsingSubscriptionData(dyeon, 1)
 
-
 def sendPushMessage():
     title = "동알동알 알림도착"
     message = "%d 건이 업데이트 되었습니다."
@@ -209,31 +209,47 @@ def sendPushMessage():
             from dongal.user a
             inner join dongal.user_category_settings b on a.idx = b.user_id
             group by b.user_id
-    """
+    """)
     data = cursor.fetchall()
     
+    gcm = GCM("AIzaSyALPptuR-rtsonyGG1j5HuPHuAAzRYi-ck")
     users = []
     for row in data:
         user = {}
-        user['device_key'] = row[0]
+        user['device_token'] = str(row[0])
         user['category_idxes'] = str(row[1]).split(",")
         user['sub_count'] = 0
         users.append(user)
 
     cursor.close()
 
-    for dgu in CATEGORY_META['dgu']:
+    print users
+
+    for dgu in CATEGORY_META_DATA['dgu']:
         for user in users:
-            if dgu['idx'] in user['category_idxes']:
-                user['sub_count']++
+            if any(str(dgu['idx']) in s for s in user['category_idxes']): 
+                #print "%s 업데이트 갯수: %s" % (dgu['name'], (dgu['after_last_seq'] - dgu['before_last_seq']))
+                user['sub_count'] = user['sub_count'] + (dgu['after_last_seq'] - dgu['before_last_seq'])
         
-    for dgu in CATEGORY_META['dyeon']:
+    for dyeon in CATEGORY_META_DATA['dyeon']:
         for user in users:
-            if dgu['idx'] in user['category_idxes']:
-                user['sub_count']++
+            if any(str(dyeon['idx']) in s for s in user['category_idxes']): 
+                #print "%s 업데이트 갯수: %s" % (dyeon['name'], (dyeon['after_last_seq'] - dyeon['before_last_seq']))
+                user['sub_count'] = user['sub_count'] + (dyeon['after_last_seq'] - dyeon['before_last_seq'])
 
     for user in users:
-        user['message'] = message.replace("%d", str(user['sub_count']))
+        if not user['device_token'] == "None":
+            user['data'] = {}
+            user['data']['title'] = title
+            user['data']['message'] = message.replace("%d", str(user['sub_count']))
+            #print "%s: %s" % (user['device_token'], user['data'])
+            canonical_id = gcm.plaintext_request(registration_id=str(user['device_token']), data = user['data'])
+            if canonical_id:
+                # Repace reg_id with canonical_id in your database
+                entry = entity.filter(registration_id=reg_id)
+                entry.registration_id = canonical_id
+                entry.save()
+
         
 txt = open("mysql.json")
 
@@ -244,7 +260,8 @@ getCategoryMetaDataAndLastSeq()
 
 crawling()
 
-saveSubscription()
+#saveSubscription()
+sendPushMessage()
 
 db.close()
 
