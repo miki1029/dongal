@@ -9,6 +9,6 @@ import com.dongal.api.exception.WrongPasswordException;
 public interface SessionService {
     User login(String email, String password) throws WrongPasswordException;
     void logout(Long userIdx);
-    User join(String email, String password, String name);
+    User join(String email, String password, String name, String deviceKey);
     void verifyDGU(Long userIdx);
 }

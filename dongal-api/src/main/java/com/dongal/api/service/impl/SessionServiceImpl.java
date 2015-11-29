@@ -37,8 +37,9 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public User join(String email, String password, String name) {
+    public User join(String email, String password, String name, String deviceKey) {
         User user = new User(email, password, name, new Date(), false);
+        user.setDeviceKey(deviceKey);
         userRepository.save(user);
         return user;
     }

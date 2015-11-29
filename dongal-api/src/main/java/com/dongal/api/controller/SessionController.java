@@ -56,13 +56,14 @@ public class SessionController {
     }
 
     @RequestMapping(value = "/join", method = RequestMethod.GET)
-    public ResponseEntity<User> join(@RequestParam String email, @RequestParam String password, @RequestParam String name) {
-        LOGGER.info("join(email=" + email + ",password=" + password + ",name=" + name + ")");
+    public ResponseEntity<User> join(@RequestParam String email, @RequestParam String password,
+                                     @RequestParam String name, @RequestParam(required = false) String deviceKey) {
+        LOGGER.info("join(email=" + email + ",password=" + password + ",name=" + name + ", deviceKey=" + deviceKey + ")");
 
         ResponseEntity<User> entity = null;
         User user = null;
         try {
-            user = sessionService.join(email, password, name);
+            user = sessionService.join(email, password, name, deviceKey);
             entity = new ResponseEntity<User>(user, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
