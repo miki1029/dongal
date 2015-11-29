@@ -104,7 +104,8 @@ session = login_dyeon()
 
 def parsingSubscriptionData(dyeon, page):
     crawling_url = dyeon['url'] + "?page=" + str(page)
-    print "-------------%s(%d): %s------------" % (dyeon['name'], dyeon['idx'], crawling_url)
+    if page == 1:
+        print "---------------디연 > %s 크롤링 시작------------" % (dyeon['name'])
     resp = session.open(crawling_url)
     soup = BeautifulSoup(resp, 'html.parser')
 
@@ -140,17 +141,19 @@ def parsingSubscriptionData(dyeon, page):
             subscription['created_time'] = yyyymmdd
             dyeon['subscriptions'].append(subscription)
 
-            #print "link: %s, postId: %s, title: %s, date: %s" % (link.group(1), link.group(2), link.group(4), yyyymmdd)
+            print "제목: %s, 링크: %s, 날짜: %s" % (subscription['title'], subscription['link'], subscription['created_time'])
 
     if not dyeon['is_meet_last_board_item']:
         parsingSubscriptionData(dyeon, page+1)
     else:
-        print "last_seq change %d to %d" % (int(dyeon['before_last_seq']), int(dyeon['after_last_seq']))
+        print "---------------디연 > %s 크롤링 종료, %s개 업데이트------------" % (dyeon['name'], len(dyeon['subscriptions']))
+        #print "last_seq change %d to %d" % (int(dyeon['before_last_seq']), int(dyeon['after_last_seq']))
         return;
 
 def parsingSubscriptionDataDGU(dgu, page):
     crawling_url = dgu['url'] + "&spage=" + str(page)
-    print "-------------%s(%d): %s------------" % (dgu['name'], dgu['idx'], crawling_url)
+    if page == 1:
+        print "---------------동국대학교 홈페이지 > %s 크롤링 시작------------" % (dgu['name'])
     handle = urllib2.urlopen(crawling_url)
     data = handle.read()
     soup = BeautifulSoup(data, 'html.parser')
@@ -181,20 +184,28 @@ def parsingSubscriptionDataDGU(dgu, page):
             subscription['created_time'] = board_item.group(7).replace(" ", "").replace("\t", "")
             dgu['subscriptions'].append(subscription)
 
+            print "제목: %s, 링크: %s, 날짜: %s" % (subscription['title'], subscription['link'], subscription['created_time'])
+
+
     if not dgu['is_meet_last_board_item']:
         parsingSubscriptionDataDGU(dgu, page+1)
     else:
-        print "last_seq change %d to %d" % (int(dgu['before_last_seq']), int(dgu['after_last_seq']))
+        print "---------------동국대학교 홈페이지 > %s 크롤링 종료, %s개 업데이트------------" % (dgu['name'], len(dgu['subscriptions']))
+        #print "last_seq change %d to %d" % (int(dgu['before_last_seq'], int(dgu['after_last_seq']))
         return;
 
 def crawling():
     # crawling dyeon
+    print "----------- 동국대학교 홈페이지 크롤링 시작----------------"
     for idx, dgu in enumerate(CATEGORY_META_DATA['dgu']):
         parsingSubscriptionDataDGU(dgu, 1)
+    print "----------- 동국대학교 홈페이지 크롤링 종료----------------"
 
     # crawling dyeon
+    print "----------- 디연 홈페이지 크롤링 시작----------------"
     for idx, dyeon in enumerate(CATEGORY_META_DATA['dyeon']):
         parsingSubscriptionData(dyeon, 1)
+    print "----------- 디연 홈페이지 크롤링 종료----------------"
 
 def sendPushMessage():
     title = "동알동알 알림도착"
@@ -223,19 +234,17 @@ def sendPushMessage():
 
     cursor.close()
 
-    print users
-
     for dgu in CATEGORY_META_DATA['dgu']:
         for user in users:
             if any(str(dgu['idx']) in s for s in user['category_idxes']): 
-                #print "%s 업데이트 갯수: %s" % (dgu['name'], (dgu['after_last_seq'] - dgu['before_last_seq']))
-                user['sub_count'] = user['sub_count'] + (dgu['after_last_seq'] - dgu['before_last_seq'])
+                #print "%s 업데이트 갯수: %s" % (dgu['name'], len(dgu['subscriptions'])
+                user['sub_count'] = user['sub_count'] + len(dgu['subscriptions'])
         
     for dyeon in CATEGORY_META_DATA['dyeon']:
         for user in users:
             if any(str(dyeon['idx']) in s for s in user['category_idxes']): 
-                #print "%s 업데이트 갯수: %s" % (dyeon['name'], (dyeon['after_last_seq'] - dyeon['before_last_seq']))
-                user['sub_count'] = user['sub_count'] + (dyeon['after_last_seq'] - dyeon['before_last_seq'])
+                #print "%s 업데이트 갯수: %s" % (dyeon['name'], len(dyeon['subscriptions'])
+                user['sub_count'] = user['sub_count'] + len(dyeon['subscriptions'])
 
     for user in users:
         if not user['device_token'] == "None":
