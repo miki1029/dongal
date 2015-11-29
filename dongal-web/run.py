@@ -56,8 +56,9 @@ def join_process():
     email = request.form['email']
     password = request.form['password']
     name = request.form['name']
+    deviceKey = request.form['deviceKey']
     print email + ',' + password + ',' + name
-    data = json.loads(requests.get(url=SESSION_BASE_URL + "join?email=" + email + "&password=" + password + "&name=" + name).text)
+    data = json.loads(requests.get(url=SESSION_BASE_URL + "join?email=" + email + "&password=" + password + "&name=" + name + "&deviceKey=" + deviceKey).text)
     session["userIdx"] = str(data["idx"])
     return redirect(url_for('home'))
 

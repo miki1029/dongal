@@ -175,7 +175,7 @@ def parsingSubscriptionDataDGU(dgu, page):
                 dgu['last_seq_updated'] = True
 
             subscription = {}
-            subscription['link'] = 'http://dongguk.edu/'+ board_item.group(1)
+            subscription['link'] = 'https://www.dongguk.edu/mbs/kr/jsp/board/' + board_item.group(1)
             subscription['boardId'] = board_item.group(2)
             subscription['postId'] = board_item.group(3)
             subscription['title'] = board_item.group(4)

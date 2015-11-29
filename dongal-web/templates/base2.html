@@ -45,7 +45,6 @@
 
     <body>
         <div id="view">
-            <input id="deviceToken" name="deviceToken" type="hidden" />
             {% block content %}{% endblock %}
         </div>
 
@@ -73,19 +72,20 @@
             });
           </script>
 
-{#          <script>
+          <script>
             $("#joinForm").submit(function(e) {
               if (e.preventDefault) e.preventDefault();
+
+              var deviceKey = $("<input>")
+                               .attr("type", "hidden")
+                               .attr("name", "deviceKey").val(localStorage.getItem("deviceToken"));
+
+              $(this).append($(deviceKey));
+
               json = $(this).serializeObject();
-              json['deviceKey'] = $("#deviceToken").val();
-
-              console.log(json);
-
-              get("session/join", json, function(data) {
-                console.log(data);
-              });
+              this.submit();
             });
-          </script>#}
+          </script>
         </div>
     </body>
 
