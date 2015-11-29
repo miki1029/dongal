@@ -11,6 +11,9 @@
 
     <div class="row">
         <ul class="list-group">
+            {% if favorites|length < 1 %}
+                <li class="list-group-item text-center no-item">아직 즐겨찾기된 게시물이 없습니다.</li>
+            {% endif %}
             {% for favorite in favorites %}
             <li class="list-group-item">
                 <span class="badge">{{ favorite.list|length }}</span>

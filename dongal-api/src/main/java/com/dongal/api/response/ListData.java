@@ -66,7 +66,8 @@ public class ListData implements Serializable {
             postListData.url = subscription.getUrl();
             postData.list.add(postListData);
         }
-        posts.add(postData);
+        if (postData.date != null)
+            posts.add(postData);
     }
 
     private UserInfoData userInfo = new UserInfoData();

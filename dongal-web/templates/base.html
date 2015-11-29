@@ -120,7 +120,7 @@
                     json["subscriptionIdx"] = $(this).attr("seq") * 1;
                     url = "favorite/addFavoriteToUser";
                     get(url, json, function(data) {
-                        alert('abc');
+                        alert('Favorite에 추가되었습니다.');
                     });
                 });
                 $(".del-favorite").on('click', function(event, state) {
@@ -128,7 +128,8 @@
                     json["subscriptionIdx"] = $(this).attr("seq") * 1;
                     url = "favorite/delFavoriteFromUser";
                     get(url, json, function(data) {
-                        alert(data);
+                        alert('삭제되었습니다.');
+                        location.reload();
                     });
                 });
             </script>
