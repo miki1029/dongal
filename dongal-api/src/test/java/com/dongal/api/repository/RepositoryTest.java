@@ -42,8 +42,8 @@ public class RepositoryTest {
 
     List<CrawlingMeta> crawlingMetas = new ArrayList<>();
 
-    List<Admin> admins = new ArrayList<>();
-    List<AdminPushMessage> adminPushMessages = new ArrayList<>();
+//    List<Admin> admins = new ArrayList<>();
+//    List<AdminPushMessage> adminPushMessages = new ArrayList<>();
 
 
     @Before
