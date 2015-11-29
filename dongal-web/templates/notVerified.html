@@ -1,0 +1,18 @@
+{% extends "base2.html" %}
+{% block content %}
+
+<div class="container">
+  <h2>Email 발송이 완료되었습니다. 이메일을 확인해주세요.</h2>
+  <h2>1분이 지나도 메일이 안온다면, 아래 버튼하여 이메일을 재발송 하세요.</h2>
+  <form id="sendVerifyForm">
+    <input type="hidden" name="userIdx" value="{{ userIdx }}" />
+    <input type="hidden" name="email" value="{{ email }}" />
+    <input type="submit" class="btn btn-primary btn-lg" value="재발송"></button>
+  </form>
+</div>
+<script>
+setTimeout(function(){
+   window.location.reload(1);
+   }, 1000);
+</script>
+{% endblock %}

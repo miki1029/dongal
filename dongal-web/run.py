@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, session, redirect, url_for
+from dongal import *
 
 import simplejson as json
 import requests
@@ -35,8 +36,11 @@ def login_process():
     email = request.form['email']
     password = request.form['password']
     data = json.loads(requests.get(url=SESSION_BASE_URL + "login?email=" + email + "&password=" + password).text)
-    session["userIdx"] = str(data["idx"])
-    return redirect(url_for('home'))
+    if data['dguVerified']:
+        session["userIdx"] = str(data["idx"])
+        return redirect(url_for('home'))
+    else:
+        return render_template("notVerified.html", userIdx = session["userIdx"], email = email)
 
 @app.route("/logout")
 def logout():
@@ -51,6 +55,14 @@ def join_select():
 def join_by_mail():
     return render_template("join_mail.html", title="Join - Mail")
 
+@app.route("/sendVerifyEmail")
+def send_verify_mail():
+    # Send Verify email
+    init_mail(session["userIdx"])
+    send_mail()
+    data = {'result': 'success'}
+    return json.dumps(data)
+
 @app.route("/joinProcess", methods=['POST'])
 def join_process():
     email = request.form['email']
@@ -60,7 +72,13 @@ def join_process():
     print email + ',' + password + ',' + name
     data = json.loads(requests.get(url=SESSION_BASE_URL + "join?email=" + email + "&password=" + password + "&name=" + name + "&deviceKey=" + deviceKey).text)
     session["userIdx"] = str(data["idx"])
-    return redirect(url_for('home'))
+    session["email"] = email
+
+    # Send Verify email
+    init_mail(session["userIdx"])
+    send_mail()
+
+    return redirect(url_for('login'))
 
 @app.route("/join")
 def join():
