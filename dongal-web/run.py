@@ -57,8 +57,8 @@ def logout():
 @app.route("/sendVerifyEmail")
 def send_verify_mail():
     # Send Verify email
-    init_mail(session["userIdx"], session["email"], ROOT_BASE_URL)
-    send_mail(session["email"])
+    init_mail(request["userIdx"], request["email"], ROOT_BASE_URL)
+    send_mail(request["email"])
     data = {'result': 'success'}
     return json.dumps(data)
 
@@ -73,8 +73,8 @@ def join_process():
         session["userIdx"] = str(data["idx"])
         session["email"] = email
         # Send Verify email
-        init_mail(session["userIdx"], session["email"], ROOT_BASE_URL)
-        send_mail(session["email"])
+        init_mail(str(data["idx"]), email, ROOT_BASE_URL)
+        send_mail(email)
         return '''
             <script>
                 alert('인증 이메일이 전송되었습니다.\\n인증 후 로그인 해 주세요.');
