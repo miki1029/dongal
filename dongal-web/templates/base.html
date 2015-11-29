@@ -67,6 +67,8 @@
 
             {# collapse list, favorite #}
             <script>
+                $.ajaxPrefilter( 'json script text', function( options ) { options.crossDomain = true; }); 
+
                 $('.collapse-header').on('click', function () {
                     $($(this).data('target')).collapse('toggle');
                 });
@@ -104,6 +106,9 @@
                     $(showResult).append('success');
                     $(showResult).hide().delay(1000).fadeIn(2200);
                     get(url, json, function(data) {
+                      console.log('success');
+                    }, function(data) {
+                      console.log("url : " + ROOT_URL + url + ", json : " + JSON.stringify(json) + ", result: " + JSON.stringify(data));
                     });
                 });
             </script>

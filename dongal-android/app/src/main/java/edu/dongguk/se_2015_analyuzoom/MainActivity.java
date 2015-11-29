@@ -10,7 +10,10 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -59,38 +62,85 @@ public class MainActivity extends AppCompatActivity {
                     token = intent.getStringExtra("token");
 
                     mWebView = (WebView) findViewById(R.id.id_web_view_browser);
+                    mWebView.clearCache(true);
+                    mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
                     mWebView.getSettings().setJavaScriptEnabled(true);
+                    mWebView.getSettings().setDomStorageEnabled(true);
+                    mWebView.getSettings().setLoadWithOverviewMode(true);
+                    mWebView.getSettings().setUseWideViewPort(true);
+                    mWebView.getSettings().setSupportMultipleWindows(true);
+                    mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+                    mWebView.setHorizontalScrollBarEnabled(false);
+                    mWebView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+                    mWebView.getSettings().setAllowFileAccessFromFileURLs(true);
+                    mWebView.getSettings().setAllowUniversalAccessFromFileURLs(true);
+                    mWebView.addJavascriptInterface(this, "android");
+                    mWebView.getSettings().setAllowFileAccessFromFileURLs(true);
+
+
+                    mWebView.setWebViewClient(new WebViewClient() {
+                        @Override
+                        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                            view.loadUrl(url);
+                            return false;
+                        }
+                    });
+
                     mWebView.setWebChromeClient(new WebChromeClient() {
                         @Override
-                        public boolean onJsAlert(WebView view, String url, String message, final android.webkit.JsResult result) {
-                        new AlertDialog.Builder(dongal)
-                            .setMessage(message)
-                            .setPositiveButton(android.R.string.ok,
-                                    new AlertDialog.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            result.confirm();
-                                        }
-                                    })
-                            .setCancelable(false)
-                            .create()
-                            .show();
-
-                        return true;
+                        public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                            Log.e(TAG, consoleMessage.message() + '\n' + consoleMessage.messageLevel() + '\n' + consoleMessage.sourceId());
+                            return super.onConsoleMessage(consoleMessage);
                         }
 
-                        ;
+                        @Override
+                        public boolean onJsAlert(WebView view, String url, String message, final android.webkit.JsResult result) {
+                            new AlertDialog.Builder(dongal)
+                                    .setMessage(message)
+                                    .setPositiveButton(android.R.string.ok,
+                                            new AlertDialog.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    result.confirm();
+                                                }
+                                            })
+                                    .setCancelable(false)
+                                    .create()
+                                    .show();
+
+                            return true;
+                        }
                     });
 
-                    mWebView.loadUrl("http://dna.dongguk.ac.kr/~felika/dongal/dongal-backend/android_test.php");
+                    mWebView.loadUrl("http://192.168.0.241:5000");
                     mWebView.setWebViewClient(new WebViewClient() {
                         public void onPageFinished(WebView view, String url) {
-                            mWebView.loadUrl("javascript:init('" + token + "')");
+                            Log.e(TAG, url);
+                            if(url.equals("http://192.168.0.241:5000/")) {
+                                view.loadUrl("javascript:deviceTokenInit('" + token + "')");
+                            }
                         }
                     });
+
                 }
 
             }
         };
+    }
+
+    @Override
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if ((keyCode == KeyEvent.KEYCODE_BACK) && mWebView.canGoBack()) {
+
+            mWebView.goBack();
+
+            return true;
+
+        }
+
+        return super.onKeyDown(keyCode, event);
+
     }
 
     @Override

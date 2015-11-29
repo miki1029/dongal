@@ -13,4 +13,13 @@
      
   </div><!--END: HTML element-->
 </div>
+<script>
+  var deviceTokenInit = function(deviceToken) {
+    localStorage.removeItem('deviceToken');
+    localStorage.setItem('deviceToken', deviceToken);
+
+    console.log("deviceToken(from Android) : " + deviceToken);
+    console.log("deviceToken(from localStorage) : " + localStorage.getItem('deviceToken'));
+  };
+</script>
 {% endblock %}

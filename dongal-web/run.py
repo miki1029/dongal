@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 
 # BASE_URL = "http://dna.dongguk.ac.kr/~felika/dongal/dongal-backend/"
-ROOT_BASE_URL = "http://localhost:8080/"
+ROOT_BASE_URL = "http://192.168.0.241:8080/"
 SESSION_BASE_URL = ROOT_BASE_URL + "session/"
 VIEW_BASE_URL = ROOT_BASE_URL + "view/"
 
@@ -33,7 +33,8 @@ def login():
 def login_process():
     email = request.form['email']
     password = request.form['password']
-    data = json.loads(requests.get(url=SESSION_BASE_URL + "login?email=" + email + "&password=" + password).text)
+    deviceToken = request.form['deviceToken']
+    data = json.loads(requests.get(url=SESSION_BASE_URL + "login?email=" + email + "&password=" + password + "&deviceToken=" + deviceToken).text)
     session["userIdx"] = str(data["idx"])
     return redirect(url_for('home'))
 
@@ -89,4 +90,4 @@ def settings():
     return render_template("settings.html", title="Settings", official=data['official'], dyeon=data['dyeon'])
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)

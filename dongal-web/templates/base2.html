@@ -45,6 +45,7 @@
 
     <body>
         <div id="view">
+            <input id="deviceToken" name="deviceToken" type="hidden" />
             {% block content %}{% endblock %}
         </div>
 
@@ -61,13 +62,14 @@
           <script src="static/js/jquery.mobile.custom.min.js"></script>
 
           <script>
-            jQuery(document).ready(function($) {
+            $(document).ready(function($) {
 
               // site preloader -- also uncomment the div in the header and the css style for #preloader
               $(window).load(function(){
                 $('#preloader').fadeIn(3000).delay(1000).fadeOut('slow', function() { $(this).remove(); });
               });
 
+              $("#deviceToken").val(localStorage.getItem("deviceToken"));
             });
           </script>
 
@@ -75,6 +77,9 @@
             $("#joinForm").submit(function(e) {
               if (e.preventDefault) e.preventDefault();
               json = $(this).serializeObject();
+              json['deviceKey'] = $("#deviceToken").val();
+
+              console.log(json);
 
               get("session/join", json, function(data) {
                 console.log(data);
