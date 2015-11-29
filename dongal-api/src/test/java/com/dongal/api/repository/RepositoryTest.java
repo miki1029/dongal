@@ -51,10 +51,10 @@ public class RepositoryTest {
         // 기초 데이터 생성
         Sns facebook = new Sns("facebook");
         Sns twitter = new Sns("twitter");
-        Sns instagram = new Sns("instagram");
+//        Sns instagram = new Sns("instagram");
         snses.add(facebook);
         snses.add(twitter);
-        snses.add(instagram);
+//        snses.add(instagram);
 
         User minwoo = new User("kmwkmw5@dongguk.edu", "1234", "김민우", new Date(), false);
         User kisang = new User("felika@dongguk.edu", "5678", "강기상", new Date(), true);
@@ -405,12 +405,31 @@ public class RepositoryTest {
     }
 
     @Test
+    public void testForServer() throws Exception {
+        // 삽입 순서 중요
+        for (Sns sns : snses) {
+            snsRepository.save(sns);
+        }
+        assertThat(snsRepository.count(), is(2L));
+
+        for (Category category : categories) {
+            categoryRepository.save(category);
+        }
+        assertThat(categoryRepository.count(), is(29L));
+
+        for (CrawlingMeta crawlingMeta : crawlingMetas) {
+            crawlingMetaRepository.save(crawlingMeta);
+        }
+        assertThat(crawlingMetaRepository.count(), is(13L));
+    }
+
+    @Test
     public void testSaveAndCount() throws Exception {
         // 삽입 순서 중요
         for (Sns sns : snses) {
             snsRepository.save(sns);
         }
-        assertThat(snsRepository.count(), is(3L));
+        assertThat(snsRepository.count(), is(2L));
 
         for (Category category : categories) {
             categoryRepository.save(category);
