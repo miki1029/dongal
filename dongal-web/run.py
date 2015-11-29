@@ -33,7 +33,6 @@ def login():
 def login_process():
     email = request.form['email']
     password = request.form['password']
-    url = SESSION_BASE_URL + "login?email=" + email + "&password=" + password
     data = json.loads(requests.get(url=SESSION_BASE_URL + "login?email=" + email + "&password=" + password).text)
     session["userIdx"] = str(data["idx"])
     return redirect(url_for('home'))
@@ -50,6 +49,16 @@ def join_select():
 @app.route("/joinMail")
 def join_by_mail():
     return render_template("join_mail.html", title="Join - Mail")
+
+@app.route("/joinProcess", methods=['POST'])
+def join_process():
+    email = request.form['email']
+    password = request.form['password']
+    name = request.form['name']
+    print email + ',' + password + ',' + name
+    data = json.loads(requests.get(url=SESSION_BASE_URL + "join?email=" + email + "&password=" + password + "&name=" + name).text)
+    session["userIdx"] = str(data["idx"])
+    return redirect(url_for('home'))
 
 @app.route("/join")
 def join():
