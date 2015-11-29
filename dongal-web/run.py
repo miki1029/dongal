@@ -55,7 +55,7 @@ def logout():
 @app.route("/sendVerifyEmail")
 def send_verify_mail():
     # Send Verify email
-    init_mail(session["userIdx"], session["email"])
+    init_mail(session["userIdx"], session["email"], ROOT_URL_BASE)
     send_mail(session["email"])
     data = {'result': 'success'}
     return json.dumps(data)
@@ -71,7 +71,7 @@ def join_process():
         session["userIdx"] = str(data["idx"])
         session["email"] = email
         # Send Verify email
-        init_mail(session["userIdx"], session["email"])
+        init_mail(session["userIdx"], session["email"], ROOT_URL_BASE)
         send_mail(session["email"])
         return '''
             <script>
