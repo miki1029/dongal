@@ -10,15 +10,10 @@ SECRET_KEY = 'dongal'
 app = Flask(__name__)
 app.config.from_object(__name__)
 
-# BASE_URL = "http://dna.dongguk.ac.kr/~felika/dongal/dongal-backend/"
-ROOT_BASE_URL = "http://192.168.0.151:8080/"
-# ROOT_BASE_URL = "http://localhost:8080/"
+# ROOT_BASE_URL = "http://192.168.0.151:8080/"
+ROOT_BASE_URL = "http://localhost:8080/"
 SESSION_BASE_URL = ROOT_BASE_URL + "session/"
 VIEW_BASE_URL = ROOT_BASE_URL + "view/"
-
-# @app.before_request
-# def load_user():
-#     session["userIdx"] = "2"
 
 @app.route("/")
 @app.route("/index")
