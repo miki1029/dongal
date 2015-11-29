@@ -10,6 +10,7 @@ app.config.from_object(__name__)
 
 # BASE_URL = "http://dna.dongguk.ac.kr/~felika/dongal/dongal-backend/"
 ROOT_BASE_URL = "http://192.168.0.151:8080/"
+# ROOT_BASE_URL = "http://localhost:8080/"
 SESSION_BASE_URL = ROOT_BASE_URL + "session/"
 VIEW_BASE_URL = ROOT_BASE_URL + "view/"
 
@@ -68,6 +69,8 @@ def join():
 @app.route("/home")
 def home():
     data = json.loads(requests.get(url=VIEW_BASE_URL + "home?userIdx=" + session["userIdx"]).text)
+    if len(data['posts']) == 0 :
+        return redirect(url_for('settings'))
     return render_template("home.html", title="Home", userInfo=data['userInfo'], alarms=data['posts'])
 
 @app.route("/list")

@@ -11,11 +11,14 @@
 
     <div class="row">
         <ul class="list-group">
+            {% if favorites|length < 1 %}
+            <li class="list-group-item text-center no-item">아직 새로운 게시물이 없습니다.</li>
+            {% endif %}
             {% for favorite in favorites %}
             <li class="list-group-item">
                 <span class="badge">{{ favorite.list|length }}</span>
                 <div class="row list-content-date collapse-header" data-target="#list_value_id{{ loop.index }}">{{ favorite.date }}</div>
-                <div id="list_value_id{{ loop.index }}" class="collapse row list-content-details">
+                <div id="list_value_id{{ loop.index }}" class="collapse row list-content-details">aaa
                     {% for detail in favorite.list %}
                         <a class="col-xs-10" href="{{ detail.url }}">{{ detail.title }}</a>
                         <button class="col-xs-2 btn btn-warning text-center add-favorite" seq={{ detail.subscriptionIdx }}>★</button>

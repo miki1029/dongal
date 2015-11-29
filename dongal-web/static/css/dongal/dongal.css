@@ -55,3 +55,10 @@ h5 {
     margin-left: 15px;
     margin-right: 15px;
 }
+
+.no-item {
+    margin-top: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 1.3em;
+}
