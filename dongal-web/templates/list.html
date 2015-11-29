@@ -18,13 +18,13 @@
                 <div id="list_value_id{{ loop.index }}" class="collapse row list-content-details">
                     {% for detail in favorite.list %}
                         <a class="col-xs-10" href="{{ detail.url }}">{{ detail.title }}</a>
-                        <button class="col-xs-2 btn btn-warning text-center">★</button>
+                        <button class="col-xs-2 btn btn-warning text-center add-favorite" seq={{ detail.subscriptionIdx }}>★</button>
                     {% endfor %}
                 </div>
             </li>
             {% endfor %}
         </ul>
     </div>
-
 </div>
+<!-- /container -->
 {% endblock %}

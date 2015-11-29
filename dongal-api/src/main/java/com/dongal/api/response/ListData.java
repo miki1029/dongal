@@ -61,6 +61,7 @@ public class ListData implements Serializable {
             }
 
             PostListData postListData = new PostListData();
+            postListData.subscriptionIdx = subscription.getIdx();
             postListData.title = subscription.getTitle();
             postListData.url = subscription.getUrl();
             postData.list.add(postListData);
@@ -98,6 +99,7 @@ public class ListData implements Serializable {
 
     @Data
     private class PostListData {
+        private Long subscriptionIdx;
         private String title;
         private String url;
     }

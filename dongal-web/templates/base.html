@@ -24,81 +24,23 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-
-        <style>
-            .text-center {
-                text-align: center;
-            }
-            .text-bold {
-                font-weight: bold;
-            }
-            h5 {
-                font-size: 1em;
-            }
-            #new-board-btn {
-                white-space: normal;
-            }
-            .list-content-details {
-                line-height:220%;
-            }
-            .make-line-updown {
-                border-top: 1px solid #dbdbdb;
-                border-bottom: 1px solid #dbdbdb;
-            }
-            .make-line-bottom {
-                border-bottom: 1px solid #dbdbdb;
-            }
-            .text-over-hide {
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                overflow: hidden;
-            }
-            .list-group-item {
-                padding:0px 15px;
-            }
-            .list-content-date {
-                padding:10px 15px;
-            }
-            .body {
-                padding-top:70px;
-            }
-
-            /* for del/favorite slide */
-            .carousel-control.left {
-                background-image: none;
-            }
-            .carousel-control.right {
-               background-image: none;
-            }
-            .carousel-indicators li {
-                display:none;
-            }
-            .carousel-list {
-                margin-left: 15px;
-                margin-right: 15px;
-            }
-
-        </style>
-
     </head>
-
-    <!-- Header -->
-    <!--상위 부분, 왼쪽 벨/Home Title-->
-    <header class="header navbar-fixed-top">
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-3 col-sm-4">
-                    <a class="navbar-brand" href="#"><img alt="logo" src="static/images/glyphicons/png/glyphicons-00-bell.png"></a>
-                </div>
-                <div class="col-xs-6 col-sm-4">
-                    <span class="text-muted text-center text-bold">Dongal&Dongal</span>
+    <body>
+        <!-- Header -->
+        <!--상위 부분, 왼쪽 벨/Home Title-->
+        <header class="header navbar-fixed-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-3 col-sm-4">
+                        <a class="navbar-brand" href="#"><img alt="logo" src="static/images/glyphicons/png/glyphicons-00-bell.png"></a>
+                    </div>
+                    <div class="col-xs-6 col-sm-4">
+                        <span class="text-muted text-center text-bold">Dongal&Dongal</span>
+                    </div>
                 </div>
             </div>
-        </div>
-    </header>
+        </header>
 
-
-    <body>
         <div id="view">
             {% block content %}{% endblock %}
         </div>
@@ -113,71 +55,78 @@
                 </div>
             </div>
         </footer>
+
+        <!-- scripts -->
+        <div>
+            <!-- load library -->
+            <script src="static/js/jquery.min.js"></script>
+            <script src="static/js/bootstrap.min.js"></script>
+            <script src="static/js/bootstrap-switch.min.js"></script>
+            <script src="static/js/jquery.mobile.custom.min.js"></script>
+            <script src="static/js/common.js"></script>
+
+            {# collapse list, favorite #}
+            <script>
+                $('.collapse-header').on('click', function () {
+                    $($(this).data('target')).collapse('toggle');
+                });
+            </script>
+
+            {# settings bsSwitch #}
+            <script>
+                $bsSwitch = $('.categoryIdx');
+                $bsSwitch.bootstrapSwitch();
+                $bsSwitch.bootstrapSwitch('size', 'mini');
+            </script>
+            <script>
+                var get = function(url, data, success, error) {
+                    data['userIdx'] = "{{ session['userIdx'] }}";
+                    $.ajax({
+                        url: ROOT_URL + url,
+                        data: data,
+                        success: success,
+                        error: error
+                    });
+                }
+            </script>
+
+            {# settings ajax #}
+            <script>
+                $(".categoryIdx").on('switchChange.bootstrapSwitch', function(event, state) {
+                    var json = {};
+                    json[$(this).attr("class")] = $(this).attr("seq") * 1;
+                    if( $(this).is(":checked") ) {
+                        url = "category/addCategoryToUser";
+                    } else {
+                        url = "category/delCategoryFromUser";
+                    }
+                    var showResult = $(this).parent().parent().parent().next();
+                    $(showResult).append('success');
+                    $(showResult).hide().delay(1000).fadeIn(2200);
+                    get(url, json, function(data) {
+                    });
+                });
+            </script>
+
+            {# list, favorite ajax #}
+            <script>
+                $(".add-favorite").on('click', function(event, state) {
+                    var json = {};
+                    json["subscriptionIdx"] = $(this).attr("seq") * 1;
+                    url = "favorite/addFavoriteToUser";
+                    get(url, json, function(data) {
+                        alert('abc');
+                    });
+                });
+                $(".del-favorite").on('click', function(event, state) {
+                    var json = {};
+                    json["subscriptionIdx"] = $(this).attr("seq") * 1;
+                    url = "favorite/delFavoriteFromUser";
+                    get(url, json, function(data) {
+                        alert(data);
+                    });
+                });
+            </script>
+        </div>
     </body>
-
-    <!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
-    <script src="static/js/jquery.min.js"></script>
-
-    <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
-    <script src="static/js/bootstrap.min.js"></script>
-    <script src="static/js/bootstrap-switch.min.js"></script>
-
-    <script src="static/js/jquery.mobile.custom.min.js"></script>
-
-    <script src="static/js/common.js"></script>
-    <script>
-        $('.carousel').carousel({
-            interval: false
-        });
-
-        $(document).ready(function () {
-            $("div[id^=carousel-example-generic]").swiperight(function () {
-                $(this).carousel('prev');
-            });
-            $("div[id^=carousel-example-generic]").swipeleft(function () {
-                $(this).carousel('next');
-            });
-        });
-    </script>
-
-    <script>
-        $('.collapse-header').on('click', function () {
-            $($(this).data('target')).collapse('toggle');
-        });
-    </script>
-
-    <script>
-        $bsSwitch = $('.categoryIdx');
-        $bsSwitch.bootstrapSwitch();
-        $bsSwitch.bootstrapSwitch('size', 'mini');
-    </script>
-    <script>
-      var get = function(url, data, success) {
-        data['userIdx'] = "{{ session['userIdx'] }}";
-        $.ajax({
-            url: ROOT_URL + url,
-            jsonp: "callback",
-            dataType: 'json',
-            data: data,
-            success: success
-        });
-      }
-    </script>
-
-    <script>
-      $(".categoryIdx").on('switchChange.bootstrapSwitch', function(event, state) {
-        var json = {};
-        json[$(this).attr("class")] = $(this).attr("seq") * 1;
-        if( $(this).is(":checked") ) {
-          url = "category/addCategoryToUser";
-        } else {
-          url = "category/delCategoryFromUser";
-        }
-        var showResult = $(this).parent().parent().parent().next();
-        $(showResult).append('success');
-        $(showResult).hide().delay(1000).fadeIn(2200);
-        get(url, json, function(data) {
-        });
-      });
-    </script>
 </html>

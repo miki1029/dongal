@@ -32,10 +32,12 @@
             background: #fff url('static/images/loading.gif') no-repeat center center; }
 
           .img-center {
+            width: 90%;
+            max-width: 500px;
             display: block;
             margin-left: auto;
             margin-right: auto;
-            margin-bottom: 100px;
+            margin-bottom: 50px;
           }
         </style>
 
@@ -45,38 +47,41 @@
         <div id="view">
             {% block content %}{% endblock %}
         </div>
+
+        <!-- scripts -->
+        <div>
+          <!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
+          <script src="static/js/jquery.min.js"></script>
+          <script src="static/js/common.js"></script>
+
+          <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
+          <script src="static/js/bootstrap.min.js"></script>
+          <script src="static/js/bootstrap-switch.min.js"></script>
+
+          <script src="static/js/jquery.mobile.custom.min.js"></script>
+
+          <script>
+            jQuery(document).ready(function($) {
+
+              // site preloader -- also uncomment the div in the header and the css style for #preloader
+              $(window).load(function(){
+                $('#preloader').fadeIn(3000).delay(1000).fadeOut('slow', function() { $(this).remove(); });
+              });
+
+            });
+          </script>
+
+          <script>
+            $("#joinForm").submit(function(e) {
+              if (e.preventDefault) e.preventDefault();
+              json = $(this).serializeObject();
+
+              get("session/join", json, function(data) {
+                console.log(data);
+              });
+            });
+          </script>
+        </div>
     </body>
-
-    <!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
-    <script src="static/js/jquery.min.js"></script>
-    <script src="static/js/common.js"></script>
-
-    <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
-    <script src="static/js/bootstrap.min.js"></script>
-    <script src="static/js/bootstrap-switch.min.js"></script>
-
-    <script src="static/js/jquery.mobile.custom.min.js"></script>
-
-    <script>
-      jQuery(document).ready(function($) {  
-
-      // site preloader -- also uncomment the div in the header and the css style for #preloader
-      $(window).load(function(){
-        $('#preloader').fadeIn(3000).delay(1000).fadeOut('slow', function() { $(this).remove(); });
-      });
-
-      });
-    </script>
-
-    <script>
-      $("#joinForm").submit(function(e) {
-        if (e.preventDefault) e.preventDefault();
-        json = $(this).serializeObject();
-
-        get("session/join", json, function(data) {
-          console.log(data);
-        });
-      });
-    </script>
 
 </html>
