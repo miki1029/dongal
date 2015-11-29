@@ -251,14 +251,14 @@ def crawling():
 def sendPushMessage():
     print "----------- 푸시 메시지 보내기 시작----------------"
     title = "동알동알 알림도착"
-    message = "%d 건이 업데이트 되었습니다."
+    message = "%s님, 알림 항목 %d 건이 업데이트 되었습니다."
 
     cursor = db.cursor()
     # Get category metadata
     cursor.execute("""
         select 
         device_key,
-            GROUP_CONCAT(category_id) as category_idxes
+            GROUP_CONCAT(category_id) as category_idxes, a.name
             from dongal.user a
             inner join dongal.user_category_settings b on a.idx = b.user_id
             group by b.user_id
@@ -272,6 +272,7 @@ def sendPushMessage():
         user['device_token'] = str(row[0])
         user['category_idxes'] = str(row[1]).split(",")
         user['sub_count'] = 0
+        user['name'] = str(row[2])
         users.append(user)
 
     cursor.close()
@@ -289,11 +290,12 @@ def sendPushMessage():
                 user['sub_count'] = user['sub_count'] + len(dyeon['subscriptions'])
 
     for user in users:
-        if user['sub_count'] > 0 and not user['device_token'] == "None" and not user['device_token'] and not user['device_token'] == "":
+        #print "device_token: %s, category_idxes: %s, sub_count: %s" % (user['device_token'], user['category_idxes'], user['sub_count'])
+        if user['sub_count'] > 0 and (not user['device_token'] == ""):
             user['data'] = {}
             user['data']['title'] = title
-            user['data']['message'] = message.replace("%d", str(user['sub_count']))
-            print "%s: %s" % (user['device_token'], user['data'])
+            user['data']['message'] = message.replace("%d", str(user['sub_count'])).replace("%s", str(user['name']))
+            print "%s에게 %s 전송" % (user['name'], user['data']['message'])
             canonical_id = gcm.plaintext_request(registration_id=str(user['device_token']), data = user['data'])
             if canonical_id:
                 # Repace reg_id with canonical_id in your database

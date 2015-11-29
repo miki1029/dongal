@@ -72,10 +72,6 @@ public class MainActivity extends AppCompatActivity {
                     mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
                     mWebView.setHorizontalScrollBarEnabled(false);
                     mWebView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
-                    mWebView.getSettings().setAllowFileAccessFromFileURLs(true);
-                    mWebView.getSettings().setAllowUniversalAccessFromFileURLs(true);
-                    mWebView.addJavascriptInterface(this, "android");
-                    mWebView.getSettings().setAllowFileAccessFromFileURLs(true);
 
 
                     mWebView.setWebViewClient(new WebViewClient() {
