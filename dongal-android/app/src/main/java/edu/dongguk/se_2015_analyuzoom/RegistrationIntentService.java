@@ -2,9 +2,11 @@ package edu.dongguk.se_2015_analyuzoom;
 
 import android.annotation.SuppressLint;
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
@@ -21,6 +23,7 @@ public class RegistrationIntentService extends IntentService {
     public RegistrationIntentService() {
         super(TAG);
     }
+
 
     /**
      * GCM을 위한 Instance ID의 토큰을 생성하여 가져온다.
