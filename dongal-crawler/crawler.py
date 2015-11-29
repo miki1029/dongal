@@ -289,11 +289,11 @@ def sendPushMessage():
                 user['sub_count'] = user['sub_count'] + len(dyeon['subscriptions'])
 
     for user in users:
-        if not user['device_token'] == "None":
+        if user['sub_count'] > 0 and not user['device_token'] == "None" and not user['device_token'] and not user['device_token'] == "":
             user['data'] = {}
             user['data']['title'] = title
             user['data']['message'] = message.replace("%d", str(user['sub_count']))
-            #print "%s: %s" % (user['device_token'], user['data'])
+            print "%s: %s" % (user['device_token'], user['data'])
             canonical_id = gcm.plaintext_request(registration_id=str(user['device_token']), data = user['data'])
             if canonical_id:
                 # Repace reg_id with canonical_id in your database
@@ -315,7 +315,7 @@ try:
 except Exception as ex:
     logging.exception("[ERROR] Dongal Crawler Error Occured")
     
-#saveSubscription()
+saveSubscription()
 sendPushMessage()
 
 db.close()
