@@ -34,7 +34,6 @@ def login():
 
 @app.route("/loginProcess", methods=['POST'])
 def login_process():
-    print 'login_process'
     email = request.form['email']
     password = request.form['password']
     try:
@@ -44,7 +43,7 @@ def login_process():
             session["userIdx"] = str(data["idx"])
             return redirect(url_for('home'))
         else:
-            return render_template("notVerified.html", userIdx = session["userIdx"], email = email)
+            return render_template("notVerified.html", userIdx = session["userIdx"], email = email, password = password)
     except json.scanner.JSONDecodeError as e:
         return '''
             <script>
@@ -81,7 +80,7 @@ def join_process():
         send_mail()
         return '''
             <script>
-                alert('인증 이메일이 전송되었습니다.\n인증 후 로그인 해 주세요.');
+                alert('인증 이메일이 전송되었습니다.\\n인증 후 로그인 해 주세요.');
                 location.href='login';
             </script>
         '''

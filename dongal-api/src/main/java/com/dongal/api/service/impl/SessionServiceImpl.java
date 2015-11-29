@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Freddi
@@ -23,7 +24,8 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public User login(String email, String password) throws WrongPasswordException {
-        User user = userRepository.findByEmail(email);
+        List<User> users = userRepository.findByEmail(email);
+        User user = users.get(0);
 
         if (!user.getPassword().equals(password)) {
             throw new WrongPasswordException();
@@ -39,8 +41,8 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public User join(String email, String password, String name, String deviceKey) throws AlreadyExistUserException {
-        User existUser = userRepository.findByEmail(email);
-        if (existUser == null) {
+        List<User> existUsers = userRepository.findByEmail(email);
+        if (existUsers.size() > 0) {
             throw new AlreadyExistUserException();
         }
         User user = new User(email, password, name, new Date(), false);
