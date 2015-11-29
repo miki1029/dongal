@@ -61,6 +61,10 @@
           <script src="static/js/jquery.mobile.custom.min.js"></script>
 
           <script>
+            var get = function(url, data, success, error) {
+                            }
+          </script>
+          <script>
             $(document).ready(function($) {
 
               // site preloader -- also uncomment the div in the header and the css style for #preloader
@@ -85,6 +89,26 @@
               json = $(this).serializeObject();
               this.submit();
             });
+          </script>
+          <script>
+            $("#sendVerifyForm").submit(function(e) {
+              if (e.preventDefault) e.preventDefault();
+
+              json = $(this).serializeObject();
+              $.ajax({
+                  url: "sendVerifyEmail",
+                  data: json,
+                  success: function(data) {
+                    data = JSON.parse(data)
+                    if(data.result == 'success')
+                      alert("발송 성공!");
+                  },
+                  error: function(data) {
+                    alert("발송 실패!");
+                  }
+              });
+            });
+
           </script>
         </div>
     </body>

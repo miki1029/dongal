@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template, request, session, redirect, url_for
+from dongal import *
 
 import simplejson as json
 import requests
@@ -10,7 +11,7 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 
 # BASE_URL = "http://dna.dongguk.ac.kr/~felika/dongal/dongal-backend/"
-ROOT_BASE_URL = "http://192.168.0.241:8080/"
+ROOT_BASE_URL = "http://192.168.0.151:8080/"
 # ROOT_BASE_URL = "http://localhost:8080/"
 SESSION_BASE_URL = ROOT_BASE_URL + "session/"
 VIEW_BASE_URL = ROOT_BASE_URL + "view/"
@@ -33,11 +34,17 @@ def login():
 
 @app.route("/loginProcess", methods=['POST'])
 def login_process():
+    print 'login_process'
     email = request.form['email']
     password = request.form['password']
     try:
         data = json.loads(requests.get(url=SESSION_BASE_URL + "login?email=" + email + "&password=" + password).text)
         session["userIdx"] = str(data["idx"])
+        if data['dguVerified']:
+            session["userIdx"] = str(data["idx"])
+            return redirect(url_for('home'))
+        else:
+            return render_template("notVerified.html", userIdx = session["userIdx"], email = email)
     except json.scanner.JSONDecodeError as e:
         return '''
             <script>
@@ -45,12 +52,19 @@ def login_process():
                 location.href='login';
             </script>
         '''
-    return redirect(url_for('home'))
 
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect(url_for('index'))
+
+@app.route("/sendVerifyEmail")
+def send_verify_mail():
+    # Send Verify email
+    init_mail(session["userIdx"])
+    send_mail()
+    data = {'result': 'success'}
+    return json.dumps(data)
 
 @app.route("/joinProcess", methods=['POST'])
 def join_process():
@@ -61,6 +75,16 @@ def join_process():
     try:
         data = json.loads(requests.get(url=SESSION_BASE_URL + "join?email=" + email + "&password=" + password + "&name=" + name + "&deviceKey=" + deviceKey).text)
         session["userIdx"] = str(data["idx"])
+        session["email"] = email
+        # Send Verify email
+        init_mail(session["userIdx"])
+        send_mail()
+        return '''
+            <script>
+                alert('인증 이메일이 전송되었습니다.\n인증 후 로그인 해 주세요.');
+                location.href='login';
+            </script>
+        '''
     except json.scanner.JSONDecodeError as e:
         return '''
             <script>
@@ -68,7 +92,6 @@ def join_process():
                 location.href='join';
             </script>
         '''
-    return redirect(url_for('home'))
 
 @app.route("/join")
 def join():
