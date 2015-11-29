@@ -27,7 +27,7 @@ def init_mail(userIdx, email, rootUrl):
         </form>
       </body>
     </html>
-    """ % (userIdx, rootUrl)
+    """ % (rootUrl, userIdx)
 
     # Record the MIME types of both parts - text/plain and text/html.
     part1 = MIMEText(text, 'plain')
