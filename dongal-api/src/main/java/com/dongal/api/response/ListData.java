@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ public class ListData implements Serializable {
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-    public ListData(User user, List<Subscription> subscriptions, List<Category> categories) {
+    public ListData(User user, List<Subscription> subscriptions, List<Category> categories, Date lastLoginTime) {
         // 날짜로 역순 정렬
         Collections.sort(subscriptions, (o1, o2) -> o2.getCreatedTime().compareTo(o1.getCreatedTime()));
 
@@ -64,6 +65,11 @@ public class ListData implements Serializable {
             postListData.subscriptionIdx = subscription.getIdx();
             postListData.title = subscription.getTitle();
             postListData.url = subscription.getUrl();
+            if (subscription.getCrawlingTime().getTime() > lastLoginTime.getTime()) {
+                postListData.isNew = true;
+            } else {
+                postListData.isNew = false;
+            }
             postData.list.add(postListData);
         }
         if (postData.date != null)
@@ -103,5 +109,6 @@ public class ListData implements Serializable {
         private Long subscriptionIdx;
         private String title;
         private String url;
+        private boolean isNew;
     }
 }

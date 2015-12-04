@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public interface RestViewService {
     ListData home(Long homeIdx, Date lastLoginTime);
-    ListData list(Long userIdx);
-    ListData favorite(Long userIdx);
+    ListData list(Long userIdx, Date lastLoginTime);
+    ListData favorite(Long userIdx, Date lastLoginTime);
     SettingsData settings(Long userIdx);
 }

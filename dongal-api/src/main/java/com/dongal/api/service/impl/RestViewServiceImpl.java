@@ -47,13 +47,13 @@ public class RestViewServiceImpl implements RestViewService {
             homeSubscriptions.add(subscriptions.get(i));
         }
 
-        ListData listData = new ListData(user, homeSubscriptions, user.getCategories());
+        ListData listData = new ListData(user, homeSubscriptions, user.getCategories(), lastLoginTime);
 
         return listData;
     }
 
     @Override
-    public ListData list(Long userIdx) {
+    public ListData list(Long userIdx, Date lastLoginTime) {
         User user = userRepository.findOne(userIdx);
 
         List<Subscription> subscriptions = new ArrayList<>();
@@ -61,18 +61,18 @@ public class RestViewServiceImpl implements RestViewService {
             subscriptions.addAll(category.getSubscriptions());
         }
 
-        ListData listData = new ListData(user, subscriptions, user.getCategories());
+        ListData listData = new ListData(user, subscriptions, user.getCategories(), lastLoginTime);
 
         return listData;
     }
 
     @Override
-    public ListData favorite(Long userIdx) {
+    public ListData favorite(Long userIdx, Date lastLoginTime) {
         User user = userRepository.findOne(userIdx);
 
         List<Subscription> subscriptions = user.getFavorites();
 
-        ListData listData = new ListData(user, subscriptions, user.getCategories());
+        ListData listData = new ListData(user, subscriptions, user.getCategories(), lastLoginTime);
 
         return listData;
     }

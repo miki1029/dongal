@@ -53,13 +53,21 @@ public class RestViewController {
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public ResponseEntity<ListData> list(@RequestParam Long userIdx) {
+    public ResponseEntity<ListData> list(@RequestParam Long userIdx, @RequestParam(required = false) Long timestamp) {
+        Date lastLoginTime = null;
+        if (timestamp == null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE, -1);
+            lastLoginTime = calendar.getTime();
+        }
+        else
+            lastLoginTime = new Date(timestamp);
         LOGGER.info("list(userIdx=" + userIdx + ")");
 
         ResponseEntity<ListData> entity = null;
         ListData listData = null;
         try {
-            listData = restViewService.list(userIdx);
+            listData = restViewService.list(userIdx, lastLoginTime);
             entity = new ResponseEntity<ListData>(listData, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,13 +77,21 @@ public class RestViewController {
     }
 
     @RequestMapping(value = "/favorite", method = RequestMethod.GET)
-    public ResponseEntity<ListData> favorite(@RequestParam Long userIdx) {
+    public ResponseEntity<ListData> favorite(@RequestParam Long userIdx, @RequestParam(required = false) Long timestamp) {
+        Date lastLoginTime = null;
+        if (timestamp == null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE, -1);
+            lastLoginTime = calendar.getTime();
+        }
+        else
+            lastLoginTime = new Date(timestamp);
         LOGGER.info("favorite(userIdx=" + userIdx + ")");
 
         ResponseEntity<ListData> entity = null;
         ListData listData = null;
         try {
-            listData = restViewService.favorite(userIdx);
+            listData = restViewService.favorite(userIdx, lastLoginTime);
             entity = new ResponseEntity<ListData>(listData, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
