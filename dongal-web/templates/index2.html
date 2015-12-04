@@ -1,25 +1,25 @@
 {% extends "base2.html" %}
 {% block content %}
-  
-<div class="container">
-  <div class="js"><!--this is supposed to be on the HTML element but codepen won't let me do it-->
-    <div id="preloader"></div>
 
-    <img class="img-center" src="static/images/logo.png" />
+  <div class="container">
+    <div class="js"><!--this is supposed to be on the HTML element but codepen won't let me do it-->
+      <div id="preloader"></div>
 
-    <a href="login" role="button" class="btn btn-default btn-block btn-lg">로그인</a>
-    <a href="join" role="button" class="btn btn-default btn-block btn-lg">회원가입</a>
-      
-     
-  </div><!--END: HTML element-->
-</div>
-<script>
-  var deviceTokenInit = function(deviceToken) {
-    localStorage.removeItem('deviceToken');
-    localStorage.setItem('deviceToken', deviceToken);
+      <img class="img-center" src="static/images/logo.png"/>
 
-    console.log("deviceToken(from Android) : " + deviceToken);
-    console.log("deviceToken(from localStorage) : " + localStorage.getItem('deviceToken'));
-  };
-</script>
+      <a href="login" role="button" class="btn btn-default btn-block btn-lg">로그인</a>
+      <a href="join" role="button" class="btn btn-default btn-block btn-lg">회원가입</a>
+
+
+    </div><!--END: HTML element-->
+  </div>
+  <script>
+    var deviceTokenInit = function (deviceToken) {
+      localStorage.removeItem('deviceToken');
+      localStorage.setItem('deviceToken', deviceToken);
+
+      console.log("deviceToken(from Android) : " + deviceToken);
+      console.log("deviceToken(from localStorage) : " + localStorage.getItem('deviceToken'));
+    };
+  </script>
 {% endblock %}

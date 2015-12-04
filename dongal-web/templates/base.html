@@ -1,141 +1,143 @@
 {% from "footer_macros.html" import nav_link with context %}
 <!DOCTYPE html>
 <html lang="ko">
-    <head>
-        <title>Dongal</title>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- 위 3개의 메타 태그는 *반드시* head 태그의 처음에 와야합니다; 어떤 다른 콘텐츠들은 반드시 이 태그들 *다음에* 와야 합니다 -->
+<head>
+  <title>Dongal</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 위 3개의 메타 태그는 *반드시* head 태그의 처음에 와야합니다; 어떤 다른 콘텐츠들은 반드시 이 태그들 *다음에* 와야 합니다 -->
 
-        <!-- 부트스트랩 -->
-        <link href="static/css/bootstrap/bootstrap.min.css" rel="stylesheet">
-        <link href="static/css/dongal/sticky-header.css" rel="stylesheet">
-        <link href="static/css/dongal/sticky-footer.css" rel="stylesheet">
-        <link href="static/css/dongal/contents-jumbotron.css" rel="stylesheet">
-        <link href="static/css/dongal/dongal.css" rel="stylesheet">
+  <!-- 부트스트랩 -->
+  <link href="static/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+  <link href="static/css/dongal/sticky-header.css" rel="stylesheet">
+  <link href="static/css/dongal/sticky-footer.css" rel="stylesheet">
+  <link href="static/css/dongal/contents-jumbotron.css" rel="stylesheet">
+  <link href="static/css/dongal/dongal.css" rel="stylesheet">
 
-        <!-- checkbox toggle -->
-        <link href="static/css/bootstrap/bootstrap-switch.css" rel="stylesheet">
+  <!-- checkbox toggle -->
+  <link href="static/css/bootstrap/bootstrap-switch.css" rel="stylesheet">
 
-        <!-- IE8 에서 HTML5 요소와 미디어 쿼리를 위한 HTML5 shim 와 Respond.js -->
-        <!-- WARNING: Respond.js 는 당신이 file:// 을 통해 페이지를 볼 때는 동작하지 않습니다. -->
-        <!--[if lt IE 9]>
+  <!-- IE8 에서 HTML5 요소와 미디어 쿼리를 위한 HTML5 shim 와 Respond.js -->
+  <!-- WARNING: Respond.js 는 당신이 file:// 을 통해 페이지를 볼 때는 동작하지 않습니다. -->
+  <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-    </head>
-    <body>
-        <!-- Header -->
-        <!--상위 부분, 왼쪽 벨/Home Title-->
-        <header class="header navbar-fixed-top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-3 col-sm-4">
-                        <a class="navbar-brand" href="#"><img alt="logo" src="static/images/glyphicons/png/glyphicons-00-bell.png"></a>
-                    </div>
-                    <div class="col-xs-6 col-sm-4">
-                        <span class="text-muted text-center text-bold">Dongal&Dongal</span>
-                    </div>
-                </div>
-            </div>
-        </header>
+</head>
+<body>
+<!-- Header -->
+<!--상위 부분, 왼쪽 벨/Home Title-->
+<header class="header navbar-fixed-top">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-3 col-sm-4">
+        <a class="navbar-brand" href="#"><img alt="logo" src="static/images/glyphicons/png/glyphicons-00-bell.png"></a>
+      </div>
+      <div class="col-xs-6 col-sm-4">
+        <span class="text-muted text-center text-bold">Dongal&Dongal</span>
+      </div>
+    </div>
+  </div>
+</header>
 
-        <div id="view">
-            {% block content %}{% endblock %}
-        </div>
-        <!-- Footer Menu Bar -->
-        <footer class="footer">
-            <div class="container">
-                <div class="row">
-                    {{ nav_link('home', 'Home', 'glyphicon-home') }}
-                    {{ nav_link('list', 'List', 'glyphicon-th-list') }}
-                    {{ nav_link('favorite', 'Favorite', 'glyphicon-star-empty') }}
-                    {{ nav_link('more', 'More', 'glyphicon-option-horizontal') }}
-                </div>
-            </div>
-        </footer>
+<div id="view">
+  {% block content %}{% endblock %}
+</div>
+<!-- Footer Menu Bar -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      {{ nav_link('home', 'Home', 'glyphicon-home') }}
+      {{ nav_link('list', 'List', 'glyphicon-th-list') }}
+      {{ nav_link('favorite', 'Favorite', 'glyphicon-star-empty') }}
+      {{ nav_link('more', 'More', 'glyphicon-option-horizontal') }}
+    </div>
+  </div>
+</footer>
 
-        <!-- scripts -->
-        <div>
-            <script>
-                var ROOT_URL = "{{ root_url }}";
-            </script>
-            <!-- load library -->
-            <script src="static/js/jquery.min.js"></script>
-            <script src="static/js/bootstrap.min.js"></script>
-            <script src="static/js/bootstrap-switch.min.js"></script>
-            <script src="static/js/jquery.mobile.custom.min.js"></script>
-            <script src="static/js/common.js"></script>
+<!-- scripts -->
+<div>
+  <script>
+    var ROOT_URL = "{{ root_url }}";
+  </script>
+  <!-- load library -->
+  <script src="static/js/jquery.min.js"></script>
+  <script src="static/js/bootstrap.min.js"></script>
+  <script src="static/js/bootstrap-switch.min.js"></script>
+  <script src="static/js/jquery.mobile.custom.min.js"></script>
+  <script src="static/js/common.js"></script>
 
-            {# collapse list, favorite #}
-            <script>
-                $.ajaxPrefilter( 'json script text', function( options ) { options.crossDomain = true; }); 
+  {# collapse list, favorite #}
+  <script>
+    $.ajaxPrefilter('json script text', function (options) {
+      options.crossDomain = true;
+    });
 
-                $('.collapse-header').on('click', function () {
-                    $($(this).data('target')).collapse('toggle');
-                });
-            </script>
+    $('.collapse-header').on('click', function () {
+      $($(this).data('target')).collapse('toggle');
+    });
+  </script>
 
-            {# settings bsSwitch #}
-            <script>
-                $bsSwitch = $('.categoryIdx');
-                $bsSwitch.bootstrapSwitch();
-                $bsSwitch.bootstrapSwitch('size', 'mini');
-            </script>
-            <script>
-                var get = function(url, data, success, error) {
-                    data['userIdx'] = "{{ session['userIdx'] }}";
-                    $.ajax({
-                        url: ROOT_URL + url,
-                        data: data,
-                        success: success,
-                        error: error
-                    });
-                }
-            </script>
+  {# settings bsSwitch #}
+  <script>
+    $bsSwitch = $('.categoryIdx');
+    $bsSwitch.bootstrapSwitch();
+    $bsSwitch.bootstrapSwitch('size', 'mini');
+  </script>
+  <script>
+    var get = function (url, data, success, error) {
+      data['userIdx'] = "{{ session['userIdx'] }}";
+      $.ajax({
+        url: ROOT_URL + url,
+        data: data,
+        success: success,
+        error: error
+      });
+    }
+  </script>
 
-            {# settings ajax #}
-            <script>
-                $(".categoryIdx").on('switchChange.bootstrapSwitch', function(event, state) {
-                    var json = {};
-                    json[$(this).attr("class")] = $(this).attr("seq") * 1;
-                    if( $(this).is(":checked") ) {
-                        url = "category/addCategoryToUser";
-                    } else {
-                        url = "category/delCategoryFromUser";
-                    }
-                    var showResult = $(this).parent().parent().parent().next();
-{#                    $(showResult).append('success');#}
-                    $(showResult).hide().delay(1000).fadeIn(2200);
-                    get(url, json, function(data) {
-                      console.log('success');
-                    }, function(data) {
-                      console.log("url : " + ROOT_URL + url + ", json : " + JSON.stringify(json) + ", result: " + JSON.stringify(data));
-                    });
-                });
-            </script>
+  {# settings ajax #}
+  <script>
+    $(".categoryIdx").on('switchChange.bootstrapSwitch', function (event, state) {
+      var json = {};
+      json[$(this).attr("class")] = $(this).attr("seq") * 1;
+      if ($(this).is(":checked")) {
+        url = "category/addCategoryToUser";
+      } else {
+        url = "category/delCategoryFromUser";
+      }
+      var showResult = $(this).parent().parent().parent().next();
+      {#                    $(showResult).append('success');#}
+      $(showResult).hide().delay(1000).fadeIn(2200);
+      get(url, json, function (data) {
+        console.log('success');
+      }, function (data) {
+        console.log("url : " + ROOT_URL + url + ", json : " + JSON.stringify(json) + ", result: " + JSON.stringify(data));
+      });
+    });
+  </script>
 
-            {# list, favorite ajax #}
-            <script>
-                $(".add-favorite").on('click', function(event, state) {
-                    var json = {};
-                    json["subscriptionIdx"] = $(this).attr("seq") * 1;
-                    url = "favorite/addFavoriteToUser";
-                    get(url, json, function(data) {
-                        alert('즐겨찾기에 추가되었습니다.');
-                    });
-                });
-                $(".del-favorite").on('click', function(event, state) {
-                    var json = {};
-                    json["subscriptionIdx"] = $(this).attr("seq") * 1;
-                    url = "favorite/delFavoriteFromUser";
-                    get(url, json, function(data) {
-                        alert('삭제되었습니다.');
-                        location.reload();
-                    });
-                });
-            </script>
-        </div>
-    </body>
+  {# list, favorite ajax #}
+  <script>
+    $(".add-favorite").on('click', function (event, state) {
+      var json = {};
+      json["subscriptionIdx"] = $(this).attr("seq") * 1;
+      url = "favorite/addFavoriteToUser";
+      get(url, json, function (data) {
+        alert('즐겨찾기에 추가되었습니다.');
+      });
+    });
+    $(".del-favorite").on('click', function (event, state) {
+      var json = {};
+      json["subscriptionIdx"] = $(this).attr("seq") * 1;
+      url = "favorite/delFavoriteFromUser";
+      get(url, json, function (data) {
+        alert('삭제되었습니다.');
+        location.reload();
+      });
+    });
+  </script>
+</div>
+</body>
 </html>

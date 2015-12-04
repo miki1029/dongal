@@ -1,16 +1,16 @@
 {% macro nav_link(endpoint, name, glyphicon) %}
-{% if request.endpoint.endswith(endpoint) %}
+  {% if request.endpoint.endswith(endpoint) %}
     <div class="col-xs-3">
-        <a href="{{ url_for(endpoint) }}" class="text-muted text-center active">
-            <span class="glyphicon {{ glyphicon }}" aria-hidden="true"></span><br/>{{name}}
-        </a>
+      <a href="{{ url_for(endpoint) }}" class="text-muted text-center active">
+        <span class="glyphicon {{ glyphicon }}" aria-hidden="true"></span><br/>{{ name }}
+      </a>
     </div>
-{% else %}
+  {% else %}
     <div class="col-xs-3">
-        <a href="{{ url_for(endpoint) }}" class="text-muted text-center">
-            <span class="glyphicon {{ glyphicon }}" aria-hidden="true"></span><br/>{{name}}
-        </a>
+      <a href="{{ url_for(endpoint) }}" class="text-muted text-center">
+        <span class="glyphicon {{ glyphicon }}" aria-hidden="true"></span><br/>{{ name }}
+      </a>
     </div>
-{% endif %}
+  {% endif %}
 {% endmacro %}
     

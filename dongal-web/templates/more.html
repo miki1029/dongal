@@ -1,135 +1,141 @@
 ﻿{% extends "base.html" %}
 {% block content %}
-    <style>
-        .Table {
-            display: table;
-            width : 95%;
-            margin: auto;
-        }
+  <style>
+    .Table {
+      display: table;
+      width: 95%;
+      margin: auto;
+    }
 
-        .Row {
-            display: table-row;
-            font-weight:bold;
-            text-align:center;
-        }
+    .Row {
+      display: table-row;
+      font-weight: bold;
+      text-align: center;
+    }
 
-        .Cell {
-            display: table-cell;
-            border:solid;
-            border-width: thin;
-            padding: 15px 5px 15px 5px;
-        }
+    .Cell {
+      display: table-cell;
+      border: solid;
+      border-width: thin;
+      padding: 15px 5px 15px 5px;
+    }
 
-        .shorcutCell {
-            display: table-cell;
-            padding: 20px 20px 0px 20px;
-            text-align:center;
-        }
-        .paddingTop {
-            padding-top:20px;
-        }
-        .shortcutpadding {
-            padding-left:20px;
-        }
+    .shorcutCell {
+      display: table-cell;
+      padding: 20px 20px 0px 20px;
+      text-align: center;
+    }
 
-    </style>
+    .paddingTop {
+      padding-top: 20px;
+    }
 
-<!-- Contents -->
-<div class="jumptron">
+    .shortcutpadding {
+      padding-left: 20px;
+    }
+
+  </style>
+
+  <!-- Contents -->
+  <div class="jumptron">
     <div class="container">
-        <div class="row">
-            <div class="Table">
-                <div class="Row">
-                    <div class="Cell col-xs-3">
-                        <a href="#" class="text-muted">
-                            <img src="static/images/glyphicons/png/glyphicons-356-bullhorn.png" width="27" height="26" /><br />
-                            <small>공지사항</small>
-                        </a>
-                    </div>
-                    <div class="Cell col-xs-3">
-                        <a href="settings" class="text-muted">
-                            <img src="static/images/glyphicons/png/glyphicons-137-cogwheel.png" width="27" height="26" /><br />
-                            <small>설정</small>
-                        </a>
-                    </div>
-                    <div class="Cell col-xs-3">
-                        <a href="#" class="text-muted">
-                            <img src="static/images/glyphicons/png/glyphicons-124-message-out.png" width="27" height="26" /><br />
-                            <small>버그리포트</small>
-                        </a>
-                    </div>
-                    <div class="Cell col-xs-3">
-                        <a href="logout" class="text-muted">
-                            <img src="static/images/glyphicons/png/glyphicons-388-log-out.png" width="27" height="26" /><br />
-                            <small>로그아웃</small>
-                        </a>
-                    </div>
-                </div>
-                <div class="Row">
-                    <div class="Cell col-xs-3">
-                        <a class="text-muted">
-                            <img src="static/images/glyphicons/png/noimage.png" width="27" height="26" /><br />
-                            <small>-</small>
-                        </a>
-                    </div>
-                    <div class="Cell col-xs-3">
-                        <a class="text-muted">
-                            <img src="static/images/glyphicons/png/noimage.png" width="27" height="26" /><br />
-                            <small>-</small>
-                        </a>
-                    </div>
-                    <div class="Cell col-xs-3">
-                        <a class="text-muted">
-                            <img src="static/images/glyphicons/png/noimage.png" width="27" height="26" /><br />
-                            <small>-</small>
-                        </a>
-                    </div>
-                    <div class="Cell col-xs-3">
-                        <a class="text-muted">
-                            <img src="static/images/glyphicons/png/noimage.png" width="27" height="26" /><br />
-                            <small>-</small>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--바로가기-->
-<div class="container paddingTop">
-    <div class="row">
-        <div class="col-xs-12 shortcutpadding">
-            <h5 style="font-weight:bold">바로가기</h5>
-        </div>
-    </div>
-
-    <div class="row">
+      <div class="row">
         <div class="Table">
-            <div class="Row">
-                <div class="shorcutCell col-xs-3">
-                    <a href="http://www.dongguk.edu"><div><img src="static/images/dguicon.png" width="27" height="26" /></div></a>
-                </div>
-                <div class="shorcutCell col-xs-3">
-                    <a href="http://www.dyeon.net"><div><img src="static/images/dyeonicon.jpg" width="27" height="26" /></div></a>
-                </div>
-                <div class="col-xs-3"></div>
+          <div class="Row">
+            <div class="Cell col-xs-3">
+              <a href="#" class="text-muted">
+                <img src="static/images/glyphicons/png/glyphicons-356-bullhorn.png" width="27" height="26"/><br/>
+                <small>공지사항</small>
+              </a>
             </div>
+            <div class="Cell col-xs-3">
+              <a href="settings" class="text-muted">
+                <img src="static/images/glyphicons/png/glyphicons-137-cogwheel.png" width="27" height="26"/><br/>
+                <small>설정</small>
+              </a>
+            </div>
+            <div class="Cell col-xs-3">
+              <a href="#" class="text-muted">
+                <img src="static/images/glyphicons/png/glyphicons-124-message-out.png" width="27" height="26"/><br/>
+                <small>버그리포트</small>
+              </a>
+            </div>
+            <div class="Cell col-xs-3">
+              <a href="logout" class="text-muted">
+                <img src="static/images/glyphicons/png/glyphicons-388-log-out.png" width="27" height="26"/><br/>
+                <small>로그아웃</small>
+              </a>
+            </div>
+          </div>
+          <div class="Row">
+            <div class="Cell col-xs-3">
+              <a class="text-muted">
+                <img src="static/images/glyphicons/png/noimage.png" width="27" height="26"/><br/>
+                <small>-</small>
+              </a>
+            </div>
+            <div class="Cell col-xs-3">
+              <a class="text-muted">
+                <img src="static/images/glyphicons/png/noimage.png" width="27" height="26"/><br/>
+                <small>-</small>
+              </a>
+            </div>
+            <div class="Cell col-xs-3">
+              <a class="text-muted">
+                <img src="static/images/glyphicons/png/noimage.png" width="27" height="26"/><br/>
+                <small>-</small>
+              </a>
+            </div>
+            <div class="Cell col-xs-3">
+              <a class="text-muted">
+                <img src="static/images/glyphicons/png/noimage.png" width="27" height="26"/><br/>
+                <small>-</small>
+              </a>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-    
+  </div>
+
+  <!--바로가기-->
+  <div class="container paddingTop">
     <div class="row">
-        <div class="Table">
-            <div class="Row">
-                <div class="shorcutCell col-xs-3">
-                    <small>동국대</small>
-                </div>
-                <div class="shorcutCell col-xs-3">
-                    <small>디연</small>
-                </div>
-            </div>
-        </div>
+      <div class="col-xs-12 shortcutpadding">
+        <h5 style="font-weight:bold">바로가기</h5>
+      </div>
     </div>
-</div>
-<!-- /container -->
+
+    <div class="row">
+      <div class="Table">
+        <div class="Row">
+          <div class="shorcutCell col-xs-3">
+            <a href="http://www.dongguk.edu">
+              <div><img src="static/images/dguicon.png" width="27" height="26"/></div>
+            </a>
+          </div>
+          <div class="shorcutCell col-xs-3">
+            <a href="http://www.dyeon.net">
+              <div><img src="static/images/dyeonicon.jpg" width="27" height="26"/></div>
+            </a>
+          </div>
+          <div class="col-xs-3"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="Table">
+        <div class="Row">
+          <div class="shorcutCell col-xs-3">
+            <small>동국대</small>
+          </div>
+          <div class="shorcutCell col-xs-3">
+            <small>디연</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /container -->
 {% endblock %}

@@ -1,21 +1,23 @@
 ﻿{% extends "base.html" %}
 {% block content %}
-<!-- Contents -->
-<div class="jumbotron">
+  <!-- Contents -->
+  <div class="jumbotron">
     <div class="container">
-        <div class="row">
-            <div class="jumbo-user col-xs-2 text-right">
-                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-            </div>
-            <div class="jumbo-user col-xs-3 col-sm-4 text-left">
-                <small>{{ userInfo.name }}</small>
-            </div>
-            <div class="col-xs-7 col-sm-6">
-                <small>홈 설정 : 최근 {{ userInfo.settings.home.count }}개만</small><br/>
-                <small>카테고리 설정 : {{ userInfo.settings.category }}</small><br/>
-                <small>최근 업데이트 : {{ userInfo.settings.lastUpdateTime }}</small>
-            </div>
-{#            <div class="col-xs-7 col-sm-6">
+      <div class="row">
+        <div class="jumbo-user col-xs-2 text-right">
+          <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+        </div>
+        <div class="jumbo-user col-xs-3 col-sm-4 text-left">
+          <small>{{ userInfo.name }}</small>
+        </div>
+        <div class="col-xs-7 col-sm-6">
+          <small>홈 설정 : 최근 {{ userInfo.settings.home.count }}개만</small>
+          <br/>
+          <small>카테고리 설정 : {{ userInfo.settings.category }}</small>
+          <br/>
+          <small>최근 업데이트 : {{ userInfo.settings.lastUpdateTime }}</small>
+        </div>
+        {#            <div class="col-xs-7 col-sm-6">
 
                 <small>[홈 설정]</small><br/>
                 <small>최대 리스트 개수: {{ userInfo.settings.home.count }} 개</small><br/>
@@ -30,34 +32,36 @@
 
                 <small>최근 업데이트 : {{ userInfo.settings.lastUpdateTime }}</small>
             </div>#}
-        </div>
+      </div>
     </div>
-</div>
-<div class="container">
+  </div>
+  <div class="container">
     <ul class="list-group">
-        {% for alarm in alarms %}
+      {% for alarm in alarms %}
         <li class="list-group-item">
-            <span class="badge">{{ alarm.list|length }}</span>
-            <div class="row list-content-date collapse-header" data-target="#value_id{{ loop.index }}" >{{ alarm.date }}</div>
-            <div id="value_id{{ loop.index }}" class="collapse row list-content-details">
-                {% for detail in alarm.list %}
-                    <a class="col-xs-12 make-line text-over-hide" href="{{ detail.url }}">
-                      {% if detail.dongguk %}
-                        <span class="label label-success">동국</span>
-                      {% endif %}
-                      {% if detail.dyeon %}
-                        <span class="label label-primary">디연</span>
-                      {% endif %}
-                      {{ detail.title }}
-                      {% if detail.new %}
-                        <span class="label label-warning">new</span>
-                      {% endif %}
-                    </a>
-                {% endfor %}
-            </div>
+          <span class="badge">{{ alarm.list|length }}</span>
+
+          <div class="row list-content-date collapse-header"
+               data-target="#value_id{{ loop.index }}">{{ alarm.date }}</div>
+          <div id="value_id{{ loop.index }}" class="collapse row list-content-details">
+            {% for detail in alarm.list %}
+              <a class="col-xs-12 make-line text-over-hide" href="{{ detail.url }}">
+                {% if detail.dongguk %}
+                  <span class="label label-success">동국</span>
+                {% endif %}
+                {% if detail.dyeon %}
+                  <span class="label label-primary">디연</span>
+                {% endif %}
+                {{ detail.title }}
+                {% if detail.new %}
+                  <span class="label label-warning">new</span>
+                {% endif %}
+              </a>
+            {% endfor %}
+          </div>
         </li>
-        {% endfor %}
+      {% endfor %}
     </ul>
-</div>
+  </div>
 {% endblock %}
 

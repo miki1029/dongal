@@ -1,19 +1,22 @@
-jQuery.fn.serializeObject = function() {
+jQuery.fn.serializeObject = function () {
   var obj = null;
   try {
-    if ( this[0].tagName && this[0].tagName.toUpperCase() == "FORM" ) {
+    if (this[0].tagName && this[0].tagName.toUpperCase() == "FORM") {
       var arr = this.serializeArray();
-      if ( arr ) {
+      if (arr) {
         obj = {};
-        jQuery.each(arr, function() {
+        jQuery.each(arr, function () {
           obj[this.name] = this.value;
-        });				
+        });
       }//if ( arr ) {
- 		}
+    }
   }
-  catch(e) {alert(e.message);}
-  finally  {}
-  
+  catch (e) {
+    alert(e.message);
+  }
+  finally {
+  }
+
   return obj;
 };
 
@@ -21,26 +24,26 @@ jQuery.fn.serializeObject = function() {
 //var ROOT_URL = "http://localhost:8080/";
 //var ROOT_URL = "http://dna.dongguk.ac.kr:8080/";
 
-var post = function(url, data, success) {
-	$.ajax({
-		  type: "POST",
-		  url: ROOT_URL + url,
-		  crossDomain: true,
-		  data: data,
-		  success: success,
-		  dataType: 'jsonp'
-	});
+var post = function (url, data, success) {
+  $.ajax({
+    type: "POST",
+    url: ROOT_URL + url,
+    crossDomain: true,
+    data: data,
+    success: success,
+    dataType: 'jsonp'
+  });
 };
 
-var get = function(url, data, success) {
-	data['userIdx'] = "{{ session['userIdx'] }}";
-	$.ajax({
-  		url: ROOT_URL + url,
-		jsonp: "callback",
-  		dataType: 'json',
-  		data: data,
-		success: function(result) {
-			console.log("success: " + JSON.stringify(result));
-		}
-	});
-}
+var get = function (url, data, success) {
+  data['userIdx'] = "{{ session['userIdx'] }}";
+  $.ajax({
+    url: ROOT_URL + url,
+    jsonp: "callback",
+    dataType: 'json',
+    data: data,
+    success: function (result) {
+      console.log("success: " + JSON.stringify(result));
+    }
+  });
+};

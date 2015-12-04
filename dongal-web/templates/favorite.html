@@ -1,41 +1,44 @@
 ﻿{% extends "base.html" %}
 {% block content %}
-<!-- Contents -->
-<div class="container">
+  <!-- Contents -->
+  <div class="container">
 
-{#    <div class="row text-center text-bold">
+    {#    <div class="row text-center text-bold">
         <div class="col-xs-3 col-sm-2">즐겨찾기</div>
         <div class="col-xs-6 col-sm-8">리스트 목록</div>
         <div class="col-xs-3 col-sm-2">삭제</div>
     </div>#}
 
     <div class="row">
-        <ul class="list-group">
-            {% if favorites|length < 1 %}
-                <li class="list-group-item text-center no-item">아직 즐겨찾기된 게시물이 없습니다.</li>
-            {% endif %}
-            {% for favorite in favorites %}
-            <li class="list-group-item">
-                <span class="badge">{{ favorite.list|length }}</span>
-                <div class="row list-content-date collapse-header" data-target="#fav_list_id{{ loop.index }}">{{ favorite.date }}</div>
-                <div id="fav_list_id{{ loop.index }}" class="collapse row list-content-details">
-                    {% for detail in favorite.list %}
-                        <a class="col-xs-10" href="{{ detail.url }}">
-                          {% if detail.dongguk %}
-                            <span class="label label-success">동국</span>
-                          {% endif %}
-                          {% if detail.dyeon %}
-                            <span class="label label-primary">디연</span>
-                          {% endif %}
-                          {{ detail.title }}
-                        </a>
-                        <button class="col-xs-2 btn btn-danger text-center del-favorite" seq={{ detail.subscriptionIdx }}>Del</button>
-                    {% endfor %}
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
+      <ul class="list-group">
+        {% if favorites|length < 1 %}
+          <li class="list-group-item text-center no-item">아직 즐겨찾기된 게시물이 없습니다.</li>
+        {% endif %}
+        {% for favorite in favorites %}
+          <li class="list-group-item">
+            <span class="badge">{{ favorite.list|length }}</span>
+
+            <div class="row list-content-date collapse-header"
+                 data-target="#fav_list_id{{ loop.index }}">{{ favorite.date }}</div>
+            <div id="fav_list_id{{ loop.index }}" class="collapse row list-content-details">
+              {% for detail in favorite.list %}
+                <a class="col-xs-10" href="{{ detail.url }}">
+                  {% if detail.dongguk %}
+                    <span class="label label-success">동국</span>
+                  {% endif %}
+                  {% if detail.dyeon %}
+                    <span class="label label-primary">디연</span>
+                  {% endif %}
+                  {{ detail.title }}
+                </a>
+                <button class="col-xs-2 btn btn-danger text-center del-favorite" seq={{ detail.subscriptionIdx }}>Del
+                </button>
+              {% endfor %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
     </div>
-</div>
-<!-- /container -->
+  </div>
+  <!-- /container -->
 {% endblock %}
