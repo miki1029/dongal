@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,10 +34,10 @@ public class RestViewServiceImpl implements RestViewService {
     private SubscriptionRepository subscriptionRepository;
 
     @Override
-    public ListData home(Long userIdx) {
+    public ListData home(Long userIdx, Date lastLoginTime) {
         User user = userRepository.findOne(userIdx);
 
-        List<Subscription> subscriptions = subscriptionRepository.findByCategoryInOrderByCreatedTimeDesc(user.getCategories());
+        List<Subscription> subscriptions = subscriptionRepository.findByCategoryInAndCrawlingTimeAfterOrderByCreatedTimeDesc(user.getCategories(), lastLoginTime);
         List<Subscription> homeSubscriptions = new ArrayList<>(user.getHomeCount());
 
         int homeCount = subscriptions.size();

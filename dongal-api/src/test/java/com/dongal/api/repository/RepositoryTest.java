@@ -448,6 +448,7 @@ public class RepositoryTest {
         assertThat(subscriptionRepository.count(), is(29L * 8));
 
         for (User user : users) {
+            user.setLastLoginTime(user.getCreatedTime());
             userRepository.save(user);
         }
         assertThat(userRepository.count(), is(2L));

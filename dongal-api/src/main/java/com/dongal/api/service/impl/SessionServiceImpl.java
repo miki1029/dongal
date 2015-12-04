@@ -58,5 +58,10 @@ public class SessionServiceImpl implements SessionService {
         userRepository.save(user);
     }
 
-    // TODO - 로그인 처리 어떻게 할 것인지?
+    @Override
+    public void updateLoginTime(Long userIdx) {
+        User user = userRepository.findOne(userIdx);
+        user.setLastLoginTime(new Date());
+        userRepository.save(user);
+    }
 }

@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * @author miki
  */
@@ -26,13 +29,21 @@ public class RestViewController {
     private RestViewService restViewService;
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public ResponseEntity<ListData> home(@RequestParam Long userIdx) {
-        LOGGER.info("home(userIdx=" + userIdx + ")");
+    public ResponseEntity<ListData> home(@RequestParam Long userIdx, @RequestParam(required = false) Long timestamp) {
+        Date lastLoginTime = null;
+        if (timestamp == null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE, -1);
+            lastLoginTime = calendar.getTime();
+        }
+        else
+            lastLoginTime = new Date(timestamp);
+        LOGGER.info("home(userIdx=" + userIdx + ",timestamp=" + timestamp + ",lastLoginTime=" + lastLoginTime + ")");
 
         ResponseEntity<ListData> entity = null;
         ListData listData = null;
         try {
-            listData = restViewService.home(userIdx);
+            listData = restViewService.home(userIdx, lastLoginTime);
             entity = new ResponseEntity<ListData>(listData, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

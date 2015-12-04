@@ -12,4 +12,5 @@ public interface SessionService {
     void logout(Long userIdx);
     User join(String email, String password, String name, String deviceKey) throws AlreadyExistUserException;
     void verifyDGU(Long userIdx);
+    void updateLoginTime(Long userIdx);
 }

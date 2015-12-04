@@ -31,12 +31,14 @@ def login():
 
 @app.route("/loginProcess", methods=['POST'])
 def login_process():
-    session["email"] = request.form['email']
     email = request.form['email']
     password = request.form['password']
     try:
         data = json.loads(requests.get(url=SESSION_BASE_URL + "login?email=" + email + "&password=" + password).text)
         session["userIdx"] = str(data["idx"])
+        session["email"] = request.form['email']
+        session["lastLoginTime"] = str(data["lastLoginTime"])
+        requests.get(url=SESSION_BASE_URL + "updateLoginTime?userIdx=" + session["userIdx"])
         print 'loginProcess ~ session["userIdx"]=' + session["userIdx"]
         if data['dguVerified']:
             session["userIdx"] = str(data["idx"])
@@ -76,6 +78,7 @@ def join_process():
         print data
         session["userIdx"] = str(data["idx"])
         session["email"] = email
+        session["lastLoginTime"] = str(data["lastLoginTime"])
         # Send Verify email
         init_mail(str(data["idx"]), email, ROOT_BASE_URL)
         send_mail(email)
@@ -99,7 +102,7 @@ def join():
 
 @app.route("/home")
 def home():
-    data = json.loads(requests.get(url=VIEW_BASE_URL + "home?userIdx=" + session["userIdx"]).text)
+    data = json.loads(requests.get(url=VIEW_BASE_URL + "home?userIdx=" + session["userIdx"] + "&timestamp=" + session["lastLoginTime"]).text)
     if len(data['posts']) == 0 :
         return redirect(url_for('settings'))
     return render_template("home.html", title="Home", userInfo=data['userInfo'], alarms=data['posts'], root_url=ROOT_BASE_URL)

@@ -89,4 +89,20 @@ public class SessionController {
         }
         return entity;
     }
+
+    @RequestMapping(value = "/updateLoginTime", method = RequestMethod.GET)
+    public ResponseEntity<String> updateLoginTime(@RequestParam Long userIdx) {
+        LOGGER.info("updateLoginTime(userIdx=" + userIdx + ")");
+
+        ResponseEntity<String> entity = null;
+        try {
+            sessionService.updateLoginTime(userIdx);
+            entity = new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return entity;
+    }
+
 }
