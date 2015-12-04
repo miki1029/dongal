@@ -13,6 +13,7 @@ import urllib, urllib2, cookielib, ssl
 import re
 import MySQLdb
 import datetime
+import time
 
 logging.basicConfig(level=logging.ERROR, filename='crawler.log')
 
@@ -103,15 +104,19 @@ def updateLastSeq():
 def insertSubscriptions():
     cursor = db.cursor()
     params = []
+
+    localtime   = time.localtime()
+    timeString  = time.strftime("%Y-%m-%d %H:%M:%S", localtime)
+
     for idx, dyeon in enumerate(CATEGORY_META_DATA['dgu']):
-        param = [ (dyeon['idx'], subscription['title'], subscription['link'], subscription['created_time']) for subscription in dyeon['subscriptions'] ]
+        param = [ (dyeon['idx'], subscription['title'], subscription['link'], subscription['created_time'], timeString) for subscription in dyeon['subscriptions'] ]
         params += param
         
     for idx, dyeon in enumerate(CATEGORY_META_DATA['dyeon']):
-        param = [ (dyeon['idx'], subscription['title'], subscription['link'], subscription['created_time']) for subscription in dyeon['subscriptions'] ]
+        param = [ (dyeon['idx'], subscription['title'], subscription['link'], subscription['created_time'], timeString) for subscription in dyeon['subscriptions'] ]
         params += param
 
-    sql = "INSERT INTO dongal.subscription(category_id, title, url, created_time) VALUES(%s, %s, %s, %s)"
+    sql = "INSERT INTO dongal.subscription(category_id, title, url, created_time, crawling_time) VALUES(%s, %s, %s, %s, %s)"
     try:
         cursor.executemany(sql, params)
         db.commit()
