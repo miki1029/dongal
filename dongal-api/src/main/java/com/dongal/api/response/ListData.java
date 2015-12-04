@@ -70,6 +70,17 @@ public class ListData implements Serializable {
             } else {
                 postListData.isNew = false;
             }
+            if (subscription.getCategory().getCategoryType() == CategoryEnum.DONGGUK) {
+                postListData.isDongguk = true;
+                postListData.isDyeon = false;
+            }
+            else if (subscription.getCategory().getCategoryType() == CategoryEnum.DYEON) {
+                postListData.isDongguk = false;
+                postListData.isDyeon = true;
+            } else {
+                postListData.isDongguk = false;
+                postListData.isDyeon = false;
+            }
             postData.list.add(postListData);
         }
         if (postData.date != null)
@@ -110,5 +121,7 @@ public class ListData implements Serializable {
         private String title;
         private String url;
         private boolean isNew;
+        private boolean isDongguk;
+        private boolean isDyeon;
     }
 }

@@ -21,10 +21,17 @@
                 <div id="list_value_id{{ loop.index }}" class="collapse row list-content-details">
                     {% for detail in favorite.list %}
                         <a class="col-xs-10" href="{{ detail.url }}">
-                        {% if detail.new %}
-                        <span class="label label-warning">new</span>
-                        {% endif %}
-                        {{ detail.title }}</a>
+                          {% if detail.dongguk %}
+                            <span class="label label-success">동국</span>
+                          {% endif %}
+                          {% if detail.dyeon %}
+                            <span class="label label-primary">디연</span>
+                          {% endif %}
+                          {{ detail.title }}
+                          {% if detail.new %}
+                            <span class="label label-warning">new</span>
+                          {% endif %}
+                        </a>
                         <button class="col-xs-2 btn btn-warning text-center add-favorite" seq={{ detail.subscriptionIdx }}>★</button>
                     {% endfor %}
                 </div>

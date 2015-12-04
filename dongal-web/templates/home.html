@@ -42,10 +42,16 @@
             <div id="value_id{{ loop.index }}" class="collapse row list-content-details">
                 {% for detail in alarm.list %}
                     <a class="col-xs-12 make-line text-over-hide" href="{{ detail.url }}">
-                      {% if detail.new %}
-                      <span class="label label-warning">new</span>
+                      {% if detail.dongguk %}
+                        <span class="label label-success">동국</span>
+                      {% endif %}
+                      {% if detail.dyeon %}
+                        <span class="label label-primary">디연</span>
                       {% endif %}
                       {{ detail.title }}
+                      {% if detail.new %}
+                        <span class="label label-warning">new</span>
+                      {% endif %}
                     </a>
                 {% endfor %}
             </div>
