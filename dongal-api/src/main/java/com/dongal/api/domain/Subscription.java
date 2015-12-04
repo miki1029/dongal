@@ -34,6 +34,11 @@ public class Subscription {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdTime;
 
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date crawlingTime;
+
     public Subscription(Category category, String title, String url, Date createdTime) {
         this.category = category;
         this.title = title;
