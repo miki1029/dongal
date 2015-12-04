@@ -5,3 +5,4 @@
 ### dongal-web
 *.pyc
 venv
+ConfigFile.properties

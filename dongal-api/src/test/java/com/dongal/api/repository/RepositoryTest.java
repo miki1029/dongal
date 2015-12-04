@@ -442,6 +442,7 @@ public class RepositoryTest {
         assertThat(crawlingMetaRepository.count(), is(13L));
 
         for (Subscription subscription : subscriptions) {
+            subscription.setCrawlingTime(subscription.getCreatedTime());
             subscriptionRepository.save(subscription);
         }
         assertThat(subscriptionRepository.count(), is(29L * 8));

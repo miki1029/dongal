@@ -4,15 +4,16 @@ from dongal import *
 
 import simplejson as json
 import requests
+import ConfigParser
 
 SECRET_KEY = 'dongal'
 
 app = Flask(__name__)
 app.config.from_object(__name__)
 
-# ROOT_BASE_URL = "http://192.168.0.151:8080/"
-# ROOT_BASE_URL = "http://localhost:8080/"
-ROOT_BASE_URL = "http://dna.dongguk.ac.kr:8080/"
+config = ConfigParser.RawConfigParser()
+config.read('ConfigFile.properties')
+ROOT_BASE_URL = config.get('HostSection', 'host.name')
 SESSION_BASE_URL = ROOT_BASE_URL + "session/"
 VIEW_BASE_URL = ROOT_BASE_URL + "view/"
 
@@ -22,11 +23,11 @@ def index():
     if hasattr(session, 'userIdx'):
         return redirect("home")
     else:
-        return render_template("index2.html", title="Index")
+        return render_template("index2.html", title="Index", root_url=ROOT_BASE_URL)
 
 @app.route("/login")
 def login():
-    return render_template("login.html", title="Login")
+    return render_template("login.html", title="Login", root_url=ROOT_BASE_URL)
 
 @app.route("/loginProcess", methods=['POST'])
 def login_process():
@@ -41,7 +42,7 @@ def login_process():
             session["userIdx"] = str(data["idx"])
             return redirect(url_for('home'))
         else:
-            return render_template("notVerified.html", userIdx = session["userIdx"], email = email, password = password)
+            return render_template("notVerified.html", userIdx = session["userIdx"], email = email, password = password, root_url=ROOT_BASE_URL)
     except json.scanner.JSONDecodeError as e:
         return '''
             <script>
@@ -94,33 +95,33 @@ def join_process():
 
 @app.route("/join")
 def join():
-    return render_template("join.html", title="Join")
+    return render_template("join.html", title="Join", root_url=ROOT_BASE_URL)
 
 @app.route("/home")
 def home():
     data = json.loads(requests.get(url=VIEW_BASE_URL + "home?userIdx=" + session["userIdx"]).text)
     if len(data['posts']) == 0 :
         return redirect(url_for('settings'))
-    return render_template("home.html", title="Home", userInfo=data['userInfo'], alarms=data['posts'])
+    return render_template("home.html", title="Home", userInfo=data['userInfo'], alarms=data['posts'], root_url=ROOT_BASE_URL)
 
 @app.route("/list")
 def list():
     data = json.loads(requests.get(url=VIEW_BASE_URL + "list?userIdx=" + session["userIdx"]).text)
-    return render_template("list.html", title="List", favorites=data['posts'])
+    return render_template("list.html", title="List", favorites=data['posts'], root_url=ROOT_BASE_URL)
 
 @app.route("/favorite")
 def favorite():
     data = json.loads(requests.get(url=VIEW_BASE_URL + "favorite?userIdx=" + session["userIdx"]).text)
-    return render_template("favorite.html", title="Favorite", favorites=data['posts'])
+    return render_template("favorite.html", title="Favorite", favorites=data['posts'], root_url=ROOT_BASE_URL)
 
 @app.route("/more")
 def more():
-    return render_template("more.html", title="More")
+    return render_template("more.html", title="More", root_url=ROOT_BASE_URL)
 
 @app.route("/settings")
 def settings():
     data = json.loads(requests.get(url=VIEW_BASE_URL + "settings?userIdx=" + session["userIdx"]).text)
-    return render_template("settings.html", title="Settings", official=data['official'], dyeon=data['dyeon'])
+    return render_template("settings.html", title="Settings", official=data['official'], dyeon=data['dyeon'], root_url=ROOT_BASE_URL)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=9090, debug=True)

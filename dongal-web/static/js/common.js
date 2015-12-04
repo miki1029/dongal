@@ -19,7 +19,7 @@ jQuery.fn.serializeObject = function() {
 
 //var ROOT_URL = "http://192.168.0.151:8080/";
 //var ROOT_URL = "http://localhost:8080/";
-var ROOT_URL = "http://dna.dongguk.ac.kr:8080/";
+//var ROOT_URL = "http://dna.dongguk.ac.kr:8080/";
 
 var post = function(url, data, success) {
 	$.ajax({
