@@ -11,11 +11,18 @@
           <small>{{ userInfo.name }}</small>
         </div>
         <div class="col-xs-7 col-sm-6">
-          <small>홈 설정 : 최근 {{ userInfo.settings.home.count }}개만</small>
+          <strong>최근 로그인 시각</strong><br/>
+          <small>{{ last_login_time }}</small>
+          <br/>
+          {% if userInfo.lastCrawlingTime %}
+            <strong>최근 업데이트 시각</strong><br/>
+            <small>{{ userInfo.lastCrawlingTime }}</small>
+          {% endif %}
+          {#          <small>홈 설정 : 최근 {{ userInfo.settings.home.count }}개만</small>
           <br/>
           <small>카테고리 설정 : {{ userInfo.settings.category }}</small>
           <br/>
-          <small>최근 업데이트 : {{ userInfo.settings.lastUpdateTime }}</small>
+          <small>최근 업데이트 : {{ userInfo.settings.lastUpdateTime }}</small>#}
         </div>
         {#            <div class="col-xs-7 col-sm-6">
 
@@ -36,7 +43,16 @@
     </div>
   </div>
   <div class="container">
+    <h5>확인하지 않은 알림 목록</h5>
     <ul class="list-group">
+      {% if alarms|length < 1 %}
+        <li class="list-group-item text-center no-item">아직 새로운 알림이 없습니다.</li>
+        <li class="list-group-item text-center no-item">
+          <a href="settings">
+            카테고리 설정하러 가기
+          </a>
+        </li>
+      {% endif %}
       {% for alarm in alarms %}
         <li class="list-group-item">
           <span class="badge">{{ alarm.list|length }}</span>

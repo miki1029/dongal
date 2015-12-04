@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -37,17 +37,17 @@ public class RestViewServiceImpl implements RestViewService {
     public ListData home(Long userIdx, Date lastLoginTime) {
         User user = userRepository.findOne(userIdx);
 
-        List<Subscription> subscriptions = subscriptionRepository.findByCategoryInAndCrawlingTimeAfterOrderByCreatedTimeDesc(user.getCategories(), lastLoginTime);
-        List<Subscription> homeSubscriptions = new ArrayList<>(user.getHomeCount());
+        List<Subscription> subscriptions = subscriptionRepository.findByCategoryInAndCrawlingTimeAfterOrderByCrawlingTimeDesc(user.getCategories(), lastLoginTime);
+/*        List<Subscription> homeSubscriptions = new ArrayList<>(user.getHomeCount());
 
         int homeCount = subscriptions.size();
         if (user.getHomeCount() < homeCount) homeCount = user.getHomeCount();
 
         for (int i=0; i<homeCount; i++) {
             homeSubscriptions.add(subscriptions.get(i));
-        }
+        }*/
 
-        ListData listData = new ListData(user, homeSubscriptions, user.getCategories(), lastLoginTime);
+        ListData listData = new ListData(user, subscriptions, user.getCategories(), lastLoginTime);
 
         return listData;
     }
@@ -56,10 +56,12 @@ public class RestViewServiceImpl implements RestViewService {
     public ListData list(Long userIdx, Date lastLoginTime) {
         User user = userRepository.findOne(userIdx);
 
-        List<Subscription> subscriptions = new ArrayList<>();
+        List<Subscription> subscriptions = subscriptionRepository.findByCategoryInOrderByCrawlingTimeDesc(user.getCategories());
+
+/*        List<Subscription> subscriptions = new ArrayList<>();
         for (Category category : user.getCategories()) {
             subscriptions.addAll(category.getSubscriptions());
-        }
+        }*/
 
         ListData listData = new ListData(user, subscriptions, user.getCategories(), lastLoginTime);
 
@@ -71,6 +73,7 @@ public class RestViewServiceImpl implements RestViewService {
         User user = userRepository.findOne(userIdx);
 
         List<Subscription> subscriptions = user.getFavorites();
+        Collections.reverse(subscriptions);
 
         ListData listData = new ListData(user, subscriptions, user.getCategories(), lastLoginTime);
 

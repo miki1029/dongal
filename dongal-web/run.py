@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template, request, session, redirect, url_for
+from datetime import *
 from dongal import *
 
 import simplejson as json
 import requests
 import ConfigParser
+import time
 
 SECRET_KEY = 'dongal'
 
@@ -36,7 +38,7 @@ def login_process():
     try:
         data = json.loads(requests.get(url=SESSION_BASE_URL + "login?email=" + email + "&password=" + password).text)
         session["userIdx"] = str(data["idx"])
-        session["email"] = request.form['email']
+        session["email"] = email
         session["lastLoginTime"] = str(data["lastLoginTime"])
         requests.get(url=SESSION_BASE_URL + "updateLoginTime?userIdx=" + session["userIdx"])
         print 'loginProcess ~ session["userIdx"]=' + session["userIdx"]
@@ -62,8 +64,12 @@ def logout():
 def send_verify_mail():
     print 'sendVerifyEmail ~ session["userIdx"]=' + session["userIdx"]
     # Send Verify email
-    init_mail(request["userIdx"], request["email"], ROOT_BASE_URL)
-    send_mail(request["email"])
+    userIdx = session["userIdx"]
+    email = session["email"]
+    print 'init_mail(' + userIdx + ',' + email + ')'
+    init_mail(userIdx, email, ROOT_BASE_URL)
+    print 'send_mail'
+    send_mail(email)
     data = {'result': 'success'}
     return json.dumps(data)
 
@@ -103,18 +109,21 @@ def join():
 @app.route("/home")
 def home():
     data = json.loads(requests.get(url=VIEW_BASE_URL + "home?userIdx=" + session["userIdx"] + "&timestamp=" + session["lastLoginTime"]).text)
-    if len(data['posts']) == 0 :
-        return redirect(url_for('settings'))
-    return render_template("home.html", title="Home", userInfo=data['userInfo'], alarms=data['posts'], root_url=ROOT_BASE_URL)
+    print data
+    # if len(data['posts']) == 0 :
+    #     return redirect(url_for('settings'))
+    lt = time.localtime(float(int(session["lastLoginTime"]) / 1000))
+    last_login_time = "%04d-%02d-%02d %02d:%02d:%02d" % (lt[0], lt[1], lt[2], lt[3], lt[4], lt[5])
+    return render_template("home.html", title="Home", userInfo=data['userInfo'], alarms=data['posts'], root_url=ROOT_BASE_URL, last_login_time=last_login_time)
 
 @app.route("/list")
 def list():
-    data = json.loads(requests.get(url=VIEW_BASE_URL + "list?userIdx=" + session["userIdx"]).text)
+    data = json.loads(requests.get(url=VIEW_BASE_URL + "list?userIdx=" + session["userIdx"] + "&timestamp=" + session["lastLoginTime"]).text)
     return render_template("list.html", title="List", favorites=data['posts'], root_url=ROOT_BASE_URL)
 
 @app.route("/favorite")
 def favorite():
-    data = json.loads(requests.get(url=VIEW_BASE_URL + "favorite?userIdx=" + session["userIdx"]).text)
+    data = json.loads(requests.get(url=VIEW_BASE_URL + "favorite?userIdx=" + session["userIdx"] + "&timestamp=" + session["lastLoginTime"]).text)
     return render_template("favorite.html", title="Favorite", favorites=data['posts'], root_url=ROOT_BASE_URL)
 
 @app.route("/more")

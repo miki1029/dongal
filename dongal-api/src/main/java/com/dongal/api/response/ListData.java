@@ -19,14 +19,15 @@ import java.util.List;
 @Data
 public class ListData implements Serializable {
 
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat yyyyMMdd = new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public ListData(User user, List<Subscription> subscriptions, List<Category> categories, Date lastLoginTime) {
         // 날짜로 역순 정렬
-        Collections.sort(subscriptions, (o1, o2) -> o2.getCreatedTime().compareTo(o1.getCreatedTime()));
+         Collections.sort(subscriptions, (o1, o2) -> o2.getCrawlingTime().compareTo(o1.getCrawlingTime()));
 
         // category
-        boolean dongguk = false;
+/*        boolean dongguk = false;
         boolean dyeon = false;
 
         for (Category category : categories) {
@@ -36,23 +37,19 @@ public class ListData implements Serializable {
                 dyeon = true;
             }
             if (dongguk && dyeon) break;
-        }
+        }*/
 
         // userInfo
-        userInfo.setName(user.getName());
-        if (subscriptions.size() == 0) userInfo.settings.setLastUpdateTime("");
-        else userInfo.settings.setLastUpdateTime(sdf.format(subscriptions.get(0).getCreatedTime()));
-        userInfo.settings.home.lastDate = 3;
-        userInfo.settings.home.count = user.getHomeCount();
-        if (dongguk && dyeon) userInfo.settings.category = "동국대, 디연";
-        else if (dongguk && !dyeon) userInfo.settings.category = "동국대";
-        else if (!dongguk && dyeon) userInfo.settings.category = "디연";
-        else userInfo.settings.category = "미설정";
+        userInfo.name = user.getName();
+        if (subscriptions.size() == 0)
+            userInfo.lastCrawlingTime = "";
+        else
+            userInfo.lastCrawlingTime = sdf.format(subscriptions.get(0).getCrawlingTime());
 
         // posts
         PostData postData = new PostData();
         for (Subscription subscription : subscriptions) {
-            String subscriptionDate = sdf.format(subscription.getCreatedTime());
+            String subscriptionDate = yyyyMMdd.format(subscription.getCreatedTime());
             if (postData.date == null) {
                 postData.date = subscriptionDate;
             } else if (!postData.date.equals(subscriptionDate)) {
@@ -93,20 +90,7 @@ public class ListData implements Serializable {
     @Data
     private class UserInfoData {
         private String name;
-        private SettingsData settings = new SettingsData();
-
-        @Data
-        private class SettingsData {
-            private HomeData home = new HomeData();
-            private String category;
-            private String lastUpdateTime;
-
-            @Data
-            private class HomeData {
-                private int lastDate;
-                private int count;
-            }
-        }
+        private String lastCrawlingTime;
     }
 
     @Data

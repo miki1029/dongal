@@ -19,5 +19,7 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
 //    @Query("select s from Subscription s inner join s.category c where c in ?1")
     List<Subscription> findByCategoryInOrderByCreatedTimeDesc(List<Category> categories);
 
-    List<Subscription> findByCategoryInAndCrawlingTimeAfterOrderByCreatedTimeDesc(List<Category> categories, Date lastLoginTime);
+    List<Subscription> findByCategoryInAndCrawlingTimeAfterOrderByCrawlingTimeDesc(List<Category> categories, Date lastLoginTime);
+
+    List<Subscription> findByCategoryInOrderByCrawlingTimeDesc(List<Category> categories);
 }

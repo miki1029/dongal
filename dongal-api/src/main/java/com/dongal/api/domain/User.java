@@ -74,5 +74,6 @@ public class User {
         this.name = name;
         this.createdTime = createdTime;
         this.isDguVerified = isDguVerified;
+        this.lastLoginTime = createdTime;
     }
 }
