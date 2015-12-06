@@ -7,6 +7,7 @@ import simplejson as json
 import requests
 import ConfigParser
 import time
+import operator
 
 SECRET_KEY = 'dongal'
 
@@ -118,6 +119,7 @@ def home():
 
 @app.route("/list")
 def list():
+    print "[Request] URL: %s" % (VIEW_BASE_URL + "list?userIdx=" + session["userIdx"] + "&timestamp=" + session["lastLoginTime"])
     data = json.loads(requests.get(url=VIEW_BASE_URL + "list?userIdx=" + session["userIdx"] + "&timestamp=" + session["lastLoginTime"]).text)
     return render_template("list.html", title="List", favorites=data['posts'], root_url=ROOT_BASE_URL)
 

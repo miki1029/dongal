@@ -8,10 +8,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author miki
@@ -24,7 +21,24 @@ public class ListData implements Serializable {
 
     public ListData(User user, List<Subscription> subscriptions, List<Category> categories, Date lastLoginTime) {
         // 날짜로 역순 정렬
-         Collections.sort(subscriptions, (o1, o2) -> o2.getCrawlingTime().compareTo(o1.getCrawlingTime()));
+        Map<String, List<Subscription>> subscriptionMap = new TreeMap<>();
+        for (Subscription subscription : subscriptions) {
+            String dateStr = yyyyMMdd.format(subscription.getCreatedTime());
+            if (!subscriptionMap.containsKey(dateStr)) {
+                subscriptionMap.put(dateStr, new ArrayList<>());
+            }
+            subscriptionMap.get(dateStr).add(subscription);
+        }
+
+        subscriptions = new LinkedList<>();
+        for (String key : subscriptionMap.keySet()) {
+            List<Subscription> list = subscriptionMap.get(key);
+            Collections.sort(list, (o1, o2) -> o2.getCrawlingTime().compareTo(o1.getCrawlingTime()));
+            Collections.reverse(list);
+            for (Subscription subscription : list) {
+                ((LinkedList)subscriptions).addFirst(subscription);
+            }
+        }
 
         // category
 /*        boolean dongguk = false;
