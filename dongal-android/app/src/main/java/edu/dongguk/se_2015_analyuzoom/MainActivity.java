@@ -72,6 +72,10 @@ public class MainActivity extends AppCompatActivity {
                     mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
                     mWebView.setHorizontalScrollBarEnabled(false);
                     mWebView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+                    mWebView.getSettings().setAllowFileAccessFromFileURLs(true);
+                    mWebView.getSettings().setAllowUniversalAccessFromFileURLs(true);
+                    mWebView.addJavascriptInterface(this, "android");
+                    mWebView.getSettings().setAllowFileAccessFromFileURLs(true);
 
 
                     mWebView.setWebViewClient(new WebViewClient() {
@@ -107,11 +111,11 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
 
-                    mWebView.loadUrl("http://dna.dongguk.ac.kr:9090");
+                    mWebView.loadUrl("http://172.30.1.52:9090");
                     mWebView.setWebViewClient(new WebViewClient() {
                         public void onPageFinished(WebView view, String url) {
                             Log.e(TAG, url);
-                            if(url.equals("http://dna.dongguk.ac.kr:9090/")) {
+                            if(url.equals("http://172.30.1.52:9090/")) {
                                 view.loadUrl("javascript:deviceTokenInit('" + token + "')");
                             }
                         }
